@@ -25,6 +25,8 @@ urlpatterns = [
     path ('profile/', views.profile, name="profile"),
 
     path ('resetPassword/', views.resetPassword, name="reset_password"),
+    path ('register/', views.register, name="register"),
+    path ('changePassword/', views.register, name="change_password"),
 
     
 

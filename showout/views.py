@@ -47,6 +47,14 @@ def resetPassword(request):
     context = {}
     return render (request, 'showout/resetPassword.html', context)
 
+def register(request):
+    context = {}
+    return render (request, 'showout/register.html', context)
+
+def changePassword(request):
+    context = {}
+    return render (request, 'showout/changePassword.html', context)
+
 
 
 
