@@ -55,6 +55,42 @@ def changePassword(request):
     context = {}
     return render (request, 'showout/changePassword.html', context)
 
+def vendorPage(request):
+    context = {}
+    return render (request, 'showout/vendorPage.html', context)
+
+def servicePage(request):
+    context = {}
+    return render (request, 'showout/servicePage.html', context)
+
+def viewServices(request):
+    context = {}
+    return render (request, 'showout/viewServices.html', context)
+
+def viewVendors(request):
+    context = {}
+    return render (request, 'showout/viewVendors.html', context)
+
+def wishlist(request):
+    context = {}
+    return render (request, 'showout/wishlist.html', context)
+
+def editProfile(request):
+    context = {}
+    return render (request, 'showout/editProfile.html', context)
+
+def aboutUS(request):
+    context = {}
+    return render (request, 'showout/aboutUS.html', context)
+
+def contactUS(request):
+    context = {}
+    return render (request, 'showout/contactUS.html', context)
+
+def searchResult(request):
+    context = {}
+    return render (request, 'showout/searchResult.html', context)
+
 
 
 
