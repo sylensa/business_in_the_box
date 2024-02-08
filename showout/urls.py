@@ -27,6 +27,15 @@ urlpatterns = [
     path ('resetPassword/', views.resetPassword, name="reset_password"),
     path ('register/', views.register, name="register"),
     path ('changePassword/', views.register, name="change_password"),
+    path ('vendorPage/', views.vendorPage, name="vendorPage"),
+    path ('servicePage/', views.servicePage, name="servicePage"),
+    path ('viewServices/', views.viewServices, name="viewServices"),
+    path ('viewVendors/', views.viewVendors, name="viewVendors"),
+    path ('wishlist/', views.wishlist, name="wishlist"),
+    path ('editProfile/', views.editProfile, name="editProfile"),
+     path ('aboutUS/', views.aboutUS, name="aboutUS"),
+      path ('contactUS/', views.contactUS, name="contactUS"),
+       path ('searchResult/', views.searchResult, name="searchResult"),
 
     
 
