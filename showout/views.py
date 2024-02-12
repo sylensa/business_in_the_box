@@ -58,7 +58,7 @@ def vendorPage(request):
 
 def servicePage(request):
     context = {}
-    return render (request, 'showout/customers/servicePage.html', context)
+    return render (request, 'showout/servicePage.html', context)
 
 def viewServices(request):
     context = {}
