@@ -1,0 +1,264 @@
+
+
+<!-- start of codes inherit from base.html-->
+
+{% include 'showout/base.html' %}
+<!--end of codes-->
+
+{% load static %}
+
+
+{% block content %}
+
+
+ 
+    <div class="container" style="margin-top: 8rem;">
+        <div class="row">
+            <div class="col-sm-6">
+                <img src="{% static 'images/img1.jpg' %}" class="img-fluid" alt="Responsive image">
+            </div>
+            <div class="col-sm-6">
+                <h2>Welcome to ShowOut Inventory Platform</h2>
+                <p>
+                    We're delighted to have you here. Our platform is designed to simplify the process of identifying and selecting the right technology solutions for your business needs. Whether you're a financial services consultancy or an individual user our goal is to:  
+                </p>
+                
+                  
+                    <p><img src="{% static 'images/mark.png' %}" style="height: 2rem; width: 2rem;">provide you with an efficient tool to manage vendor information</p> 
+                    
+                    
+                    <div class="row">
+                        <div class="col-md-2">
+                        <img src="{% static 'images/mark.png' %}" style="height: 2rem; width: 2rem;">
+                        </div>
+                    <div>help you explore product options</div> 
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-1">
+                        <img src="{% static 'images/mark.png' %}" style="height: 2rem; width: 2rem;">
+                        </div>
+                    <div>and make informed decisions.</div> 
+                    </div>
+                    
+                
+                    
+               
+            </div>
+        </div>
+
+        <div class="content">
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel eligendi quam eaque libero ullam dolorem incidunt sit animi nisi optio ducimus quasi, consectetur, explicabo mollitia quae, similique facilis in cumque.
+            </p>
+
+           
+        </div>
+
+        <div class="group">
+            <div class="row">
+                <div class="col-md-8">
+                    <h5>Vendors</h5>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'vendor_list' %}"><h5>View All</h5></a>
+                </div>
+            </div>
+        
+            <div class="row" style="margin-top: 40px;">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <img class="card-img" src="{% static 'images/placeholder.png' %}" alt="Vendor Image">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card-body">
+                                    <h5 class="card-title">Vendor Name</h5>
+                                    <p class="card-text">Country</p>
+                                    <p class="card-text">City</p>
+                                    <p class="card-text">Address</p>
+                                    <div class="mt-3">
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Second card (similar structure) -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <img class="card-img" src="{% static 'images/placeholder.png' %}" alt="Vendor Image">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card-body">
+                                    <h5 class="card-title">Vendor Name</h5>
+                                    <p class="card-text">Country</p>
+                                    <p class="card-text">City</p>
+                                    <p class="card-text">Address</p>
+                                    <div class="mt-3">
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="group">
+            <div class="row">
+                <div class="col-md-8">
+                    <h5>Vendors</h5>
+                </div>
+                <div class="col-md-4">
+                    <a href="vendor_list.html"><h5>View All</h5></a>
+                </div>
+            </div>
+        
+            <div class="row" style="margin-top: 40px;">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <img class="card-img" src="{% static 'images/placeholder.png' %}" alt="Vendor Image">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card-body">
+                                    <h5 class="card-title">Vendor Name</h5>
+                                    <p class="card-text">Country</p>
+                                    <p class="card-text">City</p>
+                                    <p class="card-text">Address</p>
+                                    <div class="mt-3">
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Second card (similar structure) -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <img class="card-img" src="{% static 'images/placeholder.png' %}" alt="Vendor Image">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card-body">
+                                    <h5 class="card-title">Vendor Name</h5>
+                                    <p class="card-text">Country</p>
+                                    <p class="card-text">City</p>
+                                    <p class="card-text">Address</p>
+                                    <div class="mt-3">
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+
+        <div class="group">
+            <div class="row">
+                <div class="col-md-8">
+                    <h5>Vendors</h5>
+                </div>
+                <div class="col-md-4">
+                    <a href="vendor_list.html"><h5>View All</h5></a>
+                </div>
+            </div>
+        
+            <div class="row" style="margin-top: 40px;">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <img class="card-img" src="{% static 'images/placeholder.png' %}" alt="Vendor Image">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card-body">
+                                    <h5 class="card-title">Vendor Name</h5>
+                                    <p class="card-text">Country</p>
+                                    <p class="card-text">City</p>
+                                    <p class="card-text">Address</p>
+                                    <div class="mt-3">
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Second card (similar structure) -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <img class="card-img" src="{% static 'images/placeholder.png' %}" alt="Vendor Image">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card-body">
+                                    <h5 class="card-title">Vendor Name</h5>
+                                    <p class="card-text">Country</p>
+                                    <p class="card-text">City</p>
+                                    <p class="card-text">Address</p>
+                                    <div class="mt-3">
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                        <span class="bi bi-star-fill"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        
+    </div>
+
+    
+
+   
+{% endblock content %}
+
+
+{% include 'showout/footer.html' %}
+
+ 

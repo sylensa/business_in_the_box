@@ -24,9 +24,9 @@ def checkout(request):
     return render (request, 'showout/checkout.html', context)
 
 
-def orderDetails(request):
+def vendor_list(request):
     context ={}
-    return render (request, 'showout/orderDetails.html', context)
+    return render (request, 'showout/vendor_list.html', context)
 
 def orders(request):
     context ={}
@@ -54,6 +54,11 @@ def register(request):
 def changePassword(request):
     context = {}
     return render (request, 'showout/changePassword.html', context)
+
+
+def dashboard(request):
+    context = {}
+    return render (request, 'showout/dashboard.html', context)
 
 
 

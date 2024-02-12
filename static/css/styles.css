@@ -1,0 +1,281 @@
+:root {
+    --color-primary:#ff9900; 
+    --color-primary-variant:#f59653; 
+    --color-bg-1:#212226;
+    --color-bg-2:#2a3b42; 
+    --color-bg-3:#445a4d; 
+    --color-bg-4:#779e7f;
+    --color-bg-5:#1c282e;
+    --color-bg-6:#171719;
+    --color-bg-7:#f4f3f3;   
+    --color-bg-8:#c7c5c5; 
+    --color-light:#85a2b2;
+    --color-white:hsl(0,0%, 90%);
+
+    /* general container size for large devices*/
+    --container-width-lg: 88%;
+
+    /* general container size for large devices*/
+    --container-width-md: 92%;
+
+    --transition: all 400ms ease;
+
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    list-style: none;
+    text-decoration: none;
+    box-sizing: border-box;
+    
+}
+
+html{
+   scroll-behavior:smooth;
+}
+
+
+body {
+    font-family:'Montserrat'
+    sans-serif;
+    background: var(--color-bg-7);
+
+    /*text color*/
+    color: var(--color-light-6);
+
+    line-height: 1.7;
+}
+
+
+h1,h2 {
+    line-height: 1.1;
+    font-weight: 400;
+    
+}
+
+h1 {
+    font-size:4rem;
+    color: var(--color-bg-);
+}
+
+h2 {
+    font-size: 3.5rem;
+    
+}
+
+a {
+    color: var(--color-light);
+    transition: var(--transition),
+    
+}
+
+a:hover{
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.container{
+    width: var(--container-width-lg);
+    margin: 0 auto;         /*will center it*/
+    max-width: 2160px;
+
+}
+
+img{
+    display: block;
+    object-fit: cover;       /*specifies how <img> should be resized to fit its container*/
+    width: 100%;
+}
+
+
+
+/*------------------------- NAV ---------------------------------*/
+
+nav{
+    height: 5rem;
+    width: 100vw;
+    display: grid;
+    place-items: center;    /* places the direct child in the middle */
+    position:fixed;          /* to prevent it from moving */
+    top: 0;
+    left: 0;
+    z-index: 99;            /* stack the nav over all elements on the page */
+}
+
+/* nav class on scroll using javasript*/
+.window-scrolled{
+    background: var(--color-bg-1);
+    border-bottom:0.1rem solid var(--color-bg-2);
+    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.2);
+
+}
+.nav__container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    background: var(--color-white);
+}
+
+/* only needed on tablets and phones */
+.nav__toggle-btn{
+    display: none;
+
+}
+
+.nav__logo{
+    width: 4rem;
+
+}
+
+.nav__links {
+    color: #c7c5c5;
+   
+    
+}
+
+.nav__right {
+    display: flex;
+    gap: 1rem;
+
+}
+
+
+
+
+
+/*------------------------- HEADER ---------------------------------*/
+
+header{
+    width: 100vw;
+    height: 100vh;
+    position:relative;
+    top:0;
+    background: linear-gradient(var(--color-bg-6), var (--color-bg-5));
+    overflow: hidden;
+
+}
+.header__container{
+    display:grid;
+    grid-template-columns: 42% 52%;
+    gap: 6%;
+    margin-top: 10rem;
+    position: relative;
+}
+
+.header__image-bg{
+    background: var(--color-bg-2);
+    height: 12rem;
+    width: 10rem;
+    position: absolute;   
+
+}
+
+.header__image-lg{
+    width: 29rem;
+    position: relative;
+    top: 1rem;
+    left: 1rem;
+  
+    transition:var(--transition);
+}
+
+.header__image-sm{
+    width: 28.5rem;
+    height: 28.5rem;
+    overflow: hidden;
+    position:absolute;
+    left: 6rem;
+    top:6rem;
+    transition:var(--transition);
+}
+
+.header__left:hover .header__image-sm{
+    opacity: 0;
+}
+
+.header__left:hover .header__image-lg{
+    filter: saturate(1) brightness(1);
+    border: 1rem solid var(--color-bg-2);
+    top:0;
+    left:0;
+}
+
+.header__head{
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+
+
+.header__tag{
+    color: var(--color-primary-variant);
+}
+
+.header__right p{
+    margin-top:2rem;
+    width: 85%;
+}
+
+/*only shows on tablets and phones */
+.header__btn-md{
+    display: none;
+}
+
+
+
+.group{
+ margin-top: 3rem;
+ padding: 1rem;
+    background: #ffffff;
+    height: 40%;
+    width: 100%;
+}
+
+.group_column{
+    display: grid;
+}
+.group_body{
+    
+   
+    display: flex;
+    border: 1px solid var(--color-bg-8);
+
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    
+}
+
+.col-md-4 h5{
+float:right;
+}
+
+.content{
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+}
+
+
+.footer {
+    background-color:#171719;
+    margin-top: 8rem;
+    /* or 'absolute' depending on your layout */
+    bottom: 0;
+    left: 0;
+    width: 100%;    
+    text-align: center;
+    padding: 10px 0;
+}
+
+.card-img{
+
+margin-left: 1rem;
+margin-top: 1rem;
+}

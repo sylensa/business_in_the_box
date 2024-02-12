@@ -8,6 +8,8 @@ urlpatterns = [
     #leave as empty string for base url
     path('', views.home, name = "home"),
 
+    path('dashboard/', views.dashboard, name =" home"),
+
     path('cart/', views.cart, name= "cart"),
 
     path('checkout/', views.checkout, name= "checkout"),
@@ -16,7 +18,7 @@ urlpatterns = [
     
     path('signup/', views.signup, name= "signup"),
 
-    path('orderDetails/', views.orderDetails, name="order_details"),
+     path('vendor_list/', views.vendor_list, name='vendor_list'),
 
     path ('orders/', views.orders, name="orders"),
 
