@@ -2,56 +2,53 @@
 {% load static %}
 <html lang="en">
 <head>
-    {% include 'showout/header.html' %}
+    {% include 'showout/customers/header.html' %}
 </head>
 <body>
-    {% include 'showout/navbar.html' %}
+    {% include 'showout/customers/navbar.html' %}
 <div class="container-fluid" style="padding-left: 60px;height: 100%;">
+  <!-- // vendors -->
     <div class="row"  style="width: 100%;padding-top: 20px;">
       <div class="col-sm-6 col-md-6 col-lg-6">
-        <h3 style="text-align: left;">wishlist</h3>
+        <h3 style="text-align: left;">Search results</h3>
       </div>
       <div class="col-sm-6 col-md-6 col-lg-6">
         <p  style="text-align: right;padding-right: 30px;"></p>
       </div>
     </div>
-  
-    <!-- Services -->
-    <div class="row" style="margin-top: 20px;" >
+    <div class="row" >
       <div class="col-md-6">
-        <a href="{% url 'servicePage' %}" style="text-decoration:none">
-        <div class="card" style="width:600px; height: 200px;">
-          <div class="row">
-            <div class="col-md-7">
-              <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-             </div>
-             <div class="col-md-5">
-              <div class="card-body">
-                <h4 class="card-title">Service name</h4>
-                <div style="margin-top: 5px;" class="card-text">Vebdors name</div>
-                <div  style="margin-top: 5px;" class="card-text">Budget</div>
-                <div style="margin-top: 10px;">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
+        <a href="{% url 'customers/vendorPage' %}" style="text-decoration:none">
+          <div class="card" style="width:600px; height: 200px;">
+            <div class="row">
+              <div class="col-md-7">
+                <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
+               </div>
+               <div class="col-md-5">
+                <div class="card-body">
+                  <h4 class="card-title">Vendors name</h4>
+                  <div style="margin-top: 5px;" class="card-text">Country</div>
+                  <div  style="margin-top: 5px;" class="card-text">City</div>
+                  <div  style="margin-top: 5px;" class="card-text">Address</div>
+                  <div style="margin-top: 10px;">
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                  </div>
                 </div>
-                <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Remove <i class="material-icons">delete</i></button>
-            
-                </div>
-              </div>
-             </div>
-
+               </div>
+  
+            </div>
+           
           </div>
-         
-        </div>
         </a>
+       
      
       </div>
       
-      <div class="col-md-6">
+      <div class="col-md-6" >
         <div class="card" style="width:600px; height: 200px;">
           <div class="row">
             <div class="col-md-7">
@@ -59,19 +56,16 @@
              </div>
              <div class="col-md-5">
               <div class="card-body">
-                <h4 class="card-title">Service name</h4>
-                <div style="margin-top: 5px;" class="card-text">Vebdors name</div>
-                <div  style="margin-top: 5px;" class="card-text">Budget</div>
+                <h4 class="card-title">Vendors name</h4>
+                <div style="margin-top: 5px;" class="card-text">Country</div>
+                <div  style="margin-top: 5px;" class="card-text">City</div>
+                <div  style="margin-top: 5px;" class="card-text">Address</div>
                 <div style="margin-top: 10px;">
                   <span class="fa fa-star checked"></span>
                   <span class="fa fa-star checked"></span>
                   <span class="fa fa-star checked"></span>
                   <span class="fa fa-star"></span>
                   <span class="fa fa-star"></span>
-                </div>
-                <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Remove <i class="material-icons">delete</i></button>
-              
                 </div>
               </div>
              </div>
@@ -93,19 +87,16 @@
              </div>
              <div class="col-md-5">
               <div class="card-body">
-                <h4 class="card-title">Service name</h4>
-                <div style="margin-top: 5px;" class="card-text">Vebdors name</div>
-                <div  style="margin-top: 5px;" class="card-text">Budget</div>
+                <h4 class="card-title">Vendors name</h4>
+                <div style="margin-top: 5px;" class="card-text">Country</div>
+                <div  style="margin-top: 5px;" class="card-text">City</div>
+                <div  style="margin-top: 5px;" class="card-text">Address</div>
                 <div style="margin-top: 10px;">
                   <span class="fa fa-star checked"></span>
                   <span class="fa fa-star checked"></span>
                   <span class="fa fa-star checked"></span>
                   <span class="fa fa-star"></span>
                   <span class="fa fa-star"></span>
-                </div>
-                <div style="margin-top: 10px;">
-                    <button style="font-size:24px">Remove <i class="material-icons">delete</i></button>
-              
                 </div>
               </div>
              </div>
@@ -116,7 +107,7 @@
      
       </div>
       
-      <div class="col-md-6">
+      <div class="col-md-6" >
         <div class="card" style="width:600px; height: 200px;">
           <div class="row">
             <div class="col-md-7">
@@ -124,19 +115,16 @@
              </div>
              <div class="col-md-5">
               <div class="card-body">
-                <h4 class="card-title">Service name</h4>
-                <div style="margin-top: 5px;" class="card-text">Vebdors name</div>
-                <div  style="margin-top: 5px;" class="card-text">Budget</div>
+                <h4 class="card-title">Vendors name</h4>
+                <div style="margin-top: 5px;" class="card-text">Country</div>
+                <div  style="margin-top: 5px;" class="card-text">City</div>
+                <div  style="margin-top: 5px;" class="card-text">Address</div>
                 <div style="margin-top: 10px;">
                   <span class="fa fa-star checked"></span>
                   <span class="fa fa-star checked"></span>
                   <span class="fa fa-star checked"></span>
                   <span class="fa fa-star"></span>
                   <span class="fa fa-star"></span>
-                </div>
-                <div style="margin-top: 10px;">
-                    <button style="font-size:24px">Remove <i class="material-icons">delete</i></button>
-              
                 </div>
               </div>
              </div>
@@ -149,6 +137,9 @@
       
     </div>
 
+
+
+
 </div>
 
 <div style="margin-top: 100px;">
@@ -156,7 +147,7 @@
 </div>
 
  
-{% include 'showout/footer.html' %}
+{% include 'showout/customers/footer.html' %}
 
 </body>
 </html>

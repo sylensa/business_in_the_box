@@ -2,10 +2,10 @@
 {% load static %}
 <html lang="en">
 <head>
-    {% include 'showout/header.html' %}
+    {% include 'showout/customers/header.html' %}
 </head>
 <body>
-    {% include 'showout/navbar.html' %}
+    {% include 'showout/customers/navbar.html' %}
 <div class="container-fluid" style="padding-left: 60px;height: 100%;">
   <!-- // vendors -->
     <div class="row"  style="width: 100%;padding-top: 20px;">
@@ -13,7 +13,7 @@
         <h3 style="text-align: left;">Vendors</h3>
       </div>
       <div class="col-sm-6 col-md-6 col-lg-6">
-        <a href="{% url 'viewVendors' %}" style="text-decoration:none">  <p  style="text-align: right;padding-right: 30px;">View all</p></a>
+        <a href="{% url 'customers/viewVendors' %}" style="text-decoration:none">  <p  style="text-align: right;padding-right: 30px;">View all</p></a>
 
        
       </div>
@@ -147,12 +147,12 @@
         <h3 style="text-align: left;">Category name</h3>
       </div>
       <div class="col-sm-6 col-md-6 col-lg-6">
-        <a href="{% url 'viewServices' %}" style="text-decoration:none"> <p  style="text-align: right;padding-right: 30px;">View all</p></a>
+        <a href="{% url 'customers/viewServices' %}" style="text-decoration:none"> <p  style="text-align: right;padding-right: 30px;">View all</p></a>
       </div>
     </div>
     <div class="row" >
       <div class="col-md-6">
-        <a href="{% url 'servicePage' %}" style="text-decoration:none">
+        <a href="{% url 'customers/servicePage' %}" style="text-decoration:none">
         <div class="card" style="width:600px; height: 200px;">
           <div class="row">
             <div class="col-md-7">
@@ -289,7 +289,7 @@
 </div>
 
  
-{% include 'showout/footer.html' %}
+{% include 'showout/customers/footer.html' %}
 
 </body>
 </html>

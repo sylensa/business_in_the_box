@@ -33,23 +33,18 @@
         <figure class="figure-style">
           <img src="{% static 'images/cover.jpg' %}" style="margin-top: 40px;"  width="100" height="50" class="img-fluid mx-auto d-block"> 
       </figure>
-      <p class="text-center">Login into your account</p>
-      <a  href="{% url 'register' %}"> <p class="text-center" >Don't have an account? Sign up</p></a><br>
+      <p class="text-center">Sign up into your account</p>
+      <a  href="{% url 'customers/login' %}"> <p class="text-center" >Already have an account? Login here</p></a><br>
+    
         <form action="/action_page.php" class="text-center">
+            <input type="text" id="fname" name="fname" class="textField" placeholder="First name" ><br><br>
+            <input type="text" id="lname" name="lname" class="textField" placeholder="Last name" ><br><br>
           <input type="email" id="email" name="email" class="textField" placeholder="Email" ><br><br>
+          <input type="number" id="mobile" name="mobile" class="textField" placeholder="Contact number" ><br><br>
           <input type="password" id="password" name="password" class="textField" placeholder="Password"><br><br>
-          <div class="row" style="padding-left: 50px;padding-right: 50px;">
-            <div class="col-md-6">
-              <input type="checkbox" >
-              <label for="vehicle1"> Remember me</label><br>
-              
-            </div>
-            <div class="col-md-6">
-              <a  href="{% url 'reset_password' %}"> Forgot password</a>
-            </div>
-          </div>
-          <br>
-          <input type="submit" formaction="/action_page2.php" value="Sign in"  class="textField">
+          <input type="password" id="confirm_password" name="confirm_password" class="textField" placeholder="Confirm password"><br><br>
+         
+          <input type="submit" formaction="/action_page2.php" value="Sign Up"  class="textField">
         </form>
       </div>
 
