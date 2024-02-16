@@ -15,22 +15,6 @@ def home(request):
     context = {}
     return render(request,'showout/customers/home.html', context)
 
-def cart(request):
-    context ={}
-    return render (request, 'showout/customers/cart.html', context)
-
-def checkout(request):
-    context ={}
-    return render (request, 'showout/customers/checkout.html', context)
-
-
-def orderDetails(request):
-    context ={}
-    return render (request, 'showout/customers/orderDetails.html', context)
-
-def orders(request):
-    context ={}
-    return render (request, 'showout/customers/orders.html', context)
 
 def productDetails(request):
     context = {}
@@ -90,7 +74,12 @@ def searchResult(request):
 
 
 
+# vendor views
 
 
 
-# add the rest of the view for the various webpages
+def customerlist(request):
+    context = {}
+    return render (request, 'showout/vendor/customerlist.html', context)
+
+
