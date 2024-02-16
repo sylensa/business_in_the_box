@@ -81,5 +81,8 @@ def searchResult(request):
 def customerlist(request):
     context = {}
     return render (request, 'showout/vendor/customerlist.html', context)
+def vendor_dash(request):
+    context = {}
+    return render (request, 'showout/vendor/vendor_dash.html', context)
 
 
