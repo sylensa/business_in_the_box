@@ -86,3 +86,6 @@ def vendor_dash(request):
     return render (request, 'showout/vendor/vendor_dash.html', context)
 
 
+def document(request):
+    context = {}
+    return render (request, 'showout/vendor/document.html', context)

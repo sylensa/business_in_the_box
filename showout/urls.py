@@ -50,6 +50,6 @@ urlpatterns = [
    
     path ('customerlist/', views.customerlist, name="customerlist"),
     path ('vendor_dash/', views.vendor_dash, name="vendor_dash"),
-    
-    
+    path ('document/', views.document, name="document"),
+
 ]
