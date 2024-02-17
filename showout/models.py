@@ -10,6 +10,7 @@ class Country(models.Model):
 		return self.countryName
 	
 class Customer(models.Model):
+	
 	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
 	firstName = models.CharField(max_length=200, null=True)
 	lastName = models.CharField(max_length=200, null=True)
