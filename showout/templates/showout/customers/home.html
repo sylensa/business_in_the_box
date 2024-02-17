@@ -7,13 +7,25 @@
 <body>
     {% include 'showout/navbar.html' %}
 <div class="container-fluid" style="padding-left: 60px;height: 100%;">
+
+  <div class="row">
+    <div class="col-lg-6">
+
+    </div>
+    <div class="col-lg-6">
+      
+    </div>
+  </div>
+
+
+
   <!-- // vendors -->
     <div class="row"  style="width: 100%;padding-top: 20px;">
       <div class="col-sm-6 col-md-6 col-lg-6">
         <h3 style="text-align: left;">Vendors</h3>
       </div>
       <div class="col-sm-6 col-md-6 col-lg-6">
-        <a href="{% url 'viewVendors' %}" style="text-decoration:none">  <p  style="text-align: right;padding-right: 30px;">View all</p></a>
+        <a href="{% url 'viewVendors' %}" style="text-decoration:none">  <p style="margin-left: 33rem;"><button  class="btn btn-primary">View all</button></p></a>
 
        
       </div>
@@ -139,15 +151,16 @@
       
     </div>
 
-
+<br>
+<br>
     <!-- Categories -->
-
+<hr>
     <div class="row"  style="width: 100%;padding-top: 40px;">
       <div class="col-sm-6 col-md-6 col-lg-6">
         <h3 style="text-align: left;">Category name</h3>
       </div>
       <div class="col-sm-6 col-md-6 col-lg-6">
-        <a href="{% url 'viewServices' %}" style="text-decoration:none"> <p  style="text-align: right;padding-right: 30px;">View all</p></a>
+        <a href="{% url 'viewServices' %}" style="text-decoration:none"> <p style="margin-left: 33rem;"><button  class="btn btn-primary">View all</button></p></a>
       </div>
     </div>
     <div class="row" >
@@ -171,7 +184,7 @@
                   <span class="fa fa-star"></span>
                 </div>
                 <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Add to wishlist <i class="material-icons">favorite</i></button>
+                  <button class="btn btn-secondary">Add to wishlist <i class="material-icons">favorite</i></button>
               
                 </div>
               </div>
@@ -203,7 +216,7 @@
                   <span class="fa fa-star"></span>
                 </div>
                 <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Add to wishlist <i class="material-icons">favorite</i></button>
+                  <button class="btn btn-secondary">Add to wishlist <i class="material-icons">favorite</i></button>
               
                 </div>
               </div>
@@ -237,7 +250,7 @@
                   <span class="fa fa-star"></span>
                 </div>
                 <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Add to wishlist <i class="material-icons">favorite</i></button>
+                  <button class="btn btn-secondary">Add to wishlist <i class="material-icons">favorite</i></button>
               
                 </div>
               </div>
@@ -268,7 +281,7 @@
                   <span class="fa fa-star"></span>
                 </div>
                 <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Add to wishlist <i class="material-icons">favorite</i></button>
+                  <button class="btn btn-secondary">Add to wishlist <i class="material-icons">favorite</i></button>
               
                 </div>
               </div>
