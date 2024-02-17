@@ -7,41 +7,58 @@
 <body>
     {% include 'showout/navbar.html' %}
 <div class="container-fluid" style="padding-left: 60px;height: 100%;">
+
+  <div class="row">
+    <div class="col-lg-6">
+
+    </div>
+    <div class="col-lg-6">
+      
+    </div>
+  </div>
+
+
+
   <!-- // vendors -->
     <div class="row"  style="width: 100%;padding-top: 20px;">
       <div class="col-sm-6 col-md-6 col-lg-6">
         <h3 style="text-align: left;">Vendors</h3>
       </div>
       <div class="col-sm-6 col-md-6 col-lg-6">
-        <p  style="text-align: right;padding-right: 30px;">View all</p>
+        <a href="{% url 'viewVendors' %}" style="text-decoration:none">  <p style="margin-left: 33rem;"><button  class="btn btn-primary">View all</button></p></a>
+
+       
       </div>
     </div>
     <div class="row" >
       <div class="col-md-6">
-        <div class="card" style="width:600px; height: 200px;">
-          <div class="row">
-            <div class="col-md-7">
-              <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-             </div>
-             <div class="col-md-5">
-              <div class="card-body">
-                <h4 class="card-title">Vendors name</h4>
-                <div style="margin-top: 5px;" class="card-text">Country</div>
-                <div  style="margin-top: 5px;" class="card-text">City</div>
-                <div  style="margin-top: 5px;" class="card-text">Address</div>
-                <div style="margin-top: 10px;">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
+        <a href="{% url 'vendorPage' %}" style="text-decoration:none">
+          <div class="card" style="width:600px; height: 200px;">
+            <div class="row">
+              <div class="col-md-7">
+                <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
+               </div>
+               <div class="col-md-5">
+                <div class="card-body">
+                  <h4 class="card-title">Vendors name</h4>
+                  <div style="margin-top: 5px;" class="card-text">Country</div>
+                  <div  style="margin-top: 5px;" class="card-text">City</div>
+                  <div  style="margin-top: 5px;" class="card-text">Address</div>
+                  <div style="margin-top: 10px;">
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                  </div>
                 </div>
-              </div>
-             </div>
-
+               </div>
+  
+            </div>
+           
           </div>
-         
-        </div>
+        </a>
+       
      
       </div>
       
@@ -134,19 +151,21 @@
       
     </div>
 
-
+<br>
+<br>
     <!-- Categories -->
-
+<hr>
     <div class="row"  style="width: 100%;padding-top: 40px;">
       <div class="col-sm-6 col-md-6 col-lg-6">
         <h3 style="text-align: left;">Category name</h3>
       </div>
       <div class="col-sm-6 col-md-6 col-lg-6">
-        <p  style="text-align: right;padding-right: 30px;">View all</p>
+        <a href="{% url 'viewServices' %}" style="text-decoration:none"> <p style="margin-left: 33rem;"><button  class="btn btn-primary">View all</button></p></a>
       </div>
     </div>
     <div class="row" >
       <div class="col-md-6">
+        <a href="{% url 'servicePage' %}" style="text-decoration:none">
         <div class="card" style="width:600px; height: 200px;">
           <div class="row">
             <div class="col-md-7">
@@ -165,7 +184,7 @@
                   <span class="fa fa-star"></span>
                 </div>
                 <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Add to wishlist <i class="material-icons">favorite</i></button>
+                  <button class="btn btn-secondary">Add to wishlist <i class="material-icons">favorite</i></button>
               
                 </div>
               </div>
@@ -174,6 +193,7 @@
           </div>
          
         </div>
+        </a>
      
       </div>
       
@@ -196,7 +216,7 @@
                   <span class="fa fa-star"></span>
                 </div>
                 <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Add to wishlist <i class="material-icons">favorite</i></button>
+                  <button class="btn btn-secondary">Add to wishlist <i class="material-icons">favorite</i></button>
               
                 </div>
               </div>
@@ -230,7 +250,7 @@
                   <span class="fa fa-star"></span>
                 </div>
                 <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Add to wishlist <i class="material-icons">favorite</i></button>
+                  <button class="btn btn-secondary">Add to wishlist <i class="material-icons">favorite</i></button>
               
                 </div>
               </div>
@@ -261,7 +281,7 @@
                   <span class="fa fa-star"></span>
                 </div>
                 <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Add to wishlist <i class="material-icons">favorite</i></button>
+                  <button class="btn btn-secondary">Add to wishlist <i class="material-icons">favorite</i></button>
               
                 </div>
               </div>

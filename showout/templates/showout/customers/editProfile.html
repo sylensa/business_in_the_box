@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    {% include 'showout/header.html' %}
+</head>
+<body>
+    {% include 'showout/navbar.html' %}
+<div class="container-fluid" style="padding-left: 60px;height: 100%;">
+  <!-- // vendors -->
+    <div class="row"  style="width: 100%;padding-top: 20px;">
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <h3 style="text-align: left;">Profile</h3>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+
+       
+      </div>
+    </div>
+    <form action="/action_page.php" class="text-center">
+      <input type="text" id="fname" name="fname" class="textField" placeholder="First name" ><br><br>
+      <input type="text" id="lname" name="lname" class="textField" placeholder="Last name" ><br><br>
+    <input type="email" id="email" name="email" class="textField" placeholder="Email" ><br><br>
+    <input type="number" id="mobile" name="mobile" class="textField" placeholder="Contact number" ><br><br>
+    <input type="password" id="password" name="password" class="textField" placeholder="Password"><br><br>
+    <input type="password" id="confirm_password" name="confirm_password" class="textField" placeholder="Confirm password"><br><br>
+   
+    <input type="submit" formaction="/action_page2.php" value="Update"  class="textField">
+  </form>
+
+
+
+
+</div>
+
+<div style="margin-top: 100px;">
+
+</div>
+
+ 
+{% include 'showout/footer.html' %}
+
+</body>
+</html>
