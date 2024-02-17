@@ -1,24 +1,26 @@
-        <nav class="navbar navbar-expand-sm navbar-dark bg-light fixed-top" >
+        
+        
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" >
             <div class="container-fluid">
-              <a class="navbar-brand" href="{% url 'home' %}"  style="color: black;">Logo</a>
+              <a class="navbar-brand" href="{% url 'home' %}">Logo</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                 <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
                   <li class="nav-item">
-                    <a class="nav-link"  href="{% url 'home' %}" style="color: black;">ShowOut</a>
+                    <a class="nav-link"  href="{% url 'home' %}">ShowOut</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link"  href="{% url 'contactUS' %}"style="color: black;">Contact Us</a>
+                    <a class="nav-link"  href="{% url 'contactUS' %}">Contact Us</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link"  href="{% url 'aboutUS' %}"style="color: black;">About Us</a>
+                    <a class="nav-link"  href="{% url 'aboutUS' %}">About Us</a>
                   </li>
     
                 </ul>
                 <div  class="nav-item dropdown"style="margin-right: 20px;">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: black;">Account</a>
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Account</a>
                   <ul class="dropdown-menu">
                     
                     <li><a class="dropdown-item"  href="{% url 'login' %}">Login</a></li>
