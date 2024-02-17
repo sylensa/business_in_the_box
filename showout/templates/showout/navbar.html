@@ -2,15 +2,13 @@
         
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" >
             <div class="container-fluid">
-              <a class="navbar-brand" href="{% url 'home' %}">Logo</a>
+              <a class="navbar-brand" href="{% url 'home' %}">ShowOut</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                 <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
-                  <li class="nav-item">
-                    <a class="nav-link"  href="{% url 'home' %}">ShowOut</a>
-                  </li>
+                  
                   <li class="nav-item">
                     <a class="nav-link"  href="{% url 'contactUS' %}">Contact Us</a>
                   </li>
@@ -28,7 +26,7 @@
                   </ul>
                 </div> 
 
-                  <a style="text-decoration: none;" href="{% url 'wishlist' %}"> <div style="background-color: #D3D3D3;padding: 5px;"><i  href="#" style="color: red;">0 </i><i  style="color: black;" href="#">Wish List</i></div></a>
+                  <a style="text-decoration: none;" href="{% url 'wishlist' %}"> <div ><button class="btn btn-light"><i  href="#" style="color: red;">0 </i>Wish List</button></div></a>
             
               
             
