@@ -7,28 +7,30 @@
 <body>
     {% include 'showout/navbar.html' %}
 <div class="container-fluid" >
+
 <div class="row" style="text-align: justify;padding: 20px;">
 <div class="col-md-6">
-    <h3>Vendor name</h3>
+    <h3>{{vendor.vendorName}}</h3>
     <figure class="figure-style">
-        <img src="{% static 'images/cover.jpg' %}" style="margin-top: 0px;"  class="img-fluid mx-auto float-none d-block"> 
-    </figure>
+      <img src="{% static 'images/cover.jpg' %}" style="margin-top: 0px; height: 220px;width: 100%;"  class="img-fluid mx-auto float-none d-block"> 
+  </figure>
       
 </div>
 <div class="col-md-6">
-    <h5>About venddor</h5>
+    <h5>About vendor</h5>
    <p>
-    Starting in Android 8.0 (API level 26), all notifications must be assigned to a channel. For each channel, you can set the visual and auditory behavior that is applied to all notifications in that channel. Users can change these settings and decide which notification channels from your app can be intrusive or visible.
-    Starting in Android 8.0 (API level 26), all notifications must be assigned to a channel. For each channel, you can set the visual and auditory behavior that is applied to all notifications in that channel. Users can change these settings and decide which notification channels from your app can be intrusive or visible.
-    Starting in Android 8.0 (API level 26), all notifications must be assigned to a channel. For each channel, you can set the visual and auditory behavior that is applied to all notifications in that channel. Users can change these settings and decide which notification channels from your app can be intrusive or visible.
-   
+    {{vendor.aboout}}
 </p>
 
 <h5>Contact information</h5>
 <p>
- Starting in Android 8.0 (API level 26), all notifications must be assigned to a channel. For each channel, you can set the visual and auditory behavior that is applied to all notifications in that channel. Users can change these settings and decide which notification channels from your app can be intrusive or visible.
- Starting in Android 8.0 (API level 26), all notifications must be assigned to a channel. For each channel, you can set the visual and auditory behavior that is applied to all notifications in that channel. Users can change these settings and decide which notification channels from your app can be intrusive or visible.
-
+  {{vendor.email}}
+</p>
+<p>
+  {{vendor.country}}
+</p>
+<p>
+  {{vendor.website}}
 </p>
     <span class="fa fa-star checked"></span>
     <span class="fa fa-star checked"></span>
@@ -52,17 +54,19 @@
           <p  style="text-align: right;padding-right: 30px;"></p>
         </div>
       </div>
-      <div class="row" style="margin-left: 10px;">
+      {% for vendorService in vendorServices %}
+      <div class="row" style="margin-left: 10px;" >
         <div class="col-md-6">
-          <div class="card" style="width:600px; height: 200px;">
+          <a href="{% url 'servicePage' vendorId=vendorService.vendor.vendorId serviceId=vendorService.services.serviceId%}" style="text-decoration:none">
+          <div class="card" style="width:600px; height: 230px;">
             <div class="row">
               <div class="col-md-7">
-                <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
+                <img class="card-img-top" height="230px" src="{% static 'images/cover.jpg' %}" alt="Card image">
                </div>
                <div class="col-md-5">
                 <div class="card-body">
-                  <h4 class="card-title">Service name</h4>
-                  <div style="margin-top: 5px;" class="card-text">Vebdors name</div>
+                  <h4 class="card-title">{{vendorService.service.serviceName}}</h4>
+                  <div style="margin-top: 5px;" class="card-text">{{vendorService.vendor.vendorName}}</div>
                   <div  style="margin-top: 5px;" class="card-text">Budget</div>
                   <div style="margin-top: 10px;">
                     <span class="fa fa-star checked"></span>
@@ -72,7 +76,7 @@
                     <span class="fa fa-star"></span>
                   </div>
                   <div style="margin-top: 10px;">
-                    <button style="font-size:24px">Add to wishlist <i class="material-icons">favorite</i></button>
+                    <button class="btn btn-success">Add to wishlist <i class="material-icons">favorite</i></button>
                 
                   </div>
                 </div>
@@ -81,46 +85,17 @@
             </div>
            
           </div>
+          </a>
        
         </div>
-        
-        <div class="col-md-6">
-          <div class="card" style="width:600px; height: 200px;">
-            <div class="row">
-              <div class="col-md-7">
-                <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-               </div>
-               <div class="col-md-5">
-                <div class="card-body">
-                  <h4 class="card-title">Service name</h4>
-                  <div style="margin-top: 5px;" class="card-text">Vebdors name</div>
-                  <div  style="margin-top: 5px;" class="card-text">Budget</div>
-                  <div style="margin-top: 10px;">
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-                  </div>
-                  <div style="margin-top: 10px;">
-                    <button style="font-size:24px">Add to wishlist <i class="material-icons">favorite</i></button>
-                
-                  </div>
-                </div>
-               </div>
   
-            </div>
-           
-          </div>
-       
-        </div>
-        
       </div>
+      {% endfor %}
   
 
        <!-- Reccommended Vendors -->
 
-    <div class="row"  style="width: 100%;padding-top: 40px;margin-left: 10px;">
+    <!-- <div class="row"  style="width: 100%;padding-top: 40px;margin-left: 10px;">
         <div class="col-sm-6 col-md-6 col-lg-6">
           <h3 style="text-align: left;">Reccommended Vendors</h3>
         </div>
@@ -130,7 +105,7 @@
       </div>
       <div class="row" style="margin-left: 10px;">
         <div class="col-md-6">
-            <a href="{% url 'vendorPage' %}" style="text-decoration:none">
+            <a href="{% url 'vendorPage' vendorId=vendor.vendorId %}" style="text-decoration:none">
               <div class="card" style="width:600px; height: 200px;">
                 <div class="row">
                   <div class="col-md-7">
@@ -160,38 +135,8 @@
          
           </div>
 
-          <div class="col-md-6">
-            <a href="{% url 'vendorPage' %}" style="text-decoration:none">
-              <div class="card" style="width:600px; height: 200px;">
-                <div class="row">
-                  <div class="col-md-7">
-                    <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-                   </div>
-                   <div class="col-md-5">
-                    <div class="card-body">
-                      <h4 class="card-title">Vendors name</h4>
-                      <div style="margin-top: 5px;" class="card-text">Country</div>
-                      <div  style="margin-top: 5px;" class="card-text">City</div>
-                      <div  style="margin-top: 5px;" class="card-text">Address</div>
-                      <div style="margin-top: 10px;">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                      </div>
-                    </div>
-                   </div>
-      
-                </div>
-               
-              </div>
-            </a>
-           
-         
-          </div>
         
-      </div>
+      </div> -->
 
 </div>
 

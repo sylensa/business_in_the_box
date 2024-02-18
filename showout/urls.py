@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 
-
 #contains all paths to the various page in the application
 
 urlpatterns = [
@@ -23,11 +22,11 @@ urlpatterns = [
 
     path ('changePassword/', views.register, name="change_password"),
 
-    path ('vendorPage/', views.vendorPage, name="vendorPage"),
+    path ('vendorPage/<int:vendorId>', views.vendorPage, name="vendorPage"),
 
-    path ('servicePage/', views.servicePage, name="servicePage"),
+    path ('servicePage/<int:vendorId>/<int:serviceId>', views.servicePage, name="servicePage"),
 
-    path ('viewServices/', views.viewServices, name="viewServices"),
+    path ('viewServices/<int:categoryId>/<str:categoryName>', views.viewServices, name="viewServices"),
 
     path ('viewVendors/', views.viewVendors, name="viewVendors"),
 
