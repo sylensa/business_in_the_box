@@ -1,5 +1,6 @@
 from django.shortcuts import render
-
+from .models import *
+from django.db import connection
 # Create your views here.
 
 
@@ -12,10 +13,11 @@ def signup(request):
     return render(request, 'showout/customers/signup.html', context)
 
 def home(request):
-    context = {}
+    categories = Category.objects.all()
+    vendorServices = VendorServices.objects.all()
+    vendors = Vendors.objects.all()
+    context = {'categories':categories,'vendorServices':vendorServices,'vendors':vendors}
     return render(request,'showout/customers/home.html', context)
-
-
 def productDetails(request):
     context = {}
     return render (request, 'showout/customers/productDetails.html', context)
@@ -42,7 +44,7 @@ def vendorPage(request):
 
 def servicePage(request):
     context = {}
-    return render (request, 'showout/servicePage.html', context)
+    return render (request, 'showout/customers/servicePage.html', context)
 
 def viewServices(request):
     context = {}
