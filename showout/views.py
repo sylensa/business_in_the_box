@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import *
 from django.db import connection
+
 # Create your views here.
 
 
@@ -38,20 +39,31 @@ def changePassword(request):
     context = {}
     return render (request, 'showout/customers/changePassword.html', context)
 
-def vendorPage(request):
-    context = {}
+def vendorPage(request,vendorId):
+    vendorServices = VendorServices.objects.all()
+    vendorServices = getVendorsServices(vendorServices,vendorId)
+    context = {'vendorServices':vendorServices,'vendor':vendorServices[0].vendor}
     return render (request, 'showout/customers/vendorPage.html', context)
 
-def servicePage(request):
-    context = {}
+def servicePage(request,vendorId,serviceId):
+    print("vendorId",  vendorId)
+    print("serviceId",  serviceId)
+    vendorServices = [];
+    vendorServices = VendorServices.objects.all()
+    vendorService = getVendorService(vendorServices,serviceId,vendorId)
+    vendorSimilarServices = getVendorSimilarService(vendorServices,serviceId)
+    context = {'vendorService':vendorService,'vendorSimilarServices':vendorSimilarServices}
     return render (request, 'showout/customers/servicePage.html', context)
 
-def viewServices(request):
-    context = {}
+def viewServices(request,categoryId,categoryName):
+    vendorServices = VendorServices.objects.all()
+    servicesByCategory = getVendorsByCategory(vendorServices,categoryId)
+    context = {'servicesByCategory':servicesByCategory,'categoryName':categoryName}
     return render (request, 'showout/customers/viewServices.html', context)
 
 def viewVendors(request):
-    context = {}
+    vendors = Vendors.objects.all()
+    context = {'vendors':vendors}
     return render (request, 'showout/customers/viewVendors.html', context)
 
 def wishlist(request):
@@ -91,3 +103,36 @@ def vendor_dash(request):
 def document(request):
     context = {}
     return render (request, 'showout/vendor/document.html', context)
+
+
+def getVendorService(vendorServices,serviceId,vendorId):
+   for vendorService in vendorServices:
+        if vendorService.services.serviceId == serviceId and vendorService.vendor.vendorId == vendorId:
+            return vendorService
+            break
+
+
+def getVendorSimilarService(vendorServices,serviceId):
+   vendorSimilarServices = [];
+   for vendorService in vendorServices:
+        if vendorService.services.serviceId == serviceId :
+            vendorSimilarServices.append(vendorService)
+            print("getVendorSimilarService",vendorSimilarServices)
+   return vendorSimilarServices
+
+
+def getVendorsServices(vendorServices,vendorId):
+   vendorSimilarServices = [];
+   for vendorService in vendorServices:
+        if vendorService.vendor.vendorId == vendorId:
+            vendorSimilarServices.append(vendorService)
+            print("getVendorSimilarService",vendorSimilarServices)
+   return vendorSimilarServices
+
+def getVendorsByCategory(vendorServices,categoryId):
+   vendorSimilarServices = [];
+   for vendorService in vendorServices:
+        if vendorService.category.categoryId == categoryId:
+            vendorSimilarServices.append(vendorService)
+            print("getVendorSimilarService",vendorSimilarServices)
+   return vendorSimilarServices

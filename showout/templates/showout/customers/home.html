@@ -53,7 +53,7 @@
         <h3 style="text-align: left;">Vendors</h3>
       </div>
       <div class="col-sm-6 col-md-6 col-lg-6">
-        <a href="{% url 'viewVendors' %}" style="text-decoration:none">  <p style="margin-left: 33rem;"><button  class="btn btn-primary">View all</button></p></a>
+        <a href="{% url 'viewVendors'  %}" style="text-decoration:none">  <p style="margin-left: 33rem;"><button  class="btn btn-primary">View all</button></p></a>
 
        
       </div>
@@ -61,7 +61,7 @@
     <div class="row" >
       {% for vendor in vendors %}
       <div class="col-md-6">
-        <a href="{% url 'vendorPage' %}" style="text-decoration:none">
+        <a href="{% url 'vendorPage' vendorId=vendor.vendorId %}" style="text-decoration:none">
           <div class="card" style="width:600px; height: 200px;">
             <div class="row">
               <div class="col-md-7">
@@ -107,14 +107,14 @@
         <h3 style="text-align: left;">{{category.categoryName}}</h3>
       </div>
       <div class="col-sm-6 col-md-6 col-lg-6">
-        <a href="{% url 'viewServices' %}" style="text-decoration:none"> <p style="margin-left: 33rem;"><button  class="btn btn-primary">View all</button></p></a>
+        <a href="{% url 'viewServices' categoryId=category.categoryId categoryName=category.categoryName %}" style="text-decoration:none"> <p style="margin-left: 33rem;"><button  class="btn btn-primary">View all</button></p></a>
       </div>
     </div>
     {% for vendorService in vendorServices %}
     {% if vendorService.category.categoryId == category.categoryId %}
     <div class="row" >
       <div class="col-md-6">
-        <a href="{% url 'servicePage' %}" style="text-decoration:none">
+        <a href="{% url 'servicePage' vendorId=vendorService.vendor.vendorId serviceId=vendorService.services.serviceId%}" style="text-decoration:none">
         <div class="card" style="width:600px; height: 230px;">
           <div class="row">
             <div class="col-md-7">
