@@ -18,6 +18,34 @@
   </div>
 
 
+  <div class="row" style="margin-bottom: 12rem;">
+    <div class="col-lg-6" style="margin-top: 4rem;">
+      <h1>Welcome to ShowOut Inventory Platform</h1>
+      <br>
+      <p>
+          We're delighted to have you here. Our platform is designed to simplify the process of identifying and selecting the right technology solutions for your business needs. Whether you're a financial services consultancy or an individual user our goal is to:
+      </p>
+
+        <br>
+          <p><img src="{% static 'images/mark.png' %}" style="height: 2rem; width: 2rem; margin-right: 10px;"></i>provide you with an efficient tool to manage vendor information</p>
+
+          <p><img src="{% static 'images/mark.png' %}" style="height: 2rem; width: 2rem; margin-right: 10px;">help you explore product options</p>
+
+          <p><img src="{% static 'images/mark.png' %}" style="height: 2rem; width: 2rem; margin-right: 10px;">help you explore product options</p>
+
+
+        <a href="{% url 'register' %}"><button class="btn btn-success" style="margin-top: 4rem;">Register Now</button></a>
+
+        <br>
+        <hr width="40%" >
+
+    </div>
+    <div class="col-lg-6" >
+
+       <img class="" src="{% static 'images/pic.jpg' %}" style="height: 100%; width: 100%; margin-top: 4rem;">
+    </div>
+  </div>
+
 
   <!-- // vendors -->
     <div class="row"  style="width: 100%;padding-top: 20px;">
@@ -63,8 +91,8 @@
      
       </div>
       {% endfor %}
- 
-      
+
+
     </div>
 
 
@@ -105,7 +133,7 @@
                   <span class="fa fa-star"></span>
                 </div>
                 <div style="margin-top: 10px;">
-                  <button class="btn btn-secondary">Add to wishlist <i class="material-icons">favorite</i></button>
+                  <button class="btn btn-success">Add to wishlist <i class="material-icons">favorite</i></button>
               
                 </div>
               </div>
@@ -117,7 +145,7 @@
         </a>
      
       </div>
-          
+
     </div>
     {% endif %}
     {% endfor %}
