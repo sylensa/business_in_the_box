@@ -20,10 +20,13 @@
                 <div  class="nav-item dropdown"style="margin-right: 20px;">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: white;">Account</a>
                   <ul class="dropdown-menu">
-                    
-                    <li><a class="dropdown-item"  href="{% url 'login' %}">Login</a></li>
-                    
+                    {% if request.user.is_authenticated %}
+                    <li><a class="dropdown-item"  href="{% url 'customerLogin' %}">Logout</a></li>
                     <li><a class="dropdown-item" href="{% url 'profile' %}" href="#">Profile</a></li>
+                    {% else %}
+                    <li><a class="dropdown-item"  href="{% url 'customerLogin' %}">Login</a></li>
+                    {% endif %}
+                  
                   </ul>
                 </div> 
 
@@ -46,16 +49,18 @@
                   <div   class="nav-item dropdown"style="margin-right: 20px;">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: black;">Categories</a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#" >Category1</a></li>
-                      <li><a class="dropdown-item"  href="#" >Category2</a></li>
-                      <li><a class="dropdown-item"  href="#" >Category3</a></li>
+                      {% for category in categories %}
+                      <li><a class="dropdown-item" href="{% url 'viewServices' categoryId=category.categoryId categoryName=category.categoryName %}" >{{category.categoryName}}</a></li>
+                      {% endfor %}
+                    
                     </ul>
                   </div> 
     
                 </ul>
-                <form class="d-flex">
-                  <input class="form-control me-2" type="text" placeholder="Search">
-                 <a  href="{% url 'searchResult' %}" style="text-decoration: none;"><button class="btn btn-primary" type="button">Search</button></a> 
+                <form class="d-flex" method="post" action="{% url 'searchResult' %}">
+                  {% csrf_token %}
+                  <input class="form-control me-2" type="text" placeholder="Search" id="query" name="query">
+                  <button class="btn btn-primary" type="submit">Search</button>
                 </form>
             
               </div>

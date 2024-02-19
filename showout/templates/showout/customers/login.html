@@ -38,7 +38,8 @@
      
       <p class="text-center">Login into your account</p>
       <a  href="{% url 'register' %}"> <p class="text-center" >Don't have an account? Sign up</p></a><br>
-        <form action="/action_page.php" class="text-center">
+        <form class="text-center" method="POST">
+          {% csrf_token %}
           <input type="email" id="email" name="email" class="textField" placeholder="Email" ><br><br>
           <input type="password" id="password" name="password" class="textField" placeholder="Password"><br><br>
           <div class="row" style="padding-left: 50px;padding-right: 50px;">
@@ -52,7 +53,7 @@
             </div>
           </div>
           <br>
-          <button  type="submit" formaction="/action_page2.php"  class="btn btn-primary" style="width: 20rem;">Sign Up</button>
+          <button  type="submit" class="btn btn-primary" style="width: 20rem;">Sign In</button>
           
         </form>
       </div>

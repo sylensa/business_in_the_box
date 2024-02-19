@@ -1,19 +1,40 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .forms import VendorRegistrationForm, CustomerRegistrationForm
 from .models import *
 from django.db import connection
-
+from django.http import HttpResponse
+from .models import Vendors, Customer
+from django.contrib.auth import authenticate, login
+from django.contrib.sessions.models import Session
 # Create your views here.
 
 
-def login(request):
-    context = {}
-    return render(request, 'showout/customers/login.html', context)
+def customerLogin(request):
+    if request.method == 'POST':
+    # Retrieve registration data from POST request
+        email = request.POST['email']
+        password = request.POST['password']
+        # Create a new Client instance and save it to the database
+        user = authenticate(request, email=email, password=password,)
+        # Log in the newly registered user
+        login(request, user)
+
+        # Redirect to a success page or client dashboard
+        return redirect('home')
+    else:
+       return render(request, 'showout/customers/login.html',)
+
 
 def signup(request):
+
     context = {}
     return render(request, 'showout/customers/signup.html', context)
 
 def home(request):
+    if request.user.is_authenticated:
+        print("authenticated")
+    else:
+        print()    
     categories = Category.objects.all()
     vendorServices = VendorServices.objects.all()
     vendors = Vendors.objects.all()
@@ -32,8 +53,25 @@ def resetPassword(request):
     return render (request, 'showout/customers/resetPassword.html', context)
 
 def register(request):
-    context = {}
-    return render (request, 'showout/customers/register.html', context)
+    if request.method == 'POST':
+        # Retrieve registration data from POST request
+        email = request.POST['email']
+        fname = request.POST['fname']
+        lname = request.POST['lname']
+        mobile = request.POST['mobile']
+        confirm_password = request.POST['confirm_password']
+        password = request.POST['password']
+        # Create a new Client instance and save it to the database
+        user = Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile)
+
+        # Log in the newly registered user
+        login(request, user)
+
+        # Redirect to a success page or client dashboard
+        return redirect('home')
+    else:
+        return render(request, 'showout/customers/register.html')
+
 
 def changePassword(request):
     context = {}
@@ -42,7 +80,8 @@ def changePassword(request):
 def vendorPage(request,vendorId):
     vendorServices = VendorServices.objects.all()
     vendorServices = getVendorsServices(vendorServices,vendorId)
-    context = {'vendorServices':vendorServices,'vendor':vendorServices[0].vendor}
+    categories = Category.objects.all()
+    context = {'vendorServices':vendorServices,'vendor':vendorServices[0].vendor,'categories':categories}
     return render (request, 'showout/customers/vendorPage.html', context)
 
 def servicePage(request,vendorId,serviceId):
@@ -50,20 +89,23 @@ def servicePage(request,vendorId,serviceId):
     print("serviceId",  serviceId)
     vendorServices = [];
     vendorServices = VendorServices.objects.all()
+    categories = Category.objects.all()
     vendorService = getVendorService(vendorServices,serviceId,vendorId)
     vendorSimilarServices = getVendorSimilarService(vendorServices,serviceId)
-    context = {'vendorService':vendorService,'vendorSimilarServices':vendorSimilarServices}
+    context = {'vendorService':vendorService,'vendorSimilarServices':vendorSimilarServices,'categories':categories}
     return render (request, 'showout/customers/servicePage.html', context)
 
 def viewServices(request,categoryId,categoryName):
     vendorServices = VendorServices.objects.all()
+    categories = Category.objects.all()
     servicesByCategory = getVendorsByCategory(vendorServices,categoryId)
-    context = {'servicesByCategory':servicesByCategory,'categoryName':categoryName}
+    context = {'servicesByCategory':servicesByCategory,'categoryName':categoryName,'categories':categories}
     return render (request, 'showout/customers/viewServices.html', context)
 
 def viewVendors(request):
     vendors = Vendors.objects.all()
-    context = {'vendors':vendors}
+    categories = Category.objects.all()
+    context = {'vendors':vendors,'categories':categories}
     return render (request, 'showout/customers/viewVendors.html', context)
 
 def wishlist(request):
@@ -83,9 +125,15 @@ def contactUS(request):
     return render (request, 'showout/customers/contactUS.html', context)
 
 def searchResult(request):
-    context = {}
-    return render (request, 'showout/customers/searchResult.html', context)
+    categories = Category.objects.all()
+    if request.method == 'POST':
+       query = request.POST.get('query')
+    # Perform search or other processing with the query
+       searchResultsServices = fetchSearchResults(query);
+       context = {'searchResultsServices':searchResultsServices,'categories':categories}
+    #    return HttpResponse(f'Searching for: {query}')
 
+    return render (request, 'showout/customers/searchResult.html', context)
 
 
 # vendor views
@@ -136,3 +184,22 @@ def getVendorsByCategory(vendorServices,categoryId):
             vendorSimilarServices.append(vendorService)
             print("getVendorSimilarService",vendorSimilarServices)
    return vendorSimilarServices
+
+
+def fetchSearchResults(userSearch):
+    services = []
+    categories = Category.objects.filter(categoryName__icontains=userSearch)
+    vendors = Vendors.objects.filter(vendorName__icontains=userSearch)
+    vendorServices = VendorServices.objects.all()
+    for category in categories:
+        for vendorService in vendorServices:
+            if category.categoryId == vendorService.category.categoryId:
+                services.append(vendorService)
+
+    for vendor in vendors:
+        for vendorService in vendorServices:
+            if vendor.vendorId == vendorService.vendor.vendorId:
+                services.append(vendorService)
+ 
+
+    return services
