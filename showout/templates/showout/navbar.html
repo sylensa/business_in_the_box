@@ -20,8 +20,8 @@
                 <div  class="nav-item dropdown"style="margin-right: 20px;">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: white;">Account</a>
                   <ul class="dropdown-menu">
-                    {% if request.user.is_authenticated %}
-                    <li><a class="dropdown-item"  href="{% url 'customerLogin' %}">Logout</a></li>
+                    {% if customer %}
+                    <li><a class="dropdown-item"  href="{% url 'logout' %}">Logout</a></li>
                     <li><a class="dropdown-item" href="{% url 'profile' %}" href="#">Profile</a></li>
                     {% else %}
                     <li><a class="dropdown-item"  href="{% url 'customerLogin' %}">Login</a></li>

@@ -1,28 +1,45 @@
 from django.shortcuts import render, redirect
 from .forms import VendorRegistrationForm, CustomerRegistrationForm
 from .models import *
-from django.db import connection
+from django.contrib.sessions.models import Session
+from django.contrib.auth import logout
 from django.http import HttpResponse
 from .models import Vendors, Customer
 from django.contrib.auth import authenticate, login
-from django.contrib.sessions.models import Session
+from django.contrib import messages
 # Create your views here.
 
+def is_user_logged_in(request):
+    return 'user_id' in request.session
 
-def customerLogin(request):
-    if request.method == 'POST':
-    # Retrieve registration data from POST request
-        email = request.POST['email']
-        password = request.POST['password']
-        # Create a new Client instance and save it to the database
-        user = authenticate(request, email=email, password=password,)
-        # Log in the newly registered user
-        login(request, user)
+def my_logout_view(request):
+    del request.session['user_id']  # Remove user ID from session
+    # Redirect to a logout success page or any other desired page
+    return redirect('home')
 
-        # Redirect to a success page or client dashboard
-        return redirect('home')
+def customerLogin(request): 
+    if 'user_id' in request.session:
+        customerId = request.session['user_id']
+        customer = Customer.objects.get(pk=customerId)
+        categories = Category.objects.all()
+        vendorServices = VendorServices.objects.all()
+        vendors = Vendors.objects.all()
+        context = {'categories':categories,'vendorServices':vendorServices,'vendors':vendors,'customer':customer}
+        return redirect('home')  
     else:
-       return render(request, 'showout/customers/login.html',)
+        if request.method == 'POST':
+            email = request.POST['email']
+            password = request.POST['password']
+            user = authenticate_customer(email, password)
+            if user is not None:
+                # Authentication successful, perform login manually
+                request.session['user_id'] = user.customerId  # Store user ID in session
+                # Redirect to a success page or home page
+                return redirect('home')
+            else:
+                # Authentication failed, display error message
+                messages.error(request, 'Invalid email or password')
+        return render(request, 'showout/customers/login.html')
 
 
 def signup(request):
@@ -30,15 +47,17 @@ def signup(request):
     context = {}
     return render(request, 'showout/customers/signup.html', context)
 
-def home(request):
-    if request.user.is_authenticated:
-        print("authenticated")
-    else:
-        print()    
+def home(request):  
     categories = Category.objects.all()
     vendorServices = VendorServices.objects.all()
     vendors = Vendors.objects.all()
-    context = {'categories':categories,'vendorServices':vendorServices,'vendors':vendors}
+    user = None
+    if 'user_id' in request.session:
+        customerId = request.session['user_id']
+        customer = Customer.objects.get(pk=customerId)
+    else:
+        customer = None
+    context = {'categories':categories,'vendorServices':vendorServices,'vendors':vendors,'customer':customer}
     return render(request,'showout/customers/home.html', context)
 def productDetails(request):
     context = {}
@@ -203,3 +222,11 @@ def fetchSearchResults(userSearch):
  
 
     return services
+
+def authenticate_customer(email, password):
+    try:
+        customer = Customer.objects.get(email=email)
+        if customer.password == password:
+            return customer
+    except Customer.DoesNotExist:
+        return None
