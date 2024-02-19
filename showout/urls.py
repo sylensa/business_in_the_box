@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path,include
 from . import views
 
 #contains all paths to the various page in the application
@@ -10,10 +10,10 @@ urlpatterns = [
 
 
     #customer urls
-    path('login/', views.login, name= "login"),
+    path('customerLogin/', views.customerLogin, name= "customerLogin"),
     
     path('signup/', views.signup, name= "signup"),
-
+    path('logout/', views.my_logout_view, name='logout'),
      path ('profile/', views.profile, name="profile"),
 
     path ('resetPassword/', views.resetPassword, name="reset_password"),
