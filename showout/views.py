@@ -7,6 +7,8 @@ from django.http import HttpResponse
 from .models import Vendors, Customer
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.http import JsonResponse
+import json
 # Create your views here.
 
 def is_user_logged_in(request):
@@ -14,8 +16,25 @@ def is_user_logged_in(request):
 
 def my_logout_view(request):
     del request.session['user_id']  # Remove user ID from session
+    del request.session['cart'] 
     # Redirect to a logout success page or any other desired page
     return redirect('home')
+
+def updateItem(request):
+    data = json.loads(request.body)
+    vendorService = data['vendorService']
+    action = data['action']
+    print('Action:', action)
+    print('vendorService:', vendorService)
+    cart = request.session.get('cart', {})
+    cart_item = cart.get(vendorService, {'quantity': 0})
+    cart_item['quantity'] += 1
+    cart[vendorService] = cart_item
+    request.session['cart'] = cart
+
+    print("ccart",cart)
+
+    return JsonResponse('Item was added', safe=False)
 
 def customerLogin(request): 
     if 'user_id' in request.session:
