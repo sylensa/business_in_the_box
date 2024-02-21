@@ -30,7 +30,7 @@ urlpatterns = [
 
     path ('viewVendors/', views.viewVendors, name="viewVendors"),
 
-    path ('customers/wishlist/', views.wishlist, name="wishlist"),
+    path ('wishlist/', views.wishlist, name="wishlist"),
 
     path ('editProfile/', views.editProfile, name="editProfile"),
 

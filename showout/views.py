@@ -21,18 +21,32 @@ def my_logout_view(request):
     return redirect('home')
 
 def updateItem(request):
+    request.session.modified = True
+
     data = json.loads(request.body)
-    vendorService = data['vendorService']
+    vendorServicesId = data['vendorServicesId']
+    vendorService = VendorServices.objects.get(vendorServicesId=vendorServicesId)
     action = data['action']
     print('Action:', action)
     print('vendorService:', vendorService)
     cart = request.session.get('cart', {})
-    cart_item = cart.get(vendorService, {'quantity': 0})
-    cart_item['quantity'] += 1
-    cart[vendorService] = cart_item
+    cart_item = cart.get(vendorService.vendorServicesId, {'quantity': 0})
+    if action == 'add':
+      cart_item['quantity'] += 1
+    elif action == 'remove':
+      cart_item['quantity'] -= 1
+    cart[vendorService.vendorServicesId] = cart_item
     request.session['cart'] = cart
+    if cart_item['quantity'] <= 0 :
+        del  request.session['cart'][vendorService.vendorServicesId] 
+        del  request.session['cart'][str(vendorService.vendorServicesId)]
+        print("ccart",request.session['cart'])
 
-    print("ccart",cart)
+
+
+
+   
+    
 
     return JsonResponse('Item was added', safe=False)
 
@@ -147,7 +161,16 @@ def viewVendors(request):
     return render (request, 'showout/customers/viewVendors.html', context)
 
 def wishlist(request):
-    context = {}
+    carts =  request.session['cart'] 
+    wishlistServices = []
+    vendorServices = VendorServices.objects.all()
+    for cart in carts:
+        for vendorService in vendorServices:
+            if vendorService.vendorServicesId == int(cart):
+                 wishlistServices.append(vendorService)
+                #  print("cart",cart)
+    # print("vendorServices",vendorServices)
+    context = {'vendorServices':wishlistServices}
     return render (request, 'showout/customers/wishlist.html', context)
 
 def editProfile(request):
