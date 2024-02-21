@@ -20,7 +20,7 @@
                 <div  class="nav-item dropdown"style="margin-right: 20px;">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: white;">Account</a>
                   <ul class="dropdown-menu">
-                    {% if customer %}
+                    {% if request.session.user_id  %}
                     <li><a class="dropdown-item"  href="{% url 'logout' %}">Logout</a></li>
                     <li><a class="dropdown-item" href="{% url 'profile' %}" href="#">Profile</a></li>
                     {% else %}
@@ -30,7 +30,7 @@
                   </ul>
                 </div> 
 
-                  <a style="text-decoration: none;" href="{% url 'wishlist' %}"> <div ><button class="btn btn-light"><i  href="#" style="color: red;">0 </i>Wish List</button></div></a>
+                  <a style="text-decoration: none;" href="{% url 'wishlist' %}"> <div ><button class="btn btn-light"><i  href="#" style="color: red;">{{ request.session.cart|length }} </i>Wish List</button></div></a>
             
               
             

@@ -74,8 +74,8 @@ class VendorServices(models.Model):
 	services = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, blank=True)
 	date_created = models.DateTimeField(auto_now_add=True)
 	vendorServicesId =  models.IntegerField(primary_key=True,default=1)
-	def __str__(self):
-		return self.vendor.vendorName	
+	def __int__(self):
+		return self.vendorServicesId
 class WishList(models.Model):
 	vendor = models.ForeignKey(Vendors, on_delete=models.SET_NULL, null=True, blank=True)
 	service = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, blank=True)
