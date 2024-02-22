@@ -3,6 +3,9 @@
 <html lang="en">
 <head>
   <style>
+    body{
+      overflow: hidden;
+    }
      .textField{
       width: 70%;
       height: 40px;
@@ -21,30 +24,31 @@
 </head>
 <body>
   
-<div class="container-fluid">
+<div class="container-fluid" style="background-color: #eff2f7;">
   <div class="row">
-    <div class="col-md-8"style="padding-right: 0;padding-left: 0;" >
-      <figure class="figure-style">
-        <img src="{% static 'images/cover.jpg' %}"  class="img-fluid"> 
-    </figure>
-    </div>
-    <div class="col-md-4">
-      <div class="column">
-        <figure class="figure-style">
-          <img src="{% static 'images/cover.jpg' %}" style="margin-top: 40px;"  width="100" height="50" class="img-fluid mx-auto d-block"> 
-      </figure>
-      <p class="text-center">Sign up into your account</p>
-      <a  href="{% url 'login' %}"> <p class="text-center" >Already have an account? Login here</p></a><br>
+    <div class="col-md-6" style="padding-top: 4rem " >
+      
+        <img src="{% static 'images/img.jpg' %}"  class="" height="30%"> 
     
-        <form action="/action_page.php" class="text-center">
+    </div>
+    <div class="col-md-6" style="padding-top: 4rem ">
+      <div class="column">
+        
+          <img src="{% static 'images/logo2.png' %}"  style="width: 25%; height: 25;"  class="img-fluid mx-auto d-block"> 
+      
+      <p class="text-center">Sign up into your account</p>
+      <a  href="{% url 'customerLogin' %}"> <p class="text-center" >Already have an account? Login here</p></a><br>
+    
+        <form class="text-center" method="POST">
+          {% csrf_token %}
             <input type="text" id="fname" name="fname" class="textField" placeholder="First name" ><br><br>
-            <input type="text" id="lname" name="lname" class="textField" placeholder="Last name" ><br><br>
+          <input type="text" id="lname" name="lname" class="textField" placeholder="Last name" ><br><br>
           <input type="email" id="email" name="email" class="textField" placeholder="Email" ><br><br>
           <input type="number" id="mobile" name="mobile" class="textField" placeholder="Contact number" ><br><br>
           <input type="password" id="password" name="password" class="textField" placeholder="Password"><br><br>
           <input type="password" id="confirm_password" name="confirm_password" class="textField" placeholder="Confirm password"><br><br>
          
-          <input type="submit" formaction="/action_page2.php" value="Sign Up"  class="textField">
+          <button  type="submit"  class="btn btn-primary" style="width: 20rem;">Sign Up</button>
         </form>
       </div>
 

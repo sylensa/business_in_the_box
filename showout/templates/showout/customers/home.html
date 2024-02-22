@@ -5,22 +5,66 @@
     {% include 'showout/header.html' %}
 </head>
 <body>
-    {% include 'showout/navbar.html' %}
+    {% include 'showout/navbar.html' with categories=categories customer=customer %}
 <div class="container-fluid" style="padding-left: 60px;height: 100%;">
+
+  <div class="row">
+    <div class="col-lg-6">
+
+    </div>
+    <div class="col-lg-6">
+      
+    </div>
+  </div>
+
+
+  <div class="row" style="margin-bottom: 12rem;">
+    <div class="col-lg-6" style="margin-top: 4rem;">
+      <h1>Welcome to ShowOut Inventory Platform</h1>
+      <br>
+      <p>
+          We're delighted to have you here. Our platform is designed to simplify the process of identifying and selecting the right technology solutions for your business needs. Whether you're a financial services consultancy or an individual user our goal is to:
+      </p>
+
+        <br>
+          <p><img src="{% static 'images/mark.png' %}" style="height: 2rem; width: 2rem; margin-right: 10px;"></i>provide you with an efficient tool to manage vendor information</p>
+
+          <p><img src="{% static 'images/mark.png' %}" style="height: 2rem; width: 2rem; margin-right: 10px;">help you explore product options</p>
+
+          <p><img src="{% static 'images/mark.png' %}" style="height: 2rem; width: 2rem; margin-right: 10px;">help you explore product options</p>
+
+          {% if request.user.is_authenticated == False %}
+          <a href="{% url 'register' %}"><button class="btn btn-success" style="margin-top: 4rem;">Register Now</button></a>
+
+          {% endif %}
+
+
+        <br>
+        <hr width="40%" >
+
+    </div>
+    <div class="col-lg-6" >
+
+       <img class="" src="{% static 'images/pic.jpg' %}" style="height: 100%; width: 100%; margin-top: 4rem;">
+    </div>
+  </div>
+
+
   <!-- // vendors -->
     <div class="row"  style="width: 100%;padding-top: 20px;">
       <div class="col-sm-6 col-md-6 col-lg-6">
         <h3 style="text-align: left;">Vendors</h3>
       </div>
       <div class="col-sm-6 col-md-6 col-lg-6">
-        <a href="{% url 'viewVendors' %}" style="text-decoration:none">  <p  style="text-align: right;padding-right: 30px;">View all</p></a>
+        <a href="{% url 'viewVendors'  %}" style="text-decoration:none">  <p style="margin-left: 33rem;"><button  class="btn btn-primary">View all</button></p></a>
 
        
       </div>
     </div>
     <div class="row" >
+      {% for vendor in vendors %}
       <div class="col-md-6">
-        <a href="{% url 'vendorPage' %}" style="text-decoration:none">
+        <a href="{% url 'vendorPage' vendorId=vendor.vendorId %}" style="text-decoration:none">
           <div class="card" style="width:600px; height: 200px;">
             <div class="row">
               <div class="col-md-7">
@@ -28,10 +72,10 @@
                </div>
                <div class="col-md-5">
                 <div class="card-body">
-                  <h4 class="card-title">Vendors name</h4>
-                  <div style="margin-top: 5px;" class="card-text">Country</div>
-                  <div  style="margin-top: 5px;" class="card-text">City</div>
-                  <div  style="margin-top: 5px;" class="card-text">Address</div>
+                  <h4 class="card-title">{{vendor.vendorName}}</h4>
+                  <div style="margin-top: 5px;" class="card-text">{{vendor.country}}</div>
+                  <div  style="margin-top: 5px;" class="card-text">{{vendor.website}}</div>
+                  <div  style="margin-top: 5px;" class="card-text">{{vendor.email}}</div>
                   <div style="margin-top: 10px;">
                     <span class="fa fa-star checked"></span>
                     <span class="fa fa-star checked"></span>
@@ -49,238 +93,32 @@
        
      
       </div>
-      
-      <div class="col-md-6" >
-        <div class="card" style="width:600px; height: 200px;">
-          <div class="row">
-            <div class="col-md-7">
-              <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-             </div>
-             <div class="col-md-5">
-              <div class="card-body">
-                <h4 class="card-title">Vendors name</h4>
-                <div style="margin-top: 5px;" class="card-text">Country</div>
-                <div  style="margin-top: 5px;" class="card-text">City</div>
-                <div  style="margin-top: 5px;" class="card-text">Address</div>
-                <div style="margin-top: 10px;">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
-                </div>
-              </div>
-             </div>
+      {% endfor %}
 
-          </div>
-         
-        </div>
-     
-      </div>
-      
-    </div>
 
-    <div class="row" style="margin-top: 40px;" >
-      <div class="col-md-6">
-        <div class="card" style="width:600px; height: 200px;">
-          <div class="row">
-            <div class="col-md-7">
-              <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-             </div>
-             <div class="col-md-5">
-              <div class="card-body">
-                <h4 class="card-title">Vendors name</h4>
-                <div style="margin-top: 5px;" class="card-text">Country</div>
-                <div  style="margin-top: 5px;" class="card-text">City</div>
-                <div  style="margin-top: 5px;" class="card-text">Address</div>
-                <div style="margin-top: 10px;">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
-                </div>
-              </div>
-             </div>
-
-          </div>
-         
-        </div>
-     
-      </div>
-      
-      <div class="col-md-6" >
-        <div class="card" style="width:600px; height: 200px;">
-          <div class="row">
-            <div class="col-md-7">
-              <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-             </div>
-             <div class="col-md-5">
-              <div class="card-body">
-                <h4 class="card-title">Vendors name</h4>
-                <div style="margin-top: 5px;" class="card-text">Country</div>
-                <div  style="margin-top: 5px;" class="card-text">City</div>
-                <div  style="margin-top: 5px;" class="card-text">Address</div>
-                <div style="margin-top: 10px;">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
-                </div>
-              </div>
-             </div>
-
-          </div>
-         
-        </div>
-     
-      </div>
-      
     </div>
 
 
+
+<br>
+<br>
     <!-- Categories -->
-
+<hr>
+    {% for category in categories %}
     <div class="row"  style="width: 100%;padding-top: 40px;">
       <div class="col-sm-6 col-md-6 col-lg-6">
-        <h3 style="text-align: left;">Category name</h3>
+        <h3 style="text-align: left;">{{category.categoryName}}</h3>
       </div>
       <div class="col-sm-6 col-md-6 col-lg-6">
-        <a href="{% url 'viewServices' %}" style="text-decoration:none"> <p  style="text-align: right;padding-right: 30px;">View all</p></a>
+        <a href="{% url 'viewServices' categoryId=category.categoryId categoryName=category.categoryName %}" style="text-decoration:none"> <p style="margin-left: 33rem;"><button  class="btn btn-primary">View all</button></p></a>
       </div>
     </div>
-    <div class="row" >
-      <div class="col-md-6">
-        <a href="{% url 'servicePage' %}" style="text-decoration:none">
-        <div class="card" style="width:600px; height: 200px;">
-          <div class="row">
-            <div class="col-md-7">
-              <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-             </div>
-             <div class="col-md-5">
-              <div class="card-body">
-                <h4 class="card-title">Service name</h4>
-                <div style="margin-top: 5px;" class="card-text">Vebdors name</div>
-                <div  style="margin-top: 5px;" class="card-text">Budget</div>
-                <div style="margin-top: 10px;">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
-                </div>
-                <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Add to wishlist <i class="material-icons">favorite</i></button>
-              
-                </div>
-              </div>
-             </div>
-
-          </div>
-         
-        </div>
-        </a>
-     
-      </div>
-      
-      <div class="col-md-6">
-        <div class="card" style="width:600px; height: 200px;">
-          <div class="row">
-            <div class="col-md-7">
-              <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-             </div>
-             <div class="col-md-5">
-              <div class="card-body">
-                <h4 class="card-title">Service name</h4>
-                <div style="margin-top: 5px;" class="card-text">Vebdors name</div>
-                <div  style="margin-top: 5px;" class="card-text">Budget</div>
-                <div style="margin-top: 10px;">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
-                </div>
-                <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Add to wishlist <i class="material-icons">favorite</i></button>
-              
-                </div>
-              </div>
-             </div>
-
-          </div>
-         
-        </div>
-     
-      </div>
-      
-    </div>
-
-    <div class="row" style="margin-top: 40px;" >
-      <div class="col-md-6">
-        <div class="card" style="width:600px; height: 200px;">
-          <div class="row">
-            <div class="col-md-7">
-              <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-             </div>
-             <div class="col-md-5">
-              <div class="card-body">
-                <h4 class="card-title">Service name</h4>
-                <div style="margin-top: 5px;" class="card-text">Vebdors name</div>
-                <div  style="margin-top: 5px;" class="card-text">Budget</div>
-                <div style="margin-top: 10px;">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
-                </div>
-                <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Add to wishlist <i class="material-icons">favorite</i></button>
-              
-                </div>
-              </div>
-             </div>
-
-          </div>
-         
-        </div>
-     
-      </div>
-      
-      <div class="col-md-6">
-        <div class="card" style="width:600px; height: 200px;">
-          <div class="row">
-            <div class="col-md-7">
-              <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-             </div>
-             <div class="col-md-5">
-              <div class="card-body">
-                <h4 class="card-title">Service name</h4>
-                <div style="margin-top: 5px;" class="card-text">Vebdors name</div>
-                <div  style="margin-top: 5px;" class="card-text">Budget</div>
-                <div style="margin-top: 10px;">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
-                </div>
-                <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Add to wishlist <i class="material-icons">favorite</i></button>
-              
-                </div>
-              </div>
-             </div>
-
-          </div>
-         
-        </div>
-     
-      </div>
-      
-    </div>
+    {% for vendorService in vendorServices %}
+    {% if vendorService.category.categoryId == category.categoryId %}
+    {% include 'showout/customers/service_componeent.html' with vendorService=vendorService %}
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
 
 </div>
 

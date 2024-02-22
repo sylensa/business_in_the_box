@@ -2,15 +2,13 @@
         
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" >
             <div class="container-fluid">
-              <a class="navbar-brand" href="{% url 'home' %}">Logo</a>
+              <a class="navbar-brand" href="{% url 'home' %}">ShowOut</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                 <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
-                  <li class="nav-item">
-                    <a class="nav-link"  href="{% url 'home' %}">ShowOut</a>
-                  </li>
+                  
                   <li class="nav-item">
                     <a class="nav-link"  href="{% url 'contactUS' %}">Contact Us</a>
                   </li>
@@ -20,15 +18,19 @@
     
                 </ul>
                 <div  class="nav-item dropdown"style="margin-right: 20px;">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Account</a>
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: white;">Account</a>
                   <ul class="dropdown-menu">
-                    
-                    <li><a class="dropdown-item"  href="{% url 'login' %}">Login</a></li>
+                    {% if request.session.user_id  %}
+                    <li><a class="dropdown-item"  href="{% url 'logout' %}">Logout</a></li>
                     <li><a class="dropdown-item" href="{% url 'profile' %}" href="#">Profile</a></li>
+                    {% else %}
+                    <li><a class="dropdown-item"  href="{% url 'customerLogin' %}">Login</a></li>
+                    {% endif %}
+                  
                   </ul>
                 </div> 
 
-                  <a style="text-decoration: none;" href="{% url 'wishlist' %}"> <div style="background-color: #D3D3D3;padding: 5px;"><i  href="#" style="color: red;">0 </i><i  style="color: black;" href="#">Wish List</i></div></a>
+                  <a style="text-decoration: none;" href="{% url 'wishlist' %}"> <div ><button class="btn btn-light"><i  href="#" style="color: red;">{{ request.session.cart|length }} </i>Wish List</button></div></a>
             
               
             
@@ -47,16 +49,18 @@
                   <div   class="nav-item dropdown"style="margin-right: 20px;">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: black;">Categories</a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="{% url 'viewServices' %}" >Category1</a></li>
-                      <li><a class="dropdown-item"  href="{% url 'viewServices' %}" >Category2</a></li>
-                      <li><a class="dropdown-item"  href="{% url 'viewServices' %}" >Category3</a></li>
+                      {% for category in categories %}
+                      <li><a class="dropdown-item" href="{% url 'viewServices' categoryId=category.categoryId categoryName=category.categoryName %}" >{{category.categoryName}}</a></li>
+                      {% endfor %}
+                    
                     </ul>
                   </div> 
     
                 </ul>
-                <form class="d-flex">
-                  <input class="form-control me-2" type="text" placeholder="Search">
-                 <a  href="{% url 'searchResult' %}" style="text-decoration: none;"><button class="btn btn-primary" type="button">Search</button></a> 
+                <form class="d-flex" method="post" action="{% url 'searchResult' %}">
+                  {% csrf_token %}
+                  <input class="form-control me-2" type="text" placeholder="Search" id="query" name="query">
+                  <button class="btn btn-primary" type="submit">Search</button>
                 </form>
             
               </div>

@@ -5,7 +5,7 @@
 
 <!--end of codes-->
 
-{% include 'showout/header.html.' %}
+{% include 'showout/header.html' %}
 
 {% block content %}
 
@@ -22,10 +22,10 @@
         </a>
         
         <ul class="nav nav-pills flex-column mb-auto container-fluid">
-          <li class="nav-item">
-            <a href="{% url 'vendor_dash' %}" class="nav-link active" aria-current="page">
+          <li class="sidebar-link" id="dashboard">
+            <a href="{% url 'vendor_dash' %}" class="nav-link"  style="color: white;">
                 <i class="bi bi-speedometer2"><use xlink:href="#home"/></i>
-              Darshboard
+              Dashboard
             </a>
           </li>
           <br>
@@ -33,7 +33,7 @@
     
          
 
-          <li>
+          <li class="sidebar-link">
             <a href="{% url 'customerlist' %}" class="nav-link text-white" >
                 <i class="bi bi-people-fill" ></i><use xlink:href="#"/></i>
               Customers
@@ -42,19 +42,19 @@
 
           
         
-          <li>
+          <li class="sidebar-link">
             <a href="{% url 'document' %}" class="nav-link text-white">
                 <i class="bi bi-file-earmark-text-fill"><use xlink:href="#people-circle"/></i>
               Documents
             </a>
           </li>
-          <li>
+          <li class="sidebar-link">
             <a href="#" class="nav-link text-white">
                 <i class="bi bi-list-stars"><use xlink:href="#people-circle"/></i>
               Wishlist
             </a>
           </li>
-          <li>
+          <li class="sidebar-link">
             <a href="#" class="nav-link text-white">
               <i class="bi bi-gear"><use xlink:href="#people-circle"/></i>
               Settings

@@ -9,25 +9,27 @@
 <div class="container-fluid" >
 <div class="row" style="text-align: justify;padding: 20px;">
 <div class="col-md-6">
-    <h3>Service name</h3>
+    <h3>{{vendorService.services.serviceName}}</h3>
     <figure class="figure-style">
-        <img src="{% static 'images/cover.jpg' %}" style="margin-top: 0px;"  class="img-fluid mx-auto float-none d-block"> 
+        <img src="{% static 'images/cover.jpg' %}" style="margin-top: 0px; height: 220px;width: 100%;"  class="img-fluid mx-auto float-none d-block"> 
     </figure>
       
 </div>
 <div class="col-md-6">
     <h5>Service details</h5>
    <p>
-    Starting in Android 8.0 (API level 26), all notifications must be assigned to a channel. For each channel, you can set the visual and auditory behavior that is applied to all notifications in that channel. Users can change these settings and decide which notification channels from your app can be intrusive or visible.
-    Starting in Android 8.0 (API level 26), all notifications must be assigned to a channel. For each channel, you can set the visual and auditory behavior that is applied to all notifications in that channel. Users can change these settings and decide which notification channels from your app can be intrusive or visible.
-    Starting in Android 8.0 (API level 26), all notifications must be assigned to a channel. For each channel, you can set the visual and auditory behavior that is applied to all notifications in that channel. Users can change these settings and decide which notification channels from your app can be intrusive or visible.
-   
+    {{vendorService.services.description}}
 </p>
 
 <h5>Contact information</h5>
 <p>
- Starting in Android 8.0 (API level 26), all notifications must be assigned to a channel. For each channel, you can set the visual and auditory behavior that is applied to all notifications in that channel. Users can change these settings and decide which notification channels from your app can be intrusive or visible.
- Starting in Android 8.0 (API level 26), all notifications must be assigned to a channel. For each channel, you can set the visual and auditory behavior that is applied to all notifications in that channel. Users can change these settings and decide which notification channels from your app can be intrusive or visible.
+  {{vendorService.vendor.email}}
+</p>
+<p>
+  {{vendorService.vendor.country}}
+</p>
+<p>
+  {{vendorService.vendor.website}}
 </p>
     <span class="fa fa-star checked"></span>
     <span class="fa fa-star checked"></span>
@@ -53,8 +55,9 @@
         </div>
       </div>
       <div class="row" style="margin-left: 10px;">
+        {% for vendorSimilarService in vendorSimilarServices %}
         <div class="col-md-6">
-            <a href="{% url 'vendorPage' %}" style="text-decoration:none">
+            <a href="{% url 'vendorPage' vendorId=vendorSimilarService.vendor.vendorId %}" style="text-decoration:none">
               <div class="card" style="width:600px; height: 200px;">
                 <div class="row">
                   <div class="col-md-7">
@@ -62,10 +65,10 @@
                    </div>
                    <div class="col-md-5">
                     <div class="card-body">
-                      <h4 class="card-title">Vendors name</h4>
-                      <div style="margin-top: 5px;" class="card-text">Country</div>
-                      <div  style="margin-top: 5px;" class="card-text">City</div>
-                      <div  style="margin-top: 5px;" class="card-text">Address</div>
+                      <h4 class="card-title">{{vendorSimilarService.vendor.vendorName}}</h4>
+                      <div style="margin-top: 5px;" class="card-text">{{vendorSimilarService.vendor.country}}</div>
+                      <div  style="margin-top: 5px;" class="card-text">{{vendorSimilarService.vendor.website}}</div>
+                      <div  style="margin-top: 5px;" class="card-text">{{vendorSimilarService.vendor.email}}</div>
                       <div style="margin-top: 10px;">
                         <span class="fa fa-star checked"></span>
                         <span class="fa fa-star checked"></span>
@@ -83,37 +86,8 @@
            
          
           </div>
-
-          <div class="col-md-6">
-            <a href="{% url 'vendorPage' %}" style="text-decoration:none">
-              <div class="card" style="width:600px; height: 200px;">
-                <div class="row">
-                  <div class="col-md-7">
-                    <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-                   </div>
-                   <div class="col-md-5">
-                    <div class="card-body">
-                      <h4 class="card-title">Vendors name</h4>
-                      <div style="margin-top: 5px;" class="card-text">Country</div>
-                      <div  style="margin-top: 5px;" class="card-text">City</div>
-                      <div  style="margin-top: 5px;" class="card-text">Address</div>
-                      <div style="margin-top: 10px;">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                      </div>
-                    </div>
-                   </div>
-      
-                </div>
-               
-              </div>
-            </a>
-           
-         
-          </div>
+          {% endfor %}
+        
         
       </div>
 
