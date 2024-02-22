@@ -199,11 +199,18 @@ def searchResult(request):
 
 # vendor views
 
+def vendor_login(request):
+    context = {}
+    return render(request, 'showout/vendor/vendor_login.html',context)
 
+def vendor_sign_up(request):
+    context = {}
+    return render(request, 'showout/vendor/vendor_sign_up.html',context)
 
 def customerlist(request):
     context = {}
     return render (request, 'showout/vendor/customerlist.html', context)
+
 def vendor_dash(request):
     context = {}
     return render (request, 'showout/vendor/vendor_dash.html', context)
