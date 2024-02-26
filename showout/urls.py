@@ -51,6 +51,6 @@ urlpatterns = [
     path ('vendor_dash/', views.vendor_dash, name="vendor_dash"),
     path ('document/', views.document, name="document"),
     path ('vendor_login/', views.vendor_login, name="vendor_login"),
-     path ('vendor_sign_up/', views.vendor_sign_up, name="vendor_sign_up"),
+    path ('vendor_sign_up/', views.vendor_sign_up, name="vendor_sign_up"),
 
 ]
