@@ -1,0 +1,124 @@
+{% load static %}
+
+{% include 'showout/header.html' %}
+
+
+
+<style>
+  body {
+      background-color: #212529;
+     /* background-image: url("{% static 'images/bg7.jpg' %}");*/
+      background-size: cover;
+      background-position: center;
+      height: 100%;
+
+
+   }
+   .login{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+
+   }
+   .login_form{
+
+    justify-content: center;
+    align-items: center;
+    display: block;
+   }
+
+
+   form{
+    background-color: white;
+    height: 80%;
+    width: 30%;
+    border-radius: 10px;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    box-shadow: 1px 1px  #8e8e8e;
+    opacity: 95%;
+    display: flex;
+
+
+   }
+
+   input{
+
+
+
+    height: 2rem;
+    border-radius: 5px;
+
+    margin-top: 1.5rem;
+    width: 100%;
+   }
+
+   input:active{
+      border:solid #d7d5d5 1px;
+   }
+
+   h2{
+    text-align: center;
+    margin-top: 4rem;
+    margin-bottom: 1rem;
+   }
+
+   .form_body{
+
+    text-align: center;
+    padding-left: 2rem;
+    padding-right: 2rem;
+
+
+   }
+
+   a{ 
+    text-decoration: none;
+   }
+
+   a:hover{
+    text-decoration: none;
+   }
+
+</style>
+
+   <div class="login">
+
+    <form class="login_form" method="POST">
+            <div class="form_body">
+            <h2>Create Account</h2>
+
+            <input type="text"  name="company_name" class="form-control" placeholder="Company Name" required>
+            <input type="email" name="email" class="form-control" placeholder="Email" required>
+            <input type="text"  name="phone" class="form-control" placeholder="Phone Number" required>
+            <select class="form-select" style="margin-top: 1rem;" required>
+               <option  selected>Select Country</option>
+               <option value="1"></option>
+               <option value="2"></option>
+
+            </select>
+            <input type="text"  name="address" class="form-control" placeholder="Address" required>
+            <input type="password"  name="password" class="form-control" placeholder="Password" type="hidden" required>
+            <input type="password"  name="confirm_password" class="form-control" placeholder=" Confirm Password" type ="hidden"required>
+            <button class="btn btn-primary" style="margin-top: 1rem; width: 20rem;">Sign Up</button>
+
+            <div>
+               <br>
+               <p>Already have an account?<a  href="{% url 'vendor_sign_up' %}"> Sign up</a></p>   
+             </div>
+
+
+
+
+
+    </div>
+      </form>
+
+
+   </div>
+
+  
