@@ -20,14 +20,17 @@
                 <div  class="nav-item dropdown"style="margin-right: 20px;">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: white;">Account</a>
                   <ul class="dropdown-menu">
-                    
-                    <li><a class="dropdown-item"  href="{% url 'login' %}">Login</a></li>
-                    
+                    {% if request.session.user_id  %}
+                    <li><a class="dropdown-item"  href="{% url 'logout' %}">Logout</a></li>
                     <li><a class="dropdown-item" href="{% url 'profile' %}" href="#">Profile</a></li>
+                    {% else %}
+                    <li><a class="dropdown-item"  href="{% url 'customerLogin' %}">Login</a></li>
+                    {% endif %}
+                  
                   </ul>
                 </div> 
 
-                  <a style="text-decoration: none;" href="{% url 'wishlist' %}"> <div ><button class="btn btn-light"><i  href="#" style="color: red;">0 </i>Wish List</button></div></a>
+                  <a style="text-decoration: none;" href="{% url 'wishlist' %}"> <div ><button class="btn btn-light"><i  href="#" style="color: red;">{{ request.session.cart|length }} </i>Wish List</button></div></a>
             
               
             
@@ -46,16 +49,18 @@
                   <div   class="nav-item dropdown"style="margin-right: 20px;">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: black;">Categories</a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="{% url 'viewServices' %}" >Category1</a></li>
-                      <li><a class="dropdown-item"  href="{% url 'viewServices' %}" >Category2</a></li>
-                      <li><a class="dropdown-item"  href="{% url 'viewServices' %}" >Category3</a></li>
+                      {% for category in categories %}
+                      <li><a class="dropdown-item" href="{% url 'viewServices' categoryId=category.categoryId categoryName=category.categoryName %}" >{{category.categoryName}}</a></li>
+                      {% endfor %}
+                    
                     </ul>
                   </div> 
     
                 </ul>
-                <form class="d-flex">
-                  <input class="form-control me-2" type="text" placeholder="Search">
-                 <a  href="{% url 'searchResult' %}" style="text-decoration: none;"><button class="btn btn-primary" type="button">Search</button></a> 
+                <form class="d-flex" method="post" action="{% url 'searchResult' %}">
+                  {% csrf_token %}
+                  <input class="form-control me-2" type="text" placeholder="Search" id="query" name="query">
+                  <button class="btn btn-primary" type="submit">Search</button>
                 </form>
             
               </div>

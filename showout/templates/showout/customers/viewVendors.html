@@ -17,38 +17,9 @@
       </div>
     </div>
     <div class="row" >
-      <div class="col-md-6">
-        <a href="{% url 'vendorPage' %}" style="text-decoration:none">
-          <div class="card" style="width:600px; height: 200px;">
-            <div class="row">
-              <div class="col-md-7">
-                <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-               </div>
-               <div class="col-md-5">
-                <div class="card-body">
-                  <h4 class="card-title">Vendors name</h4>
-                  <div style="margin-top: 5px;" class="card-text">Country</div>
-                  <div  style="margin-top: 5px;" class="card-text">City</div>
-                  <div  style="margin-top: 5px;" class="card-text">Address</div>
-                  <div style="margin-top: 10px;">
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-                  </div>
-                </div>
-               </div>
-  
-            </div>
-           
-          </div>
-        </a>
-       
-     
-      </div>
-      
-      <div class="col-md-6" >
+      {% for vendor in vendors %}
+    <div class="col-md-6">
+      <a href="{% url 'vendorPage' vendorId=vendor.vendorId %}" style="text-decoration:none">
         <div class="card" style="width:600px; height: 200px;">
           <div class="row">
             <div class="col-md-7">
@@ -56,10 +27,10 @@
              </div>
              <div class="col-md-5">
               <div class="card-body">
-                <h4 class="card-title">Vendors name</h4>
-                <div style="margin-top: 5px;" class="card-text">Country</div>
-                <div  style="margin-top: 5px;" class="card-text">City</div>
-                <div  style="margin-top: 5px;" class="card-text">Address</div>
+                <h4 class="card-title">{{vendor.vendorName}}</h4>
+                <div style="margin-top: 5px;" class="card-text">{{vendor.country}}</div>
+                <div  style="margin-top: 5px;" class="card-text">{{vendor.website}}</div>
+                <div  style="margin-top: 5px;" class="card-text">{{vendor.email}}</div>
                 <div style="margin-top: 10px;">
                   <span class="fa fa-star checked"></span>
                   <span class="fa fa-star checked"></span>
@@ -73,69 +44,15 @@
           </div>
          
         </div>
+      </a>
      
-      </div>
+   
+    </div>
+    {% endfor %}
       
     </div>
 
-    <div class="row" style="margin-top: 40px;" >
-      <div class="col-md-6">
-        <div class="card" style="width:600px; height: 200px;">
-          <div class="row">
-            <div class="col-md-7">
-              <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-             </div>
-             <div class="col-md-5">
-              <div class="card-body">
-                <h4 class="card-title">Vendors name</h4>
-                <div style="margin-top: 5px;" class="card-text">Country</div>
-                <div  style="margin-top: 5px;" class="card-text">City</div>
-                <div  style="margin-top: 5px;" class="card-text">Address</div>
-                <div style="margin-top: 10px;">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
-                </div>
-              </div>
-             </div>
-
-          </div>
-         
-        </div>
-     
-      </div>
-      
-      <div class="col-md-6" >
-        <div class="card" style="width:600px; height: 200px;">
-          <div class="row">
-            <div class="col-md-7">
-              <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-             </div>
-             <div class="col-md-5">
-              <div class="card-body">
-                <h4 class="card-title">Vendors name</h4>
-                <div style="margin-top: 5px;" class="card-text">Country</div>
-                <div  style="margin-top: 5px;" class="card-text">City</div>
-                <div  style="margin-top: 5px;" class="card-text">Address</div>
-                <div style="margin-top: 10px;">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
-                </div>
-              </div>
-             </div>
-
-          </div>
-         
-        </div>
-     
-      </div>
-      
-    </div>
+ 
 
 
 

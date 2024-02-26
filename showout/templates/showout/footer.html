@@ -1,3 +1,4 @@
+{% load static %}
 <div class="container-fluid" style="background-color: rgb(229, 229, 237);">
   <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
     <div class="col mb-3">
@@ -43,5 +44,27 @@
         <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
       </ul>
     </div>
+
+    <script type="text/javascript" src="{% static 'javascript/cart.js' %}" ></script>
+    <script type="text/javascript">
+      function getToken(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getToken('csrftoken')
+console.log("csrftoken",csrftoken)
+    </script>
+
   </footer>
 </div>

@@ -1,6 +1,5 @@
-from django.urls import path
+from django.urls import path,include
 from . import views
-
 
 #contains all paths to the various page in the application
 
@@ -11,27 +10,27 @@ urlpatterns = [
 
 
     #customer urls
-    path('login/', views.login, name= "login"),
+    path('customerLogin/', views.customerLogin, name= "customerLogin"),
     
     path('signup/', views.signup, name= "signup"),
-
+    path('logout/', views.my_logout_view, name='logout'),
      path ('profile/', views.profile, name="profile"),
-
+    path('update_item/', views.updateItem, name="update_item"),
     path ('resetPassword/', views.resetPassword, name="reset_password"),
 
     path ('register/', views.register, name="register"),
 
     path ('changePassword/', views.register, name="change_password"),
 
-    path ('vendorPage/', views.vendorPage, name="vendorPage"),
+    path ('vendorPage/<int:vendorId>', views.vendorPage, name="vendorPage"),
 
-    path ('servicePage/', views.servicePage, name="servicePage"),
+    path ('servicePage/<int:vendorId>/<int:serviceId>', views.servicePage, name="servicePage"),
 
-    path ('viewServices/', views.viewServices, name="viewServices"),
+    path ('viewServices/<int:categoryId>/<str:categoryName>', views.viewServices, name="viewServices"),
 
     path ('viewVendors/', views.viewVendors, name="viewVendors"),
 
-    path ('customers/wishlist/', views.wishlist, name="wishlist"),
+    path ('wishlist/', views.wishlist, name="wishlist"),
 
     path ('editProfile/', views.editProfile, name="editProfile"),
 

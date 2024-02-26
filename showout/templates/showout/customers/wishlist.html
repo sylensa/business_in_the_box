@@ -17,9 +17,12 @@
     </div>
   
     <!-- Services -->
+  
     <div class="row" style="margin-top: 20px;" >
-      <div class="col-md-6">
-        <a href="{% url 'servicePage' %}" style="text-decoration:none">
+      {%  for vendorService in vendorServices %}
+    
+      <div class="col-md-6" style="margin-top: 20px;">
+        <a href="#" style="text-decoration:none">
         <div class="card" style="width:600px; height: 200px;">
           <div class="row">
             <div class="col-md-7">
@@ -27,8 +30,10 @@
              </div>
              <div class="col-md-5">
               <div class="card-body">
-                <h4 class="card-title">Service name</h4>
-                <div style="margin-top: 5px;" class="card-text">Vebdors name</div>
+                <h4 class="card-title">{{vendorService.service.serviceName}}</h4>
+                <div style="margin-top: 5px;" class="card-text">{{vendorService.vendor.vendorName}}</div>
+                <div  style="margin-top: 5px;" class="card-text">{{vendorService.services.serviceName}}</div>
+  
                 <div  style="margin-top: 5px;" class="card-text">Budget</div>
                 <div style="margin-top: 10px;">
                   <span class="fa fa-star checked"></span>
@@ -38,8 +43,8 @@
                   <span class="fa fa-star"></span>
                 </div>
                 <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Remove <i class="material-icons">delete</i></button>
-            
+                  <button data-service="{{vendorService.vendorServicesId}}" data-action="remove" class="btn btn-success update-cart">Remove<i class="material-icons">delete</i></button>
+
                 </div>
               </div>
              </div>
@@ -50,104 +55,12 @@
         </a>
      
       </div>
-      
-      <div class="col-md-6">
-        <div class="card" style="width:600px; height: 200px;">
-          <div class="row">
-            <div class="col-md-7">
-              <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-             </div>
-             <div class="col-md-5">
-              <div class="card-body">
-                <h4 class="card-title">Service name</h4>
-                <div style="margin-top: 5px;" class="card-text">Vebdors name</div>
-                <div  style="margin-top: 5px;" class="card-text">Budget</div>
-                <div style="margin-top: 10px;">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
-                </div>
-                <div style="margin-top: 10px;">
-                  <button style="font-size:24px">Remove <i class="material-icons">delete</i></button>
-              
-                </div>
-              </div>
-             </div>
-
-          </div>
-         
-        </div>
-     
-      </div>
-      
+      {% endfor %}
     </div>
 
-    <div class="row" style="margin-top: 40px;" >
-      <div class="col-md-6">
-        <div class="card" style="width:600px; height: 200px;">
-          <div class="row">
-            <div class="col-md-7">
-              <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-             </div>
-             <div class="col-md-5">
-              <div class="card-body">
-                <h4 class="card-title">Service name</h4>
-                <div style="margin-top: 5px;" class="card-text">Vebdors name</div>
-                <div  style="margin-top: 5px;" class="card-text">Budget</div>
-                <div style="margin-top: 10px;">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
-                </div>
-                <div style="margin-top: 10px;">
-                    <button style="font-size:24px">Remove <i class="material-icons">delete</i></button>
-              
-                </div>
-              </div>
-             </div>
+   
 
-          </div>
-         
-        </div>
-     
-      </div>
-      
-      <div class="col-md-6">
-        <div class="card" style="width:600px; height: 200px;">
-          <div class="row">
-            <div class="col-md-7">
-              <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-             </div>
-             <div class="col-md-5">
-              <div class="card-body">
-                <h4 class="card-title">Service name</h4>
-                <div style="margin-top: 5px;" class="card-text">Vebdors name</div>
-                <div  style="margin-top: 5px;" class="card-text">Budget</div>
-                <div style="margin-top: 10px;">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
-                </div>
-                <div style="margin-top: 10px;">
-                    <button style="font-size:24px">Remove <i class="material-icons">delete</i></button>
-              
-                </div>
-              </div>
-             </div>
 
-          </div>
-         
-        </div>
-     
-      </div>
-      
-    </div>
 
 </div>
 
