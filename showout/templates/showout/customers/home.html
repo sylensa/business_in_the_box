@@ -33,7 +33,7 @@
 
           <p><img src="{% static 'images/mark.png' %}" style="height: 2rem; width: 2rem; margin-right: 10px;">help you explore product options</p>
 
-          {% if request.user.is_authenticated == False %}
+          {% if request.session.user_id == False %}
           <a href="{% url 'register' %}"><button class="btn btn-success" style="margin-top: 4rem;">Register Now</button></a>
 
           {% endif %}
