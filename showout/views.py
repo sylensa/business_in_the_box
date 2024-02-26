@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.http import JsonResponse
 import json
+from django.db.models import Count
 # Create your views here.
 
 def is_user_logged_in(request):
@@ -91,6 +92,7 @@ def home(request):
     else:
         customer = None
     context = {'categories':categories,'vendorServices':vendorServices,'vendors':vendors,'customer':customer}
+   
     return render(request,'showout/customers/home.html', context)
 def productDetails(request):
     context = {}
@@ -200,20 +202,71 @@ def searchResult(request):
 # vendor views
 
 def vendor_login(request):
-    context = {}
-    return render(request, 'showout/vendor/vendor_login.html',context)
+    if 'vendor_id' in request.session:
+        vendorId = request.session['vendor_id']
+        vendor = Vendors.objects.get(pk=vendorId)
+        categories = Category.objects.all()
+        vendorServices = VendorServices.objects.all()
+        vendors = Vendors.objects.all()
+        # context = {'categories':categories,'vendorServices':vendorServices,'vendors':vendors,'customer':customer}
+       
+        return redirect('vendor_dash')  
+    else:
+        if request.method == 'POST':
+            email = request.POST['email']
+            password = request.POST['password']
+            vendor = authenticate_vendor(email, password)
+            if vendor is not None:
+                # Authentication successful, perform login manually
+                request.session['vendor_id'] = vendor.vendorId  # Store user ID in session
+                # Redirect to a success page or home page
+                return redirect('vendor_dash')
+            else:
+                # Authentication failed, display error message
+                messages.error(request, 'Invalid email or password')
+        return render(request, 'showout/vendor/vendor_login.html')
 
 def vendor_sign_up(request):
-    context = {}
-    return render(request, 'showout/vendor/vendor_sign_up.html',context)
+    if request.method == 'POST':
+        # Retrieve registration data from POST request
+        email = request.POST['email']
+        vendorName = request.POST['vendorName']
+        mobile = request.POST['mobile']
+        countryId = request.POST['countryId']
+        address = request.POST['address']
+        confirm_password = request.POST['confirm_password']
+        password = request.POST['password']
+        # Create a new Client instance and save it to the database
+        vendor = Vendors.objects.create(vendorName=vendorName, email=email, password=password, countryId=countryId, mobile=mobile,address=address)
+        # Log in the newly registered user
+        request.session['vendor_id'] = vendor.vendorId 
+        login(request, vendor)
+        # Redirect to a success page or client dashboard
+        return redirect('vendor_dash')
+    else:
+        countries = Country.objects.all()
+        return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries})
+
 
 def customerlist(request):
     context = {}
     return render (request, 'showout/vendor/customerlist.html', context)
 
 def vendor_dash(request):
-    context = {}
-    return render (request, 'showout/vendor/vendor_dash.html', context)
+    vendorId = request.session['vendor_id']
+    vendor = Vendors.objects.get(pk=vendorId)
+    print("vendor",vendor)
+    print("vendorId",vendorId)
+    vendorServices = VendorServices.objects.filter(vendor=vendor)
+    wishLists = WishList.objects.filter(vendor=vendor)
+    customers = WishList.objects.values('customer').annotate(count=Count('customer'))
+    print("vendorServices",vendorServices)
+
+    if 'vendor_id' in request.session:
+        return render (request, 'showout/vendor/vendor_dash.html', {"vendorServices":vendorServices, "wishLists":wishLists,"customers":customers})
+
+    else:
+        return render (request, 'showout/vendor/vendor_login.html', {})
 
 
 def document(request):
@@ -278,4 +331,12 @@ def authenticate_customer(email, password):
         if customer.password == password:
             return customer
     except Customer.DoesNotExist:
+        return None
+    
+def authenticate_vendor(email, password):
+    try:
+        vendor = Vendors.objects.get(email=email)
+        if vendor.password == password:
+            return vendor
+    except vendor.DoesNotExist:
         return None

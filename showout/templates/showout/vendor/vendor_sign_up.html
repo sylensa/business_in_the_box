@@ -47,9 +47,6 @@
    }
 
    input{
-
-
-
     height: 2rem;
     border-radius: 5px;
 
@@ -68,12 +65,9 @@
    }
 
    .form_body{
-
     text-align: center;
     padding-left: 2rem;
     padding-right: 2rem;
-
-
    }
 
    a{ 
@@ -89,16 +83,18 @@
    <div class="login">
 
     <form class="login_form" method="POST">
+      {% csrf_token %}
             <div class="form_body">
             <h2>Create Account</h2>
 
-            <input type="text"  name="company_name" class="form-control" placeholder="Company Name" required>
+            <input type="text"  name="vendorName" class="form-control" placeholder="Company Name" required>
             <input type="email" name="email" class="form-control" placeholder="Email" required>
-            <input type="text"  name="phone" class="form-control" placeholder="Phone Number" required>
-            <select class="form-select" style="margin-top: 1rem;" required>
+            <input type="text"  name="mobile" class="form-control" placeholder="Phone Number" required>
+            <select class="form-select"name="countryId" style="margin-top: 1rem;" required>
                <option  selected>Select Country</option>
-               <option value="1"></option>
-               <option value="2"></option>
+               {% for country in countries %}
+               <option value="{{country.countryId}}">{{country.countryName}}</option>
+               {% endfor %}
 
             </select>
             <input type="text"  name="address" class="form-control" placeholder="Address" required>
