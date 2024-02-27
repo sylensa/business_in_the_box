@@ -43,13 +43,24 @@ def updateItem(request):
         del  request.session['cart'][str(vendorService.vendorServicesId)]
         print("ccart",request.session['cart'])
 
+    return JsonResponse('Item was added', safe=False)
 
 
+def updateRating(request):
+    if 'user_id' in request.session:
+        data = json.loads(request.body)
+        ratingValue = data['ratingValue']
+        vendorServicesId = data['vendorServicesId']
+        customerId = request.session['user_id']
+
+        print("ratingValue",ratingValue)
+        print("vendorServicesId",vendorServicesId)
+        print("customerId",customerId)
 
    
-    
-
     return JsonResponse('Item was added', safe=False)
+
+
 
 def customerLogin(request): 
     if 'user_id' in request.session:

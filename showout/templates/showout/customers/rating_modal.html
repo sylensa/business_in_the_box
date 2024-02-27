@@ -1,0 +1,38 @@
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ratingModal">
+    Open Rating Modal
+  </button> -->
+<div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ratingModalLabel">Rate This Product</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="#" method="post" id="ratingForm">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="rating">Rating:</label>
+              <!-- Rating Stars -->
+              <div class="rating">
+                <input type="radio" id="star5" name="rating" value="5">
+                <label for="star5"><i class="fas fa-star"></i></label>
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star4"><i class="fas fa-star"></i></label>
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3"><i class="fas fa-star"></i></label>
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star2"><i class="fas fa-star"></i></label>
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star1"><i class="fas fa-star"></i></label>
+                <input type="hidden" id="vendorServicesId" name="vendorServicesId" value="{{vendorService.vendorServicesId}}">
+            </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Rating</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

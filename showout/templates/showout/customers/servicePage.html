@@ -6,6 +6,7 @@
 </head>
 <body>
     {% include 'showout/navbar.html' %}
+    {% include 'showout/customers/rating_modal.html' with vendorService=vendorService %}
 <div class="container-fluid" >
 <div class="row" style="text-align: justify;padding: 20px;">
 <div class="col-md-6">
@@ -36,9 +37,11 @@
     <span class="fa fa-star checked"></span>
     <span class="fa fa-star"></span>
     <span class="fa fa-star"></span>
-    <span > <a href="#" style="text-decoration:none; color: #000;"><span style="background-color: #D3D3D3;padding: 5px;">See reviews</i></span></a></span>
-        <button style="font-size:24px;margin-left: 40px;">Add to wishlist <i class="material-icons">favorite</i></button>
-    
+   <!-- <span style="background-color: #D3D3D3;padding: 5px;" data-toggle="modal" data-target="#myModal">Review service</i></span> -->
+   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ratingModal">Review service</button>
+     <!-- <button style="font-size:24px;margin-left: 40px;">Add to wishlist <i class="material-icons">favorite</i></button> -->
+    <br><br> <button style="font-size:24px;margin-left: 0px;" data-service="{{vendorService.vendorServicesId}}" data-action="add" class="btn btn-success update-cart">Add to wishlist <i class="material-icons">favorite</i></button>
+
 </div>
 </div>
 
