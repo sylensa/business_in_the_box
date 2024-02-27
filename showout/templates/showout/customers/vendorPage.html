@@ -54,9 +54,13 @@
           <p  style="text-align: right;padding-right: 30px;"></p>
         </div>
       </div>
-      {% for vendorService in vendorServices %}
-      {% include 'showout/customers/service_componeent.html' with vendorService=vendorService %}
-      {% endfor %}
+
+      <div class="row" style="margin-top: 20px;" >
+        {% for vendorService in vendorServices %}
+        {% include 'showout/customers/service_componeent.html' with vendorService=vendorService %}
+        {% endfor %}
+      </div>
+      
   
 
        <!-- Reccommended Vendors -->

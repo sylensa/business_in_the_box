@@ -113,12 +113,16 @@
         <a href="{% url 'viewServices' categoryId=category.categoryId categoryName=category.categoryName %}" style="text-decoration:none"> <p style="margin-left: 33rem;"><button  class="btn btn-primary">View all</button></p></a>
       </div>
     </div>
-    {% for vendorService in vendorServices %}
-    {% if vendorService.category.categoryId == category.categoryId %}
-    {% include 'showout/customers/service_componeent.html' with vendorService=vendorService %}
-    {% endif %}
-    {% endfor %}
-    {% endfor %}
+
+    <div class="row" style="margin-top: 20px;" >
+      {% for vendorService in vendorServices %}
+      {% if vendorService.category.categoryId == category.categoryId %}
+      {% include 'showout/customers/service_componeent.html' with vendorService=vendorService %}
+      {% endif %}
+      {% endfor %}
+      {% endfor %}
+    </div>
+   
 
 </div>
 
