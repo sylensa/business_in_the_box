@@ -1,9 +1,13 @@
 /* global bootstrap: false */
 (() => {
-  'use strict'
-  const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  tooltipTriggerList.forEach(tooltipTriggerEl => {
-    new bootstrap.Tooltip(tooltipTriggerEl)
-  })
-})()
+  'use strict';
 
+
+  // Toggle sidebar
+  const toggleBtn = document.getElementById('toggleBtn');
+  const sidebar = document.getElementById('sidebar');
+
+  toggleBtn.addEventListener('click', function() {
+    sidebar.classList.toggle('show');
+  });
+})();
