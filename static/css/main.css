@@ -1,0 +1,17 @@
+.sidebar {
+    width: 280px;
+    height: 100%;
+    background-color: #333;
+    color: #fff;
+    transition: transform 0.3s ease;
+    transform: translateX(-280px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+  }
+  
+  .sidebar.show {
+    transform: translateX(0);
+  }
+  
