@@ -56,6 +56,7 @@ def updateRating(request):
         print("ratingValue",ratingValue)
         print("vendorServicesId",vendorServicesId)
         print("customerId",customerId)
+       
 
    
     return JsonResponse('Item was added', safe=False)
