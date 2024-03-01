@@ -33,6 +33,7 @@ urlpatterns = [
     path ('viewVendors/', views.viewVendors, name="viewVendors"),
 
     path ('wishlist/', views.wishlist, name="wishlist"),
+     path ('wishlistHistory/', views.wishlistHistory, name="wishlistHistory"),
 
     path ('editProfile/', views.editProfile, name="editProfile"),
 

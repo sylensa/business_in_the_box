@@ -72,23 +72,34 @@ class Services(models.Model):
 
 	
 class VendorServices(models.Model):
-	vendor = models.OneToOneField(Vendors, null=True, blank=True, on_delete=models.CASCADE)
+	vendor = models.ForeignKey(Vendors,  on_delete=models.SET_NULL, null=True, blank=True)
 	category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
 	services = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, blank=True)
+	rating =  models.IntegerField(primary_key=False,default=0)
 	date_created = models.DateTimeField(auto_now_add=True)
 	vendorServicesId =  models.AutoField(primary_key=True,default=1)
 	def __int__(self):
 		return self.vendorServicesId
 	
-class WishList(models.Model):
-	vendor = models.ForeignKey(Vendors, on_delete=models.SET_NULL, null=True, blank=True)
-	service = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, blank=True)
+class ReviewVendoreServices(models.Model):
+	vendorService = models.ForeignKey(VendorServices,  on_delete=models.SET_NULL, null=True, blank=True)
 	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
 	date_created = models.DateTimeField(auto_now_add=True)
-	wishListId =  models.AutoField(primary_key=True,default=1)
+	reviewVendoreServicesId =  models.AutoField(primary_key=True)
+	vendorServicesId =  models.IntegerField(primary_key=False,default=0)
+	rating =  models.FloatField(primary_key=False,default=0)
+	review =  models.CharField(max_length=500)
+	def __int__(self):
+		return self.reviewVendoreServicesId	
+	
+class WishList(models.Model):
+	vendorService = models.ForeignKey(VendorServices,  on_delete=models.SET_NULL, null=True, blank=True)
+	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+	date_created = models.DateTimeField(auto_now_add=True)
+	wishListId =  models.AutoField(primary_key=True)
 
 	def __str__(self):
-		return self.service.serviceName
+		return self.vendorService.services.serviceName
 	
 
 

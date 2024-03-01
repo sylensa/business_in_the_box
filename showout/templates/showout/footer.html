@@ -76,6 +76,8 @@
             event.preventDefault();
             var ratingValue = $('input[name="rating"]:checked').val();
             var vendorServicesId = $('input[name="vendorServicesId"]').val();
+            var review = $('input[name="review"]').val();
+            
             
             console.log("Selected rating value:", ratingValue);
             var url = '/update_rating/'
@@ -86,7 +88,7 @@
             'Content-Type':'application/json',
             'X-CSRFToken':csrftoken,
           }, 
-          body:JSON.stringify({'ratingValue':ratingValue,'vendorServicesId':vendorServicesId})
+          body:JSON.stringify({'ratingValue':ratingValue,'vendorServicesId':vendorServicesId,'review':review})
         })
         .then((response) => {
           return response.json();

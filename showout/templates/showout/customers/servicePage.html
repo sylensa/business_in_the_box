@@ -34,14 +34,14 @@
 <p>
   {{vendorService.vendor.website}}
 </p>
-    <span class="fa fa-star checked"></span>
-    <span class="fa fa-star checked"></span>
-    <span class="fa fa-star checked"></span>
-    <span class="fa fa-star"></span>
-    <span class="fa fa-star"></span>
-   <!-- <span style="background-color: #D3D3D3;padding: 5px;" data-toggle="modal" data-target="#myModal">Review service</i></span> -->
-   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ratingModal">Review service</button>
-     <!-- <button style="font-size:24px;margin-left: 40px;">Add to wishlist <i class="material-icons">favorite</i></button> -->
+    <span class="fa fa-star {% if vendorService.rating > 0 %}checked{% else %} {% endif %} "></span>
+    <span class="fa fa-star {% if vendorService.rating > 1 %}checked{% else %} {% endif %}"></span>
+    <span class="fa fa-star {% if vendorService.rating > 2 %}checked{% else %} {% endif %}"></span>
+    <span class="fa fa-star {% if vendorService.rating > 3 %}checked{% else %} {% endif %}"></span>
+    <span class="fa fa-star {% if vendorService.rating > 4 %}checked{% else %} {% endif %}"></span>
+    {% if request.session.user_id  %}
+   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ratingModal">Review service({{reviewVendoreServices|length}})</button>
+   {% endif %}
     <br><br> <button style="font-size:24px;margin-left: 0px;" data-service="{{vendorService.vendorServicesId}}" data-action="add" class="btn btn-success update-cart">Add to wishlist <i class="material-icons">favorite</i></button>
 
 </div>
