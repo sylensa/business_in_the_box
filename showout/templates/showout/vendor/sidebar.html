@@ -89,8 +89,8 @@
                 <li><a class="dropdown-item" href="#">Settings</a></li>
                 <li><a class="dropdown-item" href="#">Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
-                {% if request.session.user_id  %}
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
+                {% if request.session.vendor_id  %}
+                <li><a class="dropdown-item"  href="{% url 'vendorLogout' %}">Sign out</a></li>
 
                 {% else %}
                  <li><a class="dropdown-item"  href="">Login</a></li>

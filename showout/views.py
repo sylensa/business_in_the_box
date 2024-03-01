@@ -16,10 +16,21 @@ def is_user_logged_in(request):
     return 'user_id' in request.session
 
 def my_logout_view(request):
-    del request.session['user_id']  # Remove user ID from session
-    del request.session['cart'] 
+    
+    if 'user_id' in request.session:
+        del request.session['user_id']  # Remove user ID from session
+    if 'cart' in request.session:    
+        del request.session['cart'] 
     # Redirect to a logout success page or any other desired page
     return redirect('home')
+
+
+def vendor_logout_view(request):
+    if 'vendor_id' in request.session:
+        del request.session['vendor_id']  # Remove user ID from session
+    # Redirect to a logout success page or any other desired page
+    return redirect('vendor_dash')
+
 
 def updateItem(request):
     request.session.modified = True
@@ -135,13 +146,17 @@ def register(request):
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
         # Create a new Client instance and save it to the database
-        user = Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile)
+        Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile)
+        user = authenticate_customer(email, password)
+        if user is not None:
+            # Authentication successful, perform login manually
+            request.session['user_id'] = user.customerId  # Store user ID in session
+            # Redirect to a success page or home page
+            return redirect('home')
+        else:
+            # Authentication failed, display error message
+            messages.error(request, 'Invalid email or password')
 
-        # Log in the newly registered user
-        login(request, user)
-
-        # Redirect to a success page or client dashboard
-        return redirect('home')
     else:
         return render(request, 'showout/customers/register.html')
 
@@ -281,12 +296,16 @@ def vendor_sign_up(request):
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
         # Create a new Client instance and save it to the database
-        vendor = Vendors.objects.create(vendorName=vendorName, email=email, password=password, countryId=countryId, mobile=mobile,address=address)
-        # Log in the newly registered user
-        request.session['vendor_id'] = vendor.vendorId 
-        login(request, vendor)
-        # Redirect to a success page or client dashboard
-        return redirect('vendor_dash')
+        Vendors.objects.create(vendorName=vendorName, email=email, password=password, countryId=countryId, mobile=mobile,address=address)
+        vendor = authenticate_vendor(email, password)
+        if vendor is not None:
+            # Authentication successful, perform login manually
+            request.session['vendor_id'] = vendor.vendorId  # Store user ID in session
+            # Redirect to a success page or home page
+            return redirect('vendor_dash')
+        else:
+            # Authentication failed, display error message
+            messages.error(request, 'Invalid email or password')
     else:
         countries = Country.objects.all()
         return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries})
@@ -297,16 +316,16 @@ def customerlist(request):
     return render (request, 'showout/vendor/customerlist.html', context)
 
 def vendor_dash(request):
-    vendorId = request.session['vendor_id']
-    vendor = Vendors.objects.get(pk=vendorId)
-    print("vendor",vendor)
-    print("vendorId",vendorId)
-    vendorServices = VendorServices.objects.filter(vendor=vendor)
-    wishLists = WishList.objects.filter(vendor=vendor)
-    customers = WishList.objects.values('customer').annotate(count=Count('customer'))
-    print("vendorServices",vendorServices)
 
     if 'vendor_id' in request.session:
+        vendorId = request.session['vendor_id']
+        vendor = Vendors.objects.get(pk=vendorId)
+        print("vendor",vendor)
+        print("vendorId",vendorId)
+        vendorServices = VendorServices.objects.filter(vendor=vendor)
+        wishLists = WishList.objects.filter(vendor=vendor)
+        customers = WishList.objects.values('customer').annotate(count=Count('customer'))
+        print("vendorServices",vendorServices)
         return render (request, 'showout/vendor/vendor_dash.html', {"vendorServices":vendorServices, "wishLists":wishLists,"customers":customers})
 
     else:
