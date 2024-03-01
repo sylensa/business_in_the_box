@@ -23,7 +23,7 @@
       <div class="row" style="padding:2rem; display: flex; justify-content: center; margin-top: 2rem;"  >
         <div class="col-lg-3" style="box-shadow: #cfcece; height: 40%; background-color: rgb(21, 98, 214); border-radius: 5px; color: #fff; padding: 1rem; margin-right: 4rem;">
           <div style=" justify-content: center; text-align: center; padding: 2rem;" >   
-            <h1>0</h1>       
+            <h1>{{wishLists|length}}</h1>       
             <p> <h5>Total Service  Request</h5></p>
           <button  class="btn btn-light">View details</button>
         </div>
@@ -32,7 +32,7 @@
         <div class="col-lg-3" style="box-shadow: #cfcece; height: 40%; background-color: rgb(29, 132, 64); border-radius: 5px; color: #fff; padding: 1rem; margin-right: 4rem;">
 
           <div style=" justify-content: center; text-align: center; padding: 2rem;" >   
-            <h1>0</h1>       
+            <h1>{{customers|length}}</h1>       
             <p> <h4>Total Customers</h4></p>
           <button  class="btn btn-light">View details</button>
         </div>
@@ -40,8 +40,8 @@
 
         <div class="col-lg-3" style="box-shadow: #cfcece; height: 40%; background-color: rgb(222, 87, 30); border-radius: 5px; color: #fff; padding: 1rem;">
           <div style=" justify-content: center; text-align: center; padding: 2rem;" >   
-            <h1>0</h1>       
-            <p> <h4>Total Customers</h4></p>
+            <h1>{{vendorServices|length}}</h1>       
+            <p> <h4>Total Services</h4></p>
           <button  class="btn btn-light">View details</button>
         </div>
         </div>
@@ -55,12 +55,14 @@
             </div>
             <hr>
           <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+
+           {% for vendorService in vendorServices%}
             <div class="feature col">
               <div class="feature-icon d-inline-flex align-items-center justify-content-center  bg-gradient fs-2 mb-3">
                 <i class="bi bi-buildings"><use xlink:href="#collection"></use></i>
               </div>
-              <h3 class="fs-2 text-body-emphasis">Featured title</h3>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos enim ipsa itaque incidunt vitae quam, expedita laudantium magnam maiores, ex dolor ullam delectus consequatur! Fugit recusandae aliquid illo vel amet!
+              <h3 class="fs-2 text-body-emphasis">{{vendorService.services.serviceName}}</h3>
+              <p>{{vendorService.services.description}}
                 <br> <span class="fa fa-star checked"></span>
               <span class="fa fa-star checked"></span>
               <span class="fa fa-star checked"></span>
@@ -72,112 +74,11 @@
                 <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
               </a>
             </div>
-            <div class="feature col">
-              <div class="feature-icon d-inline-flex align-items-center justify-content-center  bg-gradient fs-2 mb-3">
-                <i class="bi bi-buildings"><use xlink:href="#collection"></use></i>
-              </div>
-              <h3 class="fs-2 text-body-emphasis">Featured title</h3>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, soluta incidunt provident reprehenderit pariatur doloremque deserunt porro quibusdam quam aut culpa in voluptatibus saepe suscipit veritatis atque? Dicta, pariatur id?
-                <br> <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star"></span>
-              <span class="fa fa-star"></span>
-              </p>
-              <a href="#" class="icon-link">
-                View
-                <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-              </a>
-            </div>
-            <div class="feature col">
-              <div class="feature-icon d-inline-flex align-items-center justify-content-center  bg-gradient fs-2 mb-3">
-                <i class="bi bi-buildings"><use xlink:href="#collection"></use></i>
-              </div>
-              <h3 class="fs-2 text-body-emphasis">Featured title</h3>
-              <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem laboriosam molestiae aliquid nulla nemo. Molestiae enim consectetur deleniti? Ipsum autem culpa pariatur nam! Tempora suscipit natus quia ut, inventore odit!
-              <br> <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star"></span>
-              <span class="fa fa-star"></span>
-              </p>
-              <a href="#" class="icon-link">
-                View
-                <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-              </a>
-            </div>
+            {% endfor %}
+          
           </div>
         </div>
-
-
-    
-        <div class="container px-4 py-5" id="featured-3" style="background-color: #fff; box-shadow: 1px 1px #cfcece;background-color: #fff; box-shadow: 1px 1px #cfcece;">
-          <div style="display: flex;">
-              <h3 class="pb-2">Most Reviewed Services</h3>
-              <button class="btn btn-primary" style="margin-left: 40rem;">View All</button>
-            
-            </div>
-            <hr>
-          <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-            <div class="feature col">
-              <div class="feature-icon d-inline-flex align-items-center justify-content-center  bg-gradient fs-2 mb-3">
-                <i class="bi bi-buildings"><use xlink:href="#collection"></use></i>
-              </div>
-              <h3 class="fs-2 text-body-emphasis">Featured title</h3>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos enim ipsa itaque incidunt vitae quam, expedita laudantium magnam maiores, ex dolor ullam delectus consequatur! Fugit recusandae aliquid illo vel amet!
-                <br> <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star"></span>
-              <span class="fa fa-star"></span>
-              </p>
-              
-              <a href="#" class="icon-link">
-                View
-                <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-              </a>
-            </div>
-            <div class="feature col">
-              <div class="feature-icon d-inline-flex align-items-center justify-content-center  bg-gradient fs-2 mb-3">
-                <i class="bi bi-buildings"><use xlink:href="#collection"></use></i>
-              </div>
-              <h3 class="fs-2 text-body-emphasis">Featured title</h3>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, soluta incidunt provident reprehenderit pariatur doloremque deserunt porro quibusdam quam aut culpa in voluptatibus saepe suscipit veritatis atque? Dicta, pariatur id?
-                <br> <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star"></span>
-              <span class="fa fa-star"></span>
-              </p>
-              <a href="#" class="icon-link">
-                View
-                <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-              </a>
-            </div>
-            <div class="feature col">
-              <div class="feature-icon d-inline-flex align-items-center justify-content-center  bg-gradient fs-2 mb-3">
-                <i class="bi bi-buildings"><use xlink:href="#collection"></use></i>
-              </div>
-              <h3 class="fs-2 text-body-emphasis">Featured title</h3>
-              <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem laboriosam molestiae aliquid nulla nemo. Molestiae enim consectetur deleniti? Ipsum autem culpa pariatur nam! Tempora suscipit natus quia ut, inventore odit!
-                <br> <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star"></span>
-              <span class="fa fa-star"></span>
-              </p>
-              <a href="#" class="icon-link">
-                View
-                <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-
-
-    
-        
-      
+  
       </div>
 
      
@@ -188,6 +89,15 @@
 
 
 {% endblock content %}
+
+
+
+
+
+{% load static %}
+
+<!-- Include necessary CSS and JavaScript files -->
+
 
 
 

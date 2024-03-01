@@ -17,9 +17,11 @@
         <p  style="text-align: right;padding-right: 30px;"></p>
       </div>
     </div>
+    <div class="row" style="margin-top: 20px;" >
     {% for vendorService in searchResultsServices %}
-    {% include 'showout/customers/service_componeent.html' with vendorService=vendorService %}
+      {% include 'showout/customers/service_componeent.html' with vendorService=vendorService %}
     {% endfor %}
+  </div>
 
 
 

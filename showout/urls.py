@@ -1,5 +1,7 @@
 from django.urls import path,include
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 #contains all paths to the various page in the application
 
@@ -16,6 +18,8 @@ urlpatterns = [
     path('logout/', views.my_logout_view, name='logout'),
      path ('profile/', views.profile, name="profile"),
     path('update_item/', views.updateItem, name="update_item"),
+    path('update_rating/', views.updateRating, name="update_rating"),
+    
     path ('resetPassword/', views.resetPassword, name="reset_password"),
 
     path ('register/', views.register, name="register"),
@@ -31,6 +35,7 @@ urlpatterns = [
     path ('viewVendors/', views.viewVendors, name="viewVendors"),
 
     path ('wishlist/', views.wishlist, name="wishlist"),
+     path ('wishlistHistory/', views.wishlistHistory, name="wishlistHistory"),
 
     path ('editProfile/', views.editProfile, name="editProfile"),
 
@@ -54,3 +59,5 @@ urlpatterns = [
     path ('vendor_sign_up/', views.vendor_sign_up, name="vendor_sign_up"),
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

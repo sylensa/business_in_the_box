@@ -8,12 +8,13 @@
 </head>
 <body>
     {% include 'showout/navbar.html' %}
+    {% include 'showout/customers/rating_modal.html' with vendorService=vendorService %}
 <div class="container-fluid" >
 <div class="row" style="text-align: justify;padding: 20px;">
 <div class="col-md-6">
     <h3>{{vendorService.services.serviceName}}</h3>
     <figure class="figure-style">
-        <img src="{% static 'images/cover.jpg' %}" style="margin-top: 0px; height: 220px;width: 100%;"  class="img-fluid mx-auto float-none d-block"> 
+        <img src="{{vendorService.services.imageURL}}" style="margin-top: 0px; height: 220px"  class="img-fluid mx-auto float-none d-block"> 
     </figure>
       
 </div>
@@ -33,20 +34,16 @@
 <p>
   {{vendorService.vendor.website}}
 </p>
-    <span class="fa fa-star checked"></span>
-    <span class="fa fa-star checked"></span>
-    <span class="fa fa-star checked"></span>
-    <span class="fa fa-star"></span>
-    <span class="fa fa-star"></span>
-    <span > <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">See reviews</button>
-      
-       
-     
-    </span>
-        <button style="font-size:24px;margin-left: 40px;">Add to wishlist <i class="material-icons">favorite</i></button>
+    <span class="fa fa-star {% if vendorService.rating > 0 %}checked{% else %} {% endif %} "></span>
+    <span class="fa fa-star {% if vendorService.rating > 1 %}checked{% else %} {% endif %}"></span>
+    <span class="fa fa-star {% if vendorService.rating > 2 %}checked{% else %} {% endif %}"></span>
+    <span class="fa fa-star {% if vendorService.rating > 3 %}checked{% else %} {% endif %}"></span>
+    <span class="fa fa-star {% if vendorService.rating > 4 %}checked{% else %} {% endif %}"></span>
+    {% if request.session.user_id  %}
+   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ratingModal">Review service({{reviewVendoreServices|length}})</button>
+   {% endif %}
+    <br><br> <button style="font-size:24px;margin-left: 0px;" data-service="{{vendorService.vendorServicesId}}" data-action="add" class="btn btn-success update-cart">Add to wishlist <i class="material-icons">favorite</i></button>
 
-
-    
 </div>
 </div>
 
@@ -89,41 +86,11 @@
           <p  style="text-align: right;padding-right: 30px;"></p>
         </div>
       </div>
-      <div class="row" style="margin-left: 10px;">
+
+      <div class="row" style="margin-top: 20px;" >
         {% for vendorSimilarService in vendorSimilarServices %}
-        <div class="col-md-6">
-            <a href="{% url 'vendorPage' vendorId=vendorSimilarService.vendor.vendorId %}" style="text-decoration:none">
-              <div class="card" style="width:600px; height: 200px;">
-                <div class="row">
-                  <div class="col-md-7">
-                    <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
-                   </div>
-                   <div class="col-md-5">
-                    <div class="card-body">
-                      <h4 class="card-title">{{vendorSimilarService.vendor.vendorName}}</h4>
-                      <div style="margin-top: 5px;" class="card-text">{{vendorSimilarService.vendor.country}}</div>
-                      <div  style="margin-top: 5px;" class="card-text">{{vendorSimilarService.vendor.website}}</div>
-                      <div  style="margin-top: 5px;" class="card-text">{{vendorSimilarService.vendor.email}}</div>
-                      <div style="margin-top: 10px;">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                      </div>
-                    </div>
-                   </div>
-      
-                </div>
-               
-              </div>
-            </a>
-           
-         
-          </div>
-          {% endfor %}
-        
-        
+        {% include 'showout/customers/service_componeent.html' with vendorService=vendorSimilarService %}
+        {% endfor %}
       </div>
 
 </div>

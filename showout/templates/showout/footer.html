@@ -62,9 +62,42 @@
     }
     return cookieValue;
 }
-var csrftoken = getToken('csrftoken')
-console.log("csrftoken",csrftoken)
-    </script>
+     
 
+    var csrftoken = getToken('csrftoken')
+    console.log("csrftoken",csrftoken)
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#ratingForm').on('submit', function(event) {
+            event.preventDefault();
+            var ratingValue = $('input[name="rating"]:checked').val();
+            var vendorServicesId = $('input[name="vendorServicesId"]').val();
+            var review = $('input[name="review"]').val();
+            
+            
+            console.log("Selected rating value:", ratingValue);
+            var url = '/update_rating/'
+
+        fetch(url, {
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+            'X-CSRFToken':csrftoken,
+          }, 
+          body:JSON.stringify({'ratingValue':ratingValue,'vendorServicesId':vendorServicesId,'review':review})
+        })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+            location.reload()
+        });
+        });
+    });
+</script>
   </footer>
 </div>
