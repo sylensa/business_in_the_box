@@ -1,5 +1,7 @@
 from django.urls import path,include
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 #contains all paths to the various page in the application
 
@@ -57,3 +59,5 @@ urlpatterns = [
     path ('vendor_sign_up/', views.vendor_sign_up, name="vendor_sign_up"),
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -60,7 +60,7 @@ def updateRating(request):
         print("customerId",customerId)
         print("review",review)
 
-        reviewVendoreServices = ReviewVendoreServices.objects.create(vendorService=vendorService, customer=customer, rating=ratingValue, review=review,vendorServicesId=vendorServicesId)
+        reviewVendoreServices = ReviewVendoreServices.objects.create(vendorService=vendorService, customer=customer, rating=ratingValue, review=review,vendorServicesId=vendorServicesId,vendor=vendorService.vendor)
 
    
     return JsonResponse('Service rated succcessfully', safe=False)
@@ -101,15 +101,16 @@ def home(request):
   
     categories = Category.objects.all()
     vendorServices = VendorServices.objects.all()
-    listVendorServices = appRatingToSerice(vendorServices)
+    listVendorServices = appRatingToService(vendorServices)
     vendors = Vendors.objects.all()
+    listVendors = appRatingToVendors(vendors)
     user = None
     if 'user_id' in request.session:
         customerId = request.session['user_id']
         customer = Customer.objects.get(pk=customerId)
     else:
         customer = None
-    context = {'categories':categories,'vendorServices':listVendorServices,'vendors':vendors,'customer':customer}
+    context = {'categories':categories,'vendorServices':listVendorServices,'vendors':listVendors,'customer':customer}
    
     return render(request,'showout/customers/home.html', context)
 def productDetails(request):
@@ -326,7 +327,7 @@ def getVendorService(vendorServices,serviceId,vendorId):
             return vendorService
             break
 
-def appRatingToSerice(vendorServices):
+def appRatingToService(vendorServices):
     listVendorServices = []
     for vendorService in vendorServices:
         average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
@@ -335,6 +336,16 @@ def appRatingToSerice(vendorServices):
         listVendorServices.append(vendorService)
 
     return listVendorServices
+
+def appRatingToVendors(vendors):
+    listVendors = []
+    for vendor in vendors:
+        average_rating = ReviewVendoreServices.objects.filter(vendor=vendor).aggregate(rating=Avg('rating'))
+        if average_rating:
+            vendor.rating = average_rating["rating"]
+        listVendors.append(vendor)
+
+    return listVendors
 
 def getVendorSimilarService(vendorServices,serviceId):
    vendorSimilarServices = [];

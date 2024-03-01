@@ -68,7 +68,7 @@
           <div class="card" style="width:600px; height: 200px;">
             <div class="row">
               <div class="col-md-7">
-                <img class="card-img-top" height="200px" src="{% static 'images/cover.jpg' %}" alt="Card image">
+                <img class="card-img-top" height="200px" src="{{vendor.imageURL}}" alt="Card image">
                </div>
                <div class="col-md-5">
                 <div class="card-body">
@@ -77,11 +77,11 @@
                   <div  style="margin-top: 5px;" class="card-text">{{vendor.website}}</div>
                   <div  style="margin-top: 5px;" class="card-text">{{vendor.email}}</div>
                   <div style="margin-top: 10px;">
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star {% if vendor.rating > 0 %}checked{% else %} {% endif %} "></span>
+                    <span class="fa fa-star {% if vendor.rating > 1 %}checked{% else %} {% endif %}"></span>
+                    <span class="fa fa-star {% if vendor.rating > 2 %}checked{% else %} {% endif %}"></span>
+                    <span class="fa fa-star {% if vendor.rating > 3 %}checked{% else %} {% endif %}"></span>
+                    <span class="fa fa-star {% if vendor.rating > 4 %}checked{% else %} {% endif %}"></span>
                   </div>
                 </div>
                </div>

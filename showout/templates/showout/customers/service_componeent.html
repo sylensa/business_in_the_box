@@ -6,7 +6,7 @@
       <div class="row">
         <div class="col-md-7">
           <a href="{% url 'servicePage' vendorId=vendorService.vendor.vendorId serviceId=vendorService.services.serviceId%}" style="text-decoration:none">
-          <img class="card-img-top" height="230px" src="{% static 'images/cover.jpg' %}" alt="Card image">
+          <img class="card-img-top" height="230px" src="{{vendorService.services.imageURL}}" alt="Card image">
         </a>
          </div>
          
