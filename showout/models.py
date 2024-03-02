@@ -40,6 +40,34 @@ class Category(models.Model):
 	
 
 	
+class Services(models.Model):
+	category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+	serviceName = models.CharField(max_length=200, null=True)
+	description = models.CharField(max_length=200)
+	date_created = models.DateTimeField(auto_now_add=True)
+	serviceId = models.AutoField(primary_key=True,)
+	image = models.ImageField(null=True, blank=True)
+	def _str_(self):
+		return self.serviceName	
+
+@property
+def imageURL(self):
+	try:
+		url = self.image.url
+	except:
+		url = ''
+	return url
+	
+class VendorServices(models.Model):
+	vendor = models.ForeignKey(Vendors,  on_delete=models.SET_NULL, null=True, blank=True)
+	category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+	services = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, blank=True)
+	rating =  models.IntegerField(primary_key=False,default=0)
+	date_created = models.DateTimeField(auto_now_add=True)
+	vendorServicesId =  models.AutoField(primary_key=True)
+	def _int_(self):
+		return self.vendorServicesId
+	
 
 
 
