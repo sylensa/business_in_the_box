@@ -399,7 +399,18 @@ def vendor_sign_up(request):
 
 
 def customerlist(request):
-    context = {}
+    if 'vendor_id' in request.session:
+        vendorId = request.session['vendor_id']
+        vendor = Vendors.objects.get(pk=vendorId)
+        wishLists = WishList.objects.filter(vendor=vendor)
+        customers = wishLists.values('customer').annotate(count=Count('customer'))
+        allCustomers = [  
+        WishList.objects.filter(customer=item['customer']).first()
+        for item in customers
+            ]
+        print("wishLists",allCustomers)
+   
+    context = {'wishLists':allCustomers}
     return render (request, 'showout/vendor/customerlist.html', context)
 
 def vendor_dash(request):
