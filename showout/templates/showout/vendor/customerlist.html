@@ -47,80 +47,37 @@
                         <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 105px;">Customer Name</th>
                         <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 170px;">Email</th>
                         <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 77px;">Phone Number</th>
-                        <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 28px;">View</th>
+                        <!-- <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 28px;">View</th>
                         <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 67px;">Edit</th>
                         <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 57px;">Delete</th>
+                   -->
                     </tr>
                 </thead>
                 <tbody>
                   
-        
-                <tr class="odd">
+                    {% for customers in wishLists%}
+                    <tr class="odd">
                        
-                        <td class="sorting_1"></td>
-                        <td></td>
-                        <td></td>
-                        <td><button type="button" class="btn btn-primary">View</button></td>
-                        <td><button type="button" class="btn btn-success"><i class="bi bi-pencil-square"></i></button></td>
-                        <td><button type="button" class="btn btn-danger"><i class="bi bi-trash3"></i></button></td>
-                    </tr><tr class="even">
+                        <td class="sorting_1">{{customers.customer.firstName}} {{customers.customer.lastName}}</td>
+                        <td>{{customers.customer.email}}</td>
+                        <td>{{customers.customer.mobile}}</td>
                        
-                        <td class="sorting_1"></td>
-                        <td></td>
-                        <td></td>
-                        <td><button type="button" class="btn btn-primary">View</button></td>
-                        <td><button type="button" class="btn btn-success"><i class="bi bi-pencil-square"></i></button></td>
-                        <td><button type="button" class="btn btn-danger"><i class="bi bi-trash3"></i></button></td>
-                    </tr><tr class="odd">
-                        
-                        <td class="sorting_1"></td>
-                        <td></td>
-                        <td></td>
-                        <td><button type="button" class="btn btn-primary">View</button></td>
-                        <td><button type="button" class="btn btn-success"><i class="bi bi-pencil-square"></i></button></td>
-                        <td><button type="button" class="btn btn-danger"><i class="bi bi-trash3"></i></button></td>
-                    </tr><tr class="even">
-                        
-                        <td class="sorting_1"></td>
-                        <td></td>
-                        <td></td>
-                        <td><button type="button" class="btn btn-primary">View</button></td>
-                        <td><button type="button" class="btn btn-success"><i class="bi bi-pencil-square"></i></button></td>
-                        <td><button type="button" class="btn btn-danger"><i class="bi bi-trash3"></i></button></td>
-                    </tr><tr class="odd">
-                        
-                        <td class="sorting_1"></td>
-                        <td></td>
-                        <td></td>
-                        <td><button type="button" class="btn btn-primary">View</button></td>
-                        <td><button type="button" class="btn btn-success"><i class="bi bi-pencil-square"></i></button></td>
-                        <td><button type="button" class="btn btn-danger"><i class="bi bi-trash3"></i></button></td>
-                    </tr><tr class="even">
-                       
-                        <td class="sorting_1"></td>
-                        <td></td>
-                        <td></td>
-                        <td><button type="button" class="btn btn-primary">View</button></td>
-                        <td><button type="button" class="btn btn-success"><i class="bi bi-pencil-square"></i></button></td>
-                        <td><button type="button" class="btn btn-danger"><i class="bi bi-trash3"></i></button></td>
-                    </tr><tr class="odd">
-                       
-                        <td class="sorting_1"></td>
-                        <td></td>
-                        <td></td>
-                        <td><button type="button" class="btn btn-primary">View</button></td>
-                        <td><button type="button" class="btn btn-success"><i class="bi bi-pencil-square"></i></button></td>
-                        <td><button type="button" class="btn btn-danger"><i class="bi bi-trash3"></i></button></td>
-                    </tr></tbody>
+                     -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
                 <tfoot>
+                 
                     <tr>
                         
                         <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 105px;">Customer Name</th>
                         <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 170px;">Email</th>
                         <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 77px;">Phone Number</th>
-                        <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 28px;">View</th>
+                        <!-- <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 28px;">View</th>
                         <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 67px;">Edit</th>
                         <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 57px;">Delete</th>
+                    -->
+                   
                     </tr>
                 </tfoot>
             </table>
