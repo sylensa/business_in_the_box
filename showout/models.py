@@ -41,7 +41,41 @@ class Customer(models.Model):
 	def __str__(self):
 		return self.firstName
 	
-    
+  
+class Vendors(models.Model):
+	vendorName = models.CharField(max_length=200, null=True)
+	email = models.CharField(max_length=200,null=True)
+	password = models.CharField(max_length=200,null=True)
+	mobile = models.CharField(max_length=200,null=True)
+	address = models.CharField(max_length=200,null=True)
+	countryId = models.IntegerField(null=True)
+	genderId = models.IntegerField(null=True)
+	aboout = models.CharField(max_length=200,null=True)
+	website = models.CharField(max_length=200,null=True)
+	facebook = models.CharField(max_length=200,null=True)
+	twitter = models.CharField(max_length=200,null=True)
+	linkedIn = models.CharField(max_length=200,null=True)
+	tiktok = models.CharField(max_length=200,null=True)
+	instagram = models.CharField(max_length=200,null=True)
+	date_created = models.DateTimeField(auto_now_add=True)
+	approved = models.BooleanField(default=False)
+	last_login = models.DateTimeField(auto_now_add=True,null=True)
+	image = models.ImageField(null=True, blank=True, storage=fs,upload_to='image/')
+	vendorId = models.AutoField(primary_key=True,)
+	rating = models.FloatField(primary_key=False,default=0)
+
+	def __str__(self):
+		return self.vendorName
+	
+	@property
+	def imageURL(self):
+		try:
+			url =self.image.url
+		except:
+			url = ''
+		return url
+
+
 class Category(models.Model):
 	categoryName = models.CharField(max_length=200, null=True)
 	date_created = models.DateTimeField(auto_now_add=True)
