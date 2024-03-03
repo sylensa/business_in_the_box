@@ -18,7 +18,7 @@
     </div>
     <div class="row" >
       {% for vendor in vendors %}
-    <div class="col-md-6">
+    <div class="col-md-6" style="margin-top: 20px;">
       <a href="{% url 'vendorPage' vendorId=vendor.vendorId %}" style="text-decoration:none">
         <div class="card" style="width:600px; height: 200px;">
           <div class="row">
@@ -32,11 +32,11 @@
                 <div  style="margin-top: 5px;" class="card-text">{{vendor.website}}</div>
                 <div  style="margin-top: 5px;" class="card-text">{{vendor.email}}</div>
                 <div style="margin-top: 10px;">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
+                  <span class="fa fa-star {% if vendor.rating > 0 %}checked{% else %} {% endif %} "></span>
+                  <span class="fa fa-star {% if vendor.rating > 1 %}checked{% else %} {% endif %}"></span>
+                  <span class="fa fa-star {% if vendor.rating > 2 %}checked{% else %} {% endif %}"></span>
+                  <span class="fa fa-star {% if vendor.rating > 3 %}checked{% else %} {% endif %}"></span>
+                  <span class="fa fa-star {% if vendor.rating > 4 %}checked{% else %} {% endif %}"></span>
                 </div>
               </div>
              </div>

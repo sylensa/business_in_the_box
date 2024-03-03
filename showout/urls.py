@@ -22,6 +22,10 @@ urlpatterns = [
     path('update_rating/', views.updateRating, name="update_rating"),
     
     path ('resetPassword/', views.resetPassword, name="reset_password"),
+     path ('sendEmail/', views.sendEmail, name="sendEmail"),
+      path ('changePassword/', views.changePassword, name="changePassword"),
+     
+     path ('emailSent/', views.emailSent, name="emailSent"),
 
     path ('register/', views.register, name="register"),
 
@@ -37,6 +41,7 @@ urlpatterns = [
 
     path ('wishlist/', views.wishlist, name="wishlist"),
      path ('wishlistHistory/', views.wishlistHistory, name="wishlistHistory"),
+     path ('topRatedServices/', views.topRatedServices, name="topRatedServices"),
 
     path ('editProfile/', views.editProfile, name="editProfile"),
 

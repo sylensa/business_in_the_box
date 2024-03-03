@@ -31,7 +31,7 @@
                   </ul>
                 </div> 
 
-                  <a style="text-decoration: none;" href="{% url 'wishlist' %}"> <div ><button class="btn btn-light"><i  href="#" style="color: red;">{{ request.session.cart|length }} </i>Wish List</button></div></a>
+                  <a style="text-decoration: none;" href="{% url 'wishlist' %}"> <div ><button class="btn btn-light"><i  href="#" style="color: red;">{{ request.session.cart|length }} </i>Requests</button></div></a>
             
               
             
@@ -45,7 +45,7 @@
               <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
                   <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)"style="color: black;">Top Reviews</a>
+                    <a class="nav-link" href="{% url 'topRatedServices' %}"style="color: black;">Top Reviews</a>
                   </li>
                   <div   class="nav-item dropdown"style="margin-right: 20px;">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: black;">Categories</a>
