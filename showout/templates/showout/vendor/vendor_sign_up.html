@@ -86,7 +86,6 @@
       {% csrf_token %}
             <div class="form_body">
             <h2>Create Account</h2>
-
             <input type="text"  name="vendorName" class="form-control" placeholder="Company Name" required>
             <input type="email" name="email" class="form-control" placeholder="Email" required>
             <input type="text"  name="mobile" class="form-control" placeholder="Phone Number" required>
@@ -97,7 +96,15 @@
                {% endfor %}
 
             </select>
+            <select class="form-select"name="genderId" style="margin-top: 1rem;" required>
+               <option value="0"  selected>Select Gender</option>
+               {% for gender in genders %}
+               <option value="{{gender.genderId}}">{{gender.genderName}}</option>
+               {% endfor %}
+
+            </select>
             <input type="text"  name="address" class="form-control" placeholder="Address" required>
+            <input type="file"  name="image" class="form-control" placeholder="Image" required>
             <input type="password"  name="password" class="form-control" placeholder="Password" type="hidden" required>
             <input type="password"  name="confirm_password" class="form-control" placeholder=" Confirm Password" type ="hidden"required>
             <button class="btn btn-primary" style="margin-top: 1rem; width: 20rem;">Sign Up</button>

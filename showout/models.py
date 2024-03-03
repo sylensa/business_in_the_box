@@ -1,14 +1,28 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
-# Create your models here.
+import os
+from pathlib import Path
 
+# Create your models here.
+from django.core.files.storage import FileSystemStorage
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+fs = FileSystemStorage(location=MEDIA_ROOT)
 
 class Country(models.Model):
 	countryName = models.CharField(max_length=200, null=True)
 	countryId =  models.AutoField(primary_key=True)
 	def __str__(self):
-		return self.countryId
+		return self.countryName
+	
+
+class Gender(models.Model):
+	genderName = models.CharField(max_length=200, null=True)
+	genderId =  models.AutoField(primary_key=True)
+	def __str__(self):
+		return self.genderName
 	
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
@@ -21,9 +35,9 @@ class Customer(models.Model):
 	date_created = models.DateTimeField(auto_now_add=True)
 	last_login = models.DateTimeField(auto_now_add=True,null=True,)
 	customerId =  models.AutoField(primary_key=True,)
-	country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, blank=True)
+	countryId =  models.IntegerField(null=True,)
+	genderId =  models.IntegerField(null=True,)
 	
-
 	def __str__(self):
 		return self.firstName
 	
@@ -34,7 +48,8 @@ class Vendors(models.Model):
 	password = models.CharField(max_length=200,null=True)
 	mobile = models.CharField(max_length=200,null=True)
 	address = models.CharField(max_length=200,null=True)
-	countryId =  models.IntegerField()
+	countryId =  models.IntegerField(null=True,)
+	genderId =  models.IntegerField(null=True,)
 	aboout = models.CharField(max_length=200,null=True)
 	website = models.CharField(max_length=200,null=True)
 	facebook = models.CharField(max_length=200,null=True)
@@ -45,7 +60,7 @@ class Vendors(models.Model):
 	date_created = models.DateTimeField(auto_now_add=True)
 	approved = models.BooleanField(default=False)
 	last_login = models.DateTimeField(auto_now_add=True,null=True,)
-	image = models.ImageField(null=True, blank=True)
+	image = models.ImageField(null=True, blank=True, storage=fs,upload_to='images/')
 	vendorId =  models.AutoField(primary_key=True,)
 	rating =  models.FloatField(primary_key=False,default=0)
 
@@ -123,3 +138,5 @@ class WishList(models.Model):
 	
 
 
+class Image(models.Model):
+    image = models.ImageField(upload_to='images/')

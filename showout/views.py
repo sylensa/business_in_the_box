@@ -1,3 +1,5 @@
+# using SendGrid's Python Library
+# https://github.com/sendgrid/sendgrid-python
 from django.shortcuts import render, redirect
 from .forms import VendorRegistrationForm, CustomerRegistrationForm
 from .models import *
@@ -10,6 +12,12 @@ from django.contrib import messages
 from django.http import JsonResponse
 import json
 from django.db.models import Count,Avg
+from .models import Image
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 # Create your views here.
 
 def is_user_logged_in(request):
@@ -24,12 +32,40 @@ def my_logout_view(request):
     # Redirect to a logout success page or any other desired page
     return redirect('home')
 
+def sendEmail(request):
+    if request.method == 'POST':
+        subject = 'Hello from Django'
+        to_email =  request.POST['email']  # Replace with the recipient's email address
+        context = {'link': f'http://127.0.0.1:8000/changePassword/?email={to_email}'}
+        template_path = 'showout/customers/email_template.html'
+        messageString = render_to_string(template_path, context)
+        from_email = 'hello@showout.studio'  # Replace with your email address
+        print("to_email",to_email)    
+        message = Mail(
+        from_email=from_email,
+        to_emails=to_email,
+        subject=subject,
+        html_content=messageString)
+        try:
+            sg = SendGridAPIClient('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')
+            response = sg.send(message)
+            print(response.status_code)
+            print(response.body)
+            print(response.headers)
+            return redirect('emailSent')
+
+        except Exception as e:
+            print(e)
+        return redirect('reset_password')   
+
+def emailSent(request):
+   return render(request, 'showout/customers/email_sent.html')
 
 def vendor_logout_view(request):
     if 'vendor_id' in request.session:
         del request.session['vendor_id']  # Remove user ID from session
     # Redirect to a logout success page or any other desired page
-    return redirect('vendor_dash')
+    return redirect('vendor_login')
 
 
 def updateItem(request):
@@ -137,16 +173,20 @@ def resetPassword(request):
     return render (request, 'showout/customers/resetPassword.html', context)
 
 def register(request):
+    countries = Country.objects.all(); 
+    genders = Gender.objects.all(); 
     if request.method == 'POST':
         # Retrieve registration data from POST request
         email = request.POST['email']
         fname = request.POST['fname']
         lname = request.POST['lname']
         mobile = request.POST['mobile']
+        genderId = request.POST['genderId']
+        countryId = request.POST['countryId']
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
         # Create a new Client instance and save it to the database
-        Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile)
+        Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,countryId=countryId)
         user = authenticate_customer(email, password)
         if user is not None:
             # Authentication successful, perform login manually
@@ -158,12 +198,30 @@ def register(request):
             messages.error(request, 'Invalid email or password')
 
     else:
-        return render(request, 'showout/customers/register.html')
+        return render(request, 'showout/customers/register.html',{'genders':genders,'countries':countries})
 
 
 def changePassword(request):
-    context = {}
-    return render (request, 'showout/customers/changePassword.html', context)
+   password = ''
+   confirmPassword = ''
+   email = ''
+   if request.method == 'GET':
+    email =  request.GET['email']
+    request.session['customerEmail']  = email;
+    return render(request,'showout/customers/changePassword.html')  
+   if request.method == 'POST': 
+        password =  request.POST['password']
+        confirmPassword =  request.POST['confirm_password']
+
+        email = request.session['customerEmail'] 
+        customer = Customer.objects.get(email=email)
+        customer.password = password
+        customer.save()
+        print("email",email)
+        print("password",password)
+        print("confirmPassword",confirmPassword)
+        context = {}
+        return redirect('customerLogin')  
 
 def vendorPage(request,vendorId):
     vendorServices = VendorServices.objects.all()
@@ -203,7 +261,7 @@ def viewVendors(request):
 
 def wishlist(request):
     carts =  request.session['cart'] 
-    wishlistServices = []
+    listVendorServices = []
     vendorServices = VendorServices.objects.all()
     for cart in carts:
         for vendorService in vendorServices:
@@ -211,15 +269,19 @@ def wishlist(request):
                      average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
                      if average_rating:
                         vendorService.rating = average_rating["rating"]
-                     wishlistServices.append(vendorService)
-    context = {'vendorServices':wishlistServices}
+                     listVendorServices.append(vendorService)
+    context = {'vendorServices':listVendorServices}
     if request.method == 'POST' and  'user_id' in request.session: 
         customerId = request.session['user_id']
         customer = Customer.objects.get(pk=customerId)
-        for vendorService in vendorServices:
-         wishList = WishList.objects.create(vendorService=vendorService, customer=customer)
+        for vendorService in listVendorServices:
+         wishList = WishList.objects.create(vendorService=vendorService, customer=customer, vendor=vendorService.vendor)
 
-        return render (request, 'showout/customers/wishlistHistory.html', context)
+        wishlistServices =  WishList.objects.filter(customer=customer)
+        listWishlistServices  = getWishListVendorService(wishlistServices)
+
+
+        return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices})
 
     else:
         return render (request, 'showout/customers/wishlist.html', context)
@@ -230,9 +292,26 @@ def wishlistHistory(request):
         customerId = request.session['user_id']
         customer = Customer.objects.get(pk=customerId)
         wishlistServices =  WishList.objects.filter(customer=customer)
+        listWishlistServices  = getWishListVendorService(wishlistServices)
 
-    return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':wishlistServices})
+    return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices})
     
+def topRatedServices(request):
+    mostReviewedServices = []
+    reviews_grouped = ReviewVendoreServices.objects.values('vendorService').annotate(rating=Avg('rating'))
+    most_reviewed_services = [  
+    ReviewVendoreServices.objects.filter(vendorService=item['vendorService']).first()
+    for item in reviews_grouped
+        ]
+    for most_reviewed_service in most_reviewed_services:
+        average_rating = ReviewVendoreServices.objects.filter(vendorService=most_reviewed_service.vendorService).aggregate(rating=Avg('rating'))
+        if average_rating:
+            most_reviewed_service.vendorService.rating = average_rating["rating"]
+            mostReviewedServices.append(most_reviewed_service)
+    print("mostReviewedServices",most_reviewed_services)
+    return render (request, 'showout/customers/topRatedServices.html', {'mostReviewedServices':mostReviewedServices})
+    
+
 
 def editProfile(request):
     context = {}
@@ -262,6 +341,7 @@ def searchResult(request):
 
 def vendor_login(request):
     if 'vendor_id' in request.session:
+        print("hello1")
         vendorId = request.session['vendor_id']
         vendor = Vendors.objects.get(pk=vendorId)
         categories = Category.objects.all()
@@ -271,7 +351,9 @@ def vendor_login(request):
        
         return redirect('vendor_dash')  
     else:
+       
         if request.method == 'POST':
+            print("hello")
             email = request.POST['email']
             password = request.POST['password']
             vendor = authenticate_vendor(email, password)
@@ -282,6 +364,7 @@ def vendor_login(request):
                 return redirect('vendor_dash')
             else:
                 # Authentication failed, display error message
+                print('Invalid email or password')
                 messages.error(request, 'Invalid email or password')
         return render(request, 'showout/vendor/vendor_login.html')
 
@@ -293,10 +376,13 @@ def vendor_sign_up(request):
         mobile = request.POST['mobile']
         countryId = request.POST['countryId']
         address = request.POST['address']
+        genderId = request.POST['genderId']
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
+        image = request.FILES.get('image')
+        print("image:",image)
         # Create a new Client instance and save it to the database
-        Vendors.objects.create(vendorName=vendorName, email=email, password=password, countryId=countryId, mobile=mobile,address=address)
+        Vendors.objects.create(vendorName=vendorName, email=email, password=password, countryId=countryId, mobile=mobile,address=address,genderId=genderId,image=image)
         vendor = authenticate_vendor(email, password)
         if vendor is not None:
             # Authentication successful, perform login manually
@@ -308,7 +394,8 @@ def vendor_sign_up(request):
             messages.error(request, 'Invalid email or password')
     else:
         countries = Country.objects.all()
-        return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries})
+        genders = Gender.objects.all()
+        return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries,'genders':genders})
 
 
 def customerlist(request):
@@ -324,8 +411,8 @@ def vendor_dash(request):
         print("vendorId",vendorId)
         vendorServices = VendorServices.objects.filter(vendor=vendor)
         wishLists = WishList.objects.filter(vendor=vendor)
-        customers = WishList.objects.values('customer').annotate(count=Count('customer'))
-        print("vendorServices",vendorServices)
+        customers = wishLists.values('customer').annotate(count=Count('customer'))
+        print("customers",customers)
         return render (request, 'showout/vendor/vendor_dash.html', {"vendorServices":vendorServices, "wishLists":wishLists,"customers":customers})
 
     else:
@@ -335,6 +422,18 @@ def vendor_dash(request):
 def document(request):
     context = {}
     return render (request, 'showout/vendor/document.html', context)
+
+def getWishListVendorService(wishlistServices):
+    listWishlistService = []
+    for wishlistService in wishlistServices:
+            average_rating = ReviewVendoreServices.objects.filter(vendorService=wishlistService.vendorService).aggregate(rating=Avg('rating'))
+            if average_rating:
+                wishlistService.vendorService.rating = average_rating["rating"]
+            listWishlistService.append(wishlistService)
+        
+    
+    return listWishlistService
+        
 
 
 def getVendorService(vendorServices,serviceId,vendorId):
