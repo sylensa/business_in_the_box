@@ -24,6 +24,8 @@ urlpatterns = [
     path ('resetPassword/', views.resetPassword, name="reset_password"),
      path ('sendEmail/', views.sendEmail, name="sendEmail"),
       path ('changePassword/', views.changePassword, name="changePassword"),
+        path ('vendorWishlist/', views.vendorWishlist, name="vendorWishlist"),
+         path ('vendorServices/', views.vendorServices, name="vendorServices"),
      
      path ('emailSent/', views.emailSent, name="emailSent"),
 
