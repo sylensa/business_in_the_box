@@ -413,6 +413,27 @@ def customerlist(request):
     context = {'wishLists':allCustomers}
     return render (request, 'showout/vendor/customerlist.html', context)
 
+
+def vendorWishlist(request):
+    if 'vendor_id' in request.session:
+        vendorId = request.session['vendor_id']
+        vendor = Vendors.objects.get(pk=vendorId)
+        wishLists = WishList.objects.filter(vendor=vendor)
+       
+   
+        context = {'wishLists':wishLists}
+    return render (request, 'showout/vendor/vendor_wishlist.html', context)
+
+def vendorServices(request):
+    if 'vendor_id' in request.session:
+        vendorId = request.session['vendor_id']
+        vendor = Vendors.objects.get(pk=vendorId)
+        vendorServices = VendorServices.objects.filter(vendor=vendor)
+        context = {'vendorServices':vendorServices}
+    return render (request, 'showout/vendor/vendor_services.html', context)
+
+
+
 def vendor_dash(request):
 
     if 'vendor_id' in request.session:

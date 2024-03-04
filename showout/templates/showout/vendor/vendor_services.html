@@ -40,27 +40,28 @@
             </div>
            
                 
-            <table  class="display nowrap dataTable" style="width: 100%;" aria-describedby="example_info">
+            <table  class="display nowrap dataTable" style="width: 100%;" aria-describedby="example_info" id="myTable">
                 <thead>
                     <tr>
-                       
+                    
                         <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 105px;">Customer Name</th>
                         <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 170px;">Email</th>
                         <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 77px;">Phone Number</th>
-                        <!-- <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 28px;">View</th>
                         <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 67px;">Edit</th>
                         <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 57px;">Delete</th>
-                   -->
+                  
                     </tr>
                 </thead>
                 <tbody>
                   
-                    {% for customers in wishLists%}
+                    {% for vendorService in vendorServices%}
                     <tr class="odd">
                        
-                        <td class="sorting_1">{{customers.customer.firstName}} {{customers.customer.lastName}}</td>
-                        <td>{{customers.customer.email}}</td>
-                        <td>{{customers.customer.mobile}}</td>
+                        <td class="sorting_1">{{vendorService.services.serviceName}}</td>
+                        <td>{{vendorService.category.categoryName}}</td>
+                        <td>{{vendorService.date_created}}</td>
+                        <td><button type="button" class="btn btn-success"><i class="bi bi-pencil-square"></i></button></td>
+                        <td><button type="button" class="btn btn-danger"><i class="bi bi-trash3"></i></button></td>
                        
                     </tr>
                     {% endfor %}
@@ -72,10 +73,9 @@
                         <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 105px;">Customer Name</th>
                         <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 170px;">Email</th>
                         <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 77px;">Phone Number</th>
-                        <!-- <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 28px;">View</th>
                         <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 67px;">Edit</th>
                         <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 57px;">Delete</th>
-                    -->
+                   
                    
                     </tr>
                 </tfoot>
@@ -86,7 +86,5 @@
         </div>
 </div>
 </div>
-<footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
-    <script type="text/javascript" src="{% static 'javascript/cart.js' %}" ></script>
-  </footer>
+
 </div>
