@@ -429,7 +429,9 @@ def vendorServices(request):
         vendorId = request.session['vendor_id']
         vendor = Vendors.objects.get(pk=vendorId)
         vendorServices = VendorServices.objects.filter(vendor=vendor)
-        context = {'vendorServices':vendorServices}
+       
+   
+    context = {'vendorServices':vendorServices}
     return render (request, 'showout/vendor/vendor_services.html', context)
 
 

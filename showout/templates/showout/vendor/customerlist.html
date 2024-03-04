@@ -1,60 +1,30 @@
 
 
-<!--end of codes-->
 
-{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    {% include 'showout/vendor/table_links.html' %}
+<body>
+    {% include 'showout/vendor/vendor_nav.html' %}
 
-{% include 'showout/vendor/table_links.html' %}
-<div>
+  <div style="height: 100%; background-color: rgba(248, 246, 245, 0.604);">
+    <div class="row">
+        <div class="col-lg-2">
+            {% include 'showout/vendor/sidebar.html' %}
+        </div>
     
-<div>{% include 'showout/vendor/vendor_nav.html' %}</div>
-
-
-<div style="height: 100%; background-color: rgba(248, 246, 245, 0.604);">
-<div class="row">
-    <div class="col-lg-2">
-        {% include 'showout/vendor/sidebar.html' %}
-    </div>
-
-    <div class="col-lg-10" style=" background-color: white; padding: 4rem; border-radius: 1rem;">
-       
-        <div class="demo-html">
-            <div id="example_wrapper" class="dataTables_wrapper">
-                
-                    
-                <div class="dt-buttons">         
-                    <button class="dt-button buttons-copy buttons-html5" tabindex="0" aria-controls="example" type="button" fdprocessedid="6lltgl">
-                       <span><i class=" bi bi-copy" style="margin-right: 2px;"></i>Copy</span></button> <button class="dt-button buttons-csv buttons-html5" tabindex="0" aria-controls="example" type="button" fdprocessedid="79dm36">
-                           <span><i class=" bi bi-filetype-csv" style="margin-right: 2px;"></i>CSV</span></button> <button class="dt-button buttons-excel buttons-html5" tabindex="0" aria-controls="example" type="button" fdprocessedid="f3yb4i">
-                               <span><i class=" bi bi-file-earmark-spreadsheet" style="margin-right: 2px;"></i>Excel</span></button> <button class="dt-button buttons-pdf buttons-html5" tabindex="0" aria-controls="example" type="button" fdprocessedid="k25gfa"><span><i class=" bi bi-file-earmark-pdf" style="margin-right: 2px;"></i>PDF</span></button> 
-                               <button class="dt-button buttons-print" tabindex="0" aria-controls="example" type="button" fdprocessedid="sol8mo"><span><i class=" bi bi-printer" style="margin-right: 2px;"></i>Print</span></button>
-
-                               <span><button class="btn btn-primary" data-toggle="modal" data-target="#document_upload" style="margin-left: 42rem;">Filter</button></span>
-                       
-                               
-                             
-               </div>
-            
-            <div class="col" style="float:right;">
-                <div id="example_filter" class="dataTables_filter"><label>Search:<input type="search" class="" placeholder="" aria-controls="example"></label></div>
-            </div>
+        <div class="col-lg-10" style=" background-color: white; padding: 4rem; border-radius: 1rem;">
            
-                
-            <table  class="display nowrap dataTable" style="width: 100%;" aria-describedby="example_info">
+            <table id="myTable" class="display">
                 <thead>
-                    <tr>
-                       
-                        <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 105px;">Customer Name</th>
-                        <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 170px;">Email</th>
-                        <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 77px;">Phone Number</th>
-                        <!-- <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 28px;">View</th>
-                        <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 67px;">Edit</th>
-                        <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 57px;">Delete</th>
-                   -->
-                    </tr>
+                  <tr>
+                    <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 105px;">Customer Name</th>
+                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 170px;">Email</th>
+                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 77px;">Phone Number</th>
+                  
+                  </tr>
                 </thead>
                 <tbody>
-                  
                     {% for customers in wishLists%}
                     <tr class="odd">
                        
@@ -64,29 +34,28 @@
                        
                     </tr>
                     {% endfor %}
+                  <!-- Add more rows as needed -->
                 </tbody>
-                <tfoot>
-                 
-                    <tr>
-                        
-                        <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 105px;">Customer Name</th>
-                        <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 170px;">Email</th>
-                        <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 77px;">Phone Number</th>
-                        <!-- <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 28px;">View</th>
-                        <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 67px;">Edit</th>
-                        <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 57px;">Delete</th>
-                    -->
-                   
-                    </tr>
-                </tfoot>
-            </table>
-            <div class="dataTables_info" id="example_info" role="status" aria-live="polite">Showing 51 to 57 of 57 entries</div><div class="dataTables_paginate paging_simple_numbers" id="example_paginate"><a class="paginate_button previous" aria-controls="example" role="link" data-dt-idx="previous" tabindex="0" id="example_previous">Previous</a><span>
-                <a class="paginate_button " aria-controls="example" role="link" data-dt-idx="0" tabindex="0">1</a><a class="paginate_button " aria-controls="example" role="link" data-dt-idx="1" tabindex="0">2</a><a class="paginate_button " aria-controls="example" role="link" data-dt-idx="2" tabindex="0">3</a><a class="paginate_button " aria-controls="example" role="link" data-dt-idx="3" tabindex="0">4</a><a class="paginate_button " aria-controls="example" role="link" data-dt-idx="4" tabindex="0">5</a><a class="paginate_button current" aria-controls="example" role="link" aria-current="page" data-dt-idx="5" tabindex="0">6</a></span>
-                <a class="paginate_button next disabled" aria-controls="example" aria-disabled="true" role="link" data-dt-idx="next" tabindex="-1" id="example_next">Next</a></div></div>
-        </div>
-</div>
-</div>
-<footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
-    <script type="text/javascript" src="{% static 'javascript/cart.js' %}" ></script>
-  </footer>
-</div>
+              </table>
+    </div>
+    </div>
+
+
+  <script>
+    $(document).ready(function() {
+      $('#myTable').DataTable({
+        dom: 'Bfrtip', // Add buttons to the DataTables DOM
+        buttons: [
+          'copy', // Add copy button
+          'csv', // Add CSV button
+          'excel', // Add Excel button
+          'pdf', // Add PDF button
+          'print' // Add print button
+        ]
+      });
+    });
+  </script>
+
+</body>
+</html>
+
