@@ -437,17 +437,18 @@ def vendorServices(request):
 
 
 def vendor_dash(request):
-
+    listVendorServices = []
     if 'vendor_id' in request.session:
         vendorId = request.session['vendor_id']
         vendor = Vendors.objects.get(pk=vendorId)
         print("vendor",vendor)
         print("vendorId",vendorId)
         vendorServices = VendorServices.objects.filter(vendor=vendor)
+        listVendorServices = appRatingToService(vendorServices)
         wishLists = WishList.objects.filter(vendor=vendor)
         customers = wishLists.values('customer').annotate(count=Count('customer'))
         print("customers",customers)
-        return render (request, 'showout/vendor/vendor_dash.html', {"vendorServices":vendorServices, "wishLists":wishLists,"customers":customers})
+        return render (request, 'showout/vendor/vendor_dash.html', {"vendorServices":listVendorServices, "wishLists":wishLists,"customers":customers})
 
     else:
         return render (request, 'showout/vendor/vendor_login.html', {})
