@@ -17,7 +17,6 @@ class Country(models.Model):
 	def __str__(self):
 		return self.countryName
 	
-
 class Gender(models.Model):
 	genderName = models.CharField(max_length=200, null=True)
 	genderId =  models.AutoField(primary_key=True)
@@ -40,7 +39,6 @@ class Customer(models.Model):
 	
 	def __str__(self):
 		return self.firstName
-	
     
 class Vendors(models.Model):
 	vendorName = models.CharField(max_length=200, null=True)
@@ -60,7 +58,7 @@ class Vendors(models.Model):
 	date_created = models.DateTimeField(auto_now_add=True)
 	approved = models.BooleanField(default=False)
 	last_login = models.DateTimeField(auto_now_add=True,null=True,)
-	image = models.ImageField(null=True, blank=True, storage=fs,upload_to='images/')
+	image = models.ImageField(null=True, blank=True, storage=fs,upload_to='')
 	vendorId =  models.AutoField(primary_key=True,)
 	rating =  models.FloatField(primary_key=False,default=0)
 
@@ -83,9 +81,6 @@ class Category(models.Model):
 	def __str__(self):
 		return self.categoryName
 	
-
-	
-
 class Services(models.Model):
 	category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
 	serviceName = models.CharField(max_length=200, null=True)
@@ -136,7 +131,7 @@ class WishList(models.Model):
 	def __str__(self):
 		return self.vendorService.services.serviceName
 	
-
-
 class Image(models.Model):
     image = models.ImageField(upload_to='images/')
+
+	

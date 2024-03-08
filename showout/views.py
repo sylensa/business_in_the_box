@@ -67,7 +67,6 @@ def vendor_logout_view(request):
     # Redirect to a logout success page or any other desired page
     return redirect('vendor_login')
 
-
 def updateItem(request):
     request.session.modified = True
 
@@ -92,7 +91,6 @@ def updateItem(request):
 
     return JsonResponse('Item was added', safe=False)
 
-
 def updateRating(request):
     if 'user_id' in request.session:
         data = json.loads(request.body)
@@ -111,8 +109,6 @@ def updateRating(request):
 
    
     return JsonResponse('Service rated succcessfully', safe=False)
-
-
 
 def customerLogin(request): 
     if 'user_id' in request.session:
@@ -137,7 +133,6 @@ def customerLogin(request):
                 # Authentication failed, display error message
                 messages.error(request, 'Invalid email or password')
         return render(request, 'showout/customers/login.html')
-
 
 def signup(request):
 
@@ -199,7 +194,6 @@ def register(request):
 
     else:
         return render(request, 'showout/customers/register.html',{'genders':genders,'countries':countries})
-
 
 def changePassword(request):
    password = ''
@@ -311,8 +305,6 @@ def topRatedServices(request):
     print("mostReviewedServices",most_reviewed_services)
     return render (request, 'showout/customers/topRatedServices.html', {'mostReviewedServices':mostReviewedServices})
     
-
-
 def editProfile(request):
     context = {}
     return render (request, 'showout/customers/editProfile.html', context)
@@ -335,7 +327,6 @@ def searchResult(request):
     #    return HttpResponse(f'Searching for: {query}')
 
     return render (request, 'showout/customers/searchResult.html', context)
-
 
 # vendor views
 
@@ -397,7 +388,6 @@ def vendor_sign_up(request):
         genders = Gender.objects.all()
         return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries,'genders':genders})
 
-
 def customerlist(request):
     if 'vendor_id' in request.session:
         vendorId = request.session['vendor_id']
@@ -412,7 +402,6 @@ def customerlist(request):
    
     context = {'wishLists':allCustomers}
     return render (request, 'showout/vendor/customerlist.html', context)
-
 
 def vendorWishlist(request):
     if 'vendor_id' in request.session:
@@ -434,8 +423,6 @@ def vendorServices(request):
     context = {'vendorServices':vendorServices}
     return render (request, 'showout/vendor/vendor_services.html', context)
 
-
-
 def vendor_dash(request):
     listVendorServices = []
     if 'vendor_id' in request.session:
@@ -453,7 +440,6 @@ def vendor_dash(request):
     else:
         return render (request, 'showout/vendor/vendor_login.html', {})
 
-
 def document(request):
     context = {}
     return render (request, 'showout/vendor/document.html', context)
@@ -469,8 +455,6 @@ def getWishListVendorService(wishlistServices):
     
     return listWishlistService
         
-
-
 def getVendorService(vendorServices,serviceId,vendorId):
    for vendorService in vendorServices:
         if vendorService.services.serviceId == serviceId and vendorService.vendor.vendorId == vendorId:
@@ -511,7 +495,6 @@ def getVendorSimilarService(vendorServices,serviceId):
             print("getVendorSimilarService",vendorSimilarServices)
    return vendorSimilarServices
 
-
 def getVendorsServices(vendorServices,vendorId):
    vendorSimilarServices = [];
    for vendorService in vendorServices:
@@ -534,7 +517,6 @@ def getVendorsByCategory(vendorServices,categoryId):
             print("getVendorSimilarService",vendorSimilarServices)
    return vendorSimilarServices
 
-
 def fetchSearchResults(userSearch):
     services = []
     categories = Category.objects.filter(categoryName__icontains=userSearch)
@@ -543,18 +525,18 @@ def fetchSearchResults(userSearch):
     for category in categories:
         for vendorService in vendorServices:
             if category.categoryId == vendorService.category.categoryId:
-             average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
-            if average_rating:
-                vendorService.rating = average_rating["rating"]
-            services.append(vendorService)
+                average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
+                if average_rating:
+                    vendorService.rating = average_rating["rating"]
+                services.append(vendorService)
 
     for vendor in vendors:
         for vendorService in vendorServices:
             if vendor.vendorId == vendorService.vendor.vendorId:
-             average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
-             if average_rating:
-                vendorService.rating = average_rating["rating"]
-            services.append(vendorService)
+                average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
+                if average_rating:
+                    vendorService.rating = average_rating["rating"]
+                services.append(vendorService)
  
 
     return services
