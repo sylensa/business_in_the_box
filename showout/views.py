@@ -337,6 +337,11 @@ def searchResult(request):
     return render (request, 'showout/customers/searchResult.html', context)
 
 
+def customer_settings(request):
+    context = {}
+    return render (request, 'showout/customers/customer_settings.html', context)  
+
+
 # vendor views
 
 def vendor_login(request):
@@ -571,3 +576,16 @@ def authenticate_vendor(email, password):
             return vendor
     except vendor.DoesNotExist:
         return None
+    
+
+def vendor_password_reset(request):
+    context = {}
+    return render (request, 'showout/vendor/vendor_password_reset.html', context)
+
+def vendor_change_password(request):
+    context = {}
+    return render (request, 'showout/vendor/vendor_change_password.html', context) 
+
+def vendor_settings(request):
+    context = {}
+    return render (request, 'showout/vendor/vendor_settings.html', context)  

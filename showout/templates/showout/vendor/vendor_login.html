@@ -93,12 +93,12 @@
             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
             <div class="row" style="padding-left: 50px;padding-right: 50px;">
             <div style="display:flex; margin-bottom: 8px;">
-                <input type="checkbox" >
+                <input type="checkbox"  style="margin-left: 0px;">
                 <label for="vehicle1" style="margin-left: 5px;"> Remember me</label><br>
 
             </div>
             <div >
-                <a  href=""> Forgot password</a>
+                <a  href="{% url 'vendor_password_reset' %}"> Forgot password</a>
                 <hr>
 
                <p>Don't have an account?<a  href="{% url 'vendor_sign_up' %}"> Sign up</a></p> 
