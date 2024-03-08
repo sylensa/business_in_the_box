@@ -1,12 +1,3 @@
-{% load static %}
-
-
-{% include 'showout/header.html' %}
-
-
-
-
-  
 
 {% load static %}
 
@@ -18,6 +9,7 @@
   width: 280px; 
   overflow: hidden;
   transition: margin-left 0.3s ease;
+  min-height: 50rem;
 }
 
 #sidebar.show {
@@ -36,10 +28,8 @@
 <main class="d-flex flex-nowrap" style="height: 100%; ">
 
     <!-- Sidebar -->
-    <div id="sidebar" class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px; overflow: hidden;">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none" style="margin-left: 1rem;">
-            <span class="fs-4" >Showout</span>
-        </a>
+    <div id="sidebar" class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark">
+        
         <br>
         <ul class="nav nav-pills flex-column mb-auto container-fluid">
             <!-- Sidebar links -->
@@ -56,7 +46,12 @@
               </a>
             </li>
   
-            
+            <li class="sidebar-link">
+              <a href="{% url 'vendorServices' %}" class="nav-link text-white">
+                <i class="bi bi-list-stars"><use xlink:href="#people-circle"/></i>
+                Services
+              </a>
+            </li>
           
             <li class="sidebar-link">
               <a href="{% url 'document' %}" class="nav-link text-white">
@@ -65,13 +60,13 @@
               </a>
             </li>
             <li class="sidebar-link">
-              <a href="#" class="nav-link text-white">
-                  <i class="bi bi-list-stars"><use xlink:href="#people-circle"/></i>
-                Wishlist
+              <a href="{% url 'vendorWishlist' %}" class="nav-link text-white">
+                <i class="bi bi-list-stars"><use xlink:href="#people-circle"/></i>
+                Request
               </a>
             </li>
             <li class="sidebar-link">
-              <a href="#" class="nav-link text-white">
+              <a href="{% url 'vendor_settings' %}" class="nav-link text-white">
                 <i class="bi bi-gear"><use xlink:href="#people-circle"/></i>
                 Settings
               </a>

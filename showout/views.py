@@ -337,6 +337,11 @@ def searchResult(request):
     return render (request, 'showout/customers/searchResult.html', context)
 
 
+def customer_settings(request):
+    context = {}
+    return render (request, 'showout/customers/customer_settings.html', context)  
+
+
 # vendor views
 
 def vendor_login(request):
@@ -412,6 +417,27 @@ def customerlist(request):
    
     context = {'wishLists':allCustomers}
     return render (request, 'showout/vendor/customerlist.html', context)
+
+
+def vendorWishlist(request):
+    if 'vendor_id' in request.session:
+        vendorId = request.session['vendor_id']
+        vendor = Vendors.objects.get(pk=vendorId)
+        wishLists = WishList.objects.filter(vendor=vendor)
+       
+   
+        context = {'wishLists':wishLists}
+    return render (request, 'showout/vendor/vendor_wishlist.html', context)
+
+def vendorServices(request):
+    if 'vendor_id' in request.session:
+        vendorId = request.session['vendor_id']
+        vendor = Vendors.objects.get(pk=vendorId)
+        vendorServices = VendorServices.objects.filter(vendor=vendor)
+        context = {'vendorServices':vendorServices}
+    return render (request, 'showout/vendor/vendor_services.html', context)
+
+
 
 def vendor_dash(request):
 
@@ -550,3 +576,16 @@ def authenticate_vendor(email, password):
             return vendor
     except vendor.DoesNotExist:
         return None
+    
+
+def vendor_password_reset(request):
+    context = {}
+    return render (request, 'showout/vendor/vendor_password_reset.html', context)
+
+def vendor_change_password(request):
+    context = {}
+    return render (request, 'showout/vendor/vendor_change_password.html', context) 
+
+def vendor_settings(request):
+    context = {}
+    return render (request, 'showout/vendor/vendor_settings.html', context)  

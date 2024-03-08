@@ -41,33 +41,6 @@
           </nav>
 
 
-          <nav class="navbar navbar-expand-sm navbar-dark bg-light " style="margin-top: 60px;" >
-            <div class="container-fluid">
-              <div class="collapse navbar-collapse" id="mynavbar">
-                <ul class="navbar-nav me-auto">
-                  <li class="nav-item">
-                    <a class="nav-link" href="{% url 'topRatedServices' %}"style="color: black;">Top Reviews</a>
-                  </li>
-                  <div   class="nav-item dropdown"style="margin-right: 20px;">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: black;">Categories</a>
-                    <ul class="dropdown-menu">
-                      {% for category in categories %}
-                      <li><a class="dropdown-item" href="{% url 'viewServices' categoryId=category.categoryId categoryName=category.categoryName %}" >{{category.categoryName}}</a></li>
-                      {% endfor %}
-                    
-                    </ul>
-                  </div> 
-    
-                </ul>
-                <form class="d-flex" method="post" action="{% url 'searchResult' %}">
-                  {% csrf_token %}
-                  <input class="form-control me-2" type="text" placeholder="Search" id="query" name="query">
-                  <button class="btn btn-primary" type="submit">Search</button>
-                </form>
-            
-              </div>
-            </div>
-          </nav>
 
 
          

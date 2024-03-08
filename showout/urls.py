@@ -13,7 +13,7 @@ urlpatterns = [
 
     #customer urls
     path('customerLogin/', views.customerLogin, name= "customerLogin"),
-    
+     path ('customer_settings/', views.customer_settings, name="customer_settings"),
     path('signup/', views.signup, name= "signup"),
     path('logout/', views.my_logout_view, name='logout'),
      path('vendorLogout/', views.vendor_logout_view, name='vendorLogout'),
@@ -24,6 +24,8 @@ urlpatterns = [
     path ('resetPassword/', views.resetPassword, name="reset_password"),
      path ('sendEmail/', views.sendEmail, name="sendEmail"),
       path ('changePassword/', views.changePassword, name="changePassword"),
+        path ('vendorWishlist/', views.vendorWishlist, name="vendorWishlist"),
+         path ('vendorServices/', views.vendorServices, name="vendorServices"),
      
      path ('emailSent/', views.emailSent, name="emailSent"),
 
@@ -50,20 +52,27 @@ urlpatterns = [
     path ('contactUS/', views.contactUS, name="contactUS"),
 
     path ('searchResult/', views.searchResult, name="searchResult"),
-
+   
     
     
 
 
 
     # vendor urls
-   
-    path ('customerlist/', views.customerlist, name="customerlist"),
-    path ('vendor_dash/', views.vendor_dash, name="vendor_dash"),
-    path ('document/', views.document, name="document"),
     path ('vendor_login/', views.vendor_login, name="vendor_login"),
     path ('vendor_sign_up/', views.vendor_sign_up, name="vendor_sign_up"),
-
+    path ('vendor_password_reset/', views.vendor_password_reset, name="vendor_password_reset"),
+    path ('vendor_change_password/', views.vendor_change_password, name="vendor_change_password"),
+    
+    path ('vendor_dash/', views.vendor_dash, name="vendor_dash"),
+    path ('customerlist/', views.customerlist, name="customerlist"),
+    path ('document/', views.document, name="document"),
+    path ('vendor_settings/', views.vendor_settings, name="vendor_settings"),
+    
+   
+    
+   
+    
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
