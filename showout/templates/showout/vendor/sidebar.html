@@ -18,6 +18,7 @@
   width: 280px; 
   overflow: hidden;
   transition: margin-left 0.3s ease;
+  min-height: 50rem;
 }
 
 #sidebar.show {
@@ -76,7 +77,7 @@
             </a>
           </li>
           <li class="sidebar-link">
-            <a href="#" class="nav-link text-white">
+            <a href="{% url 'vendor_settings' %}" class="nav-link text-white">
               <i class="bi bi-gear"><use xlink:href="#people-circle"/></i>
               Settings
             </a>
