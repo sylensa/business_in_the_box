@@ -1,0 +1,77 @@
+{% load static %}
+
+<head>
+{% include 'showout/header.html' %}
+<style>
+    .service_form{
+        padding-top: 4rem;
+        padding-left: 15rem;
+    }
+</style>
+</head>
+<body>
+    <div>{% include 'showout/vendor/vendor_nav.html' %}
+        <div class="row">
+          <div class="col-lg-2" style=" padding: 0%; margin: 0%;">
+            {% include 'showout/vendor/sidebar.html' %}
+          </div>
+    
+          <div class="col-lg-10 fles-grow-1" style="padding: 0%;" width="100%">
+          
+            <div>
+                
+                <div class="service_form">
+                    <p><h4>Add Service</h4></p>
+                    <br>
+                <div class="form-group row">
+                    <label  class="col-sm-2 col-form-label">Category:</label>
+                    <div class="col-sm-4">
+                        <select type="text" class="form-control"  value="">
+                            <option>Select Category</option>
+                            <option>Category1</option>
+                            <option>Category1</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label  class="col-sm-2 col-form-label">Service Name:</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control"  value="">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label  class="col-sm-2 col-form-label">Description:</label>
+                    <div class="col-sm-4">
+                        <textarea class="form-control" rows="3" ></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label  class="col-sm-2 col-form-label">Upload Image:</label>
+                    <div class="col-sm-4">
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                        <button class="btn btn-secondary" onclick="document.getElementById('imageInput').click();">Choose file</button> No file Chosen
+                        
+                    </div>
+                    
+    
+                  </div>
+                </div> 
+                  <div class="co-sm-6" style="background-color:#f8f8f8; padding: 1rem 0rem 1rem 15rem;" >
+                    <button class="btn btn-success">Save</button>
+                    <button class="btn btn-info">Save and add another Service</button>
+                    <button class="btn btn-info">Save and continue editing</button>
+                    <button class="btn btn-danger" style="margin-left: 2rem;">Delete</button>
+
+                  </div>
+               
+                  
+            </div>
+    
+      
+          </div>
+    
+         
+        </div>
+      </div>
+      
+</body>

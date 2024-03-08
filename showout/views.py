@@ -589,3 +589,7 @@ def vendor_change_password(request):
 def vendor_settings(request):
     context = {}
     return render (request, 'showout/vendor/vendor_settings.html', context)  
+
+def add_service(request):
+    context = {}
+    return render (request, 'showout/vendor/add_service.html', context)

@@ -68,7 +68,7 @@ urlpatterns = [
     path ('customerlist/', views.customerlist, name="customerlist"),
     path ('document/', views.document, name="document"),
     path ('vendor_settings/', views.vendor_settings, name="vendor_settings"),
-    
+    path ('add_service/', views.add_service, name="add_service"),
    
     
    
