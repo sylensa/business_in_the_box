@@ -702,11 +702,12 @@ def add_service(request):
             serviceId = request.POST['serviceId']
             description = request.POST['description']
             budget = request.POST['budget']
+            pdfUpload = request.FILES.get('pdfUpload')
             vendor = Vendors.objects.get(pk=vendorId)
             print("vendor",vendor)
             print("vendorId",vendorId)
             service = Services.objects.get(pk=serviceId)
-            VendorServices.objects.create(category=service.category,vendor=vendor,services=service,description=description,budget=budget)
+            VendorServices.objects.create(category=service.category,vendor=vendor,services=service,description=description,budget=budget,pdfUpload=pdfUpload)
         context = {'services':services}
         return render (request, 'showout/vendor/add_service.html', context)
     else:
