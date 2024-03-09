@@ -33,6 +33,12 @@ def my_logout_view(request):
     # Redirect to a logout success page or any other desired page
     return redirect('home')
 
+def navbar(request):
+    cateegories = Category.objects.all()
+    context = {'cateegories':cateegories}
+    return render(request, 'showout/navbar.html', context)
+
+
 def sendEmail(request):
     if request.method == 'POST':
         subject = 'Password reset'
@@ -183,13 +189,6 @@ def home(request):
     context = {'categories':categories,'vendorServices':listVendorServices,'vendors':listVendors,'customer':customer}
    
     return render(request,'showout/customers/home.html', context)
-def productDetails(request):
-    context = {}
-    return render (request, 'showout/customers/productDetails.html', context)
-
-def profile(request):
-    context = {}
-    return render (request, 'showout/customers/profile.html', context)
 
 def resetPassword(request):
     context = {}
@@ -290,6 +289,7 @@ def viewVendors(request):
 def wishlist(request):
     carts =  request.session['cart'] 
     listVendorServices = []
+    categories = Category.objects.all()
     vendorServices = VendorServices.objects.all()
     for cart in carts:
         for vendorService in vendorServices:
@@ -311,20 +311,21 @@ def wishlist(request):
         confirmationEmail(request,"Request Confirmation",customer.email)
 
 
-        return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices})
+        return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices,'categories':categories})
 
     else:
         return render (request, 'showout/customers/wishlist.html', context)
 
 def wishlistHistory(request):
     wishlistServices = []
+    categories = Category.objects.all()
     if 'user_id' in request.session: 
         customerId = request.session['user_id']
         customer = Customer.objects.get(pk=customerId)
         wishlistServices =  WishList.objects.filter(customer=customer)
         listWishlistServices  = getWishListVendorService(wishlistServices)
 
-    return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices})
+    return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices,'categories':categories})
     
 def topRatedServices(request):
     mostReviewedServices = []
@@ -346,14 +347,17 @@ def editProfile(request):
     return render (request, 'showout/customers/editProfile.html', context)
 
 def aboutUS(request):
-    context = {}
+    categories = Category.objects.all()
+    context = {'categories':categories}
     return render (request, 'showout/customers/aboutUS.html', context)
 
 def contactUS(request):
-    context = {}
+    categories = Category.objects.all()
+    context = {'categories':categories}
     return render (request, 'showout/customers/contactUS.html', context)
 
 def searchResult(request):
+    context = {}
     categories = Category.objects.all()
     if request.method == 'POST':
        query = request.POST.get('query')
@@ -368,10 +372,11 @@ def searchResult(request):
 def customer_settings(request):
     countries = Country.objects.all()
     genders = Gender.objects.all()
+    categories = Category.objects.all()
     if 'user_id' in request.session:
         user_id = request.session['user_id']
         customer = Customer.objects.get(pk=user_id)
-        context = {'countries':countries,'customer':customer,'genders':genders}
+        context = {'countries':countries,'customer':customer,'genders':genders,'categories':categories}
         if request.method == 'POST':
             # Retrieve registration data from POST request
             email = request.POST['email']
