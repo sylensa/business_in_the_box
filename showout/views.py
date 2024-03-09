@@ -438,7 +438,6 @@ def vendor_sign_up(request):
         mobile = request.POST['mobile']
         countryId = request.POST['countryId']
         address = request.POST['address']
-        # genderId = request.POST['genderId']
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
         image = request.FILES.get('image')
