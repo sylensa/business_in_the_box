@@ -357,6 +357,7 @@ def contactUS(request):
     return render (request, 'showout/customers/contactUS.html', context)
 
 def searchResult(request):
+    context = {}
     categories = Category.objects.all()
     if request.method == 'POST':
        query = request.POST.get('query')
