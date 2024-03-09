@@ -19,6 +19,7 @@ import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 # Create your views here.
+emailToken = "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"
 
 def is_user_logged_in(request):
     return 'user_id' in request.session
@@ -47,7 +48,7 @@ def sendEmail(request):
         subject=subject,
         html_content=messageString)
         try:
-            sg = SendGridAPIClient('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')
+            sg = SendGridAPIClient(emailToken)
             response = sg.send(message)
             print(response.status_code)
             print(response.body)
@@ -57,6 +58,33 @@ def sendEmail(request):
         except Exception as e:
             print(e)
         return redirect('reset_password')   
+
+def sendVendorEmail(request):
+    if request.method == 'POST':
+        subject = 'Hello from Django'
+        to_email =  request.POST['email']  # Replace with the recipient's email address
+        context = {'link': f'http://127.0.0.1:8000/vendor_change_password/?email={to_email}'}
+        template_path = 'showout/customers/email_template.html'
+        messageString = render_to_string(template_path, context)
+        from_email = 'hello@showout.studio'  # Replace with your email address
+        print("to_email",to_email)    
+        message = Mail(
+        from_email=from_email,
+        to_emails=to_email,
+        subject=subject,
+        html_content=messageString)
+        try:
+            sg = SendGridAPIClient(emailToken)
+            response = sg.send(message)
+            print(response.status_code)
+            print(response.body)
+            print(response.headers)
+            return redirect('emailSent')
+
+        except Exception as e:
+            print(e)
+        return redirect('vendor_password_reset')   
+
 
 def emailSent(request):
    return render(request, 'showout/customers/email_sent.html')
@@ -180,8 +208,10 @@ def register(request):
         countryId = request.POST['countryId']
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
+        address = request.POST['address']
+        
         # Create a new Client instance and save it to the database
-        Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,countryId=countryId)
+        Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,countryId=countryId,address=address)
         user = authenticate_customer(email, password)
         if user is not None:
             # Authentication successful, perform login manually
@@ -214,6 +244,8 @@ def changePassword(request):
         print("email",email)
         print("password",password)
         print("confirmPassword",confirmPassword)
+        if 'user_id' in request.session:
+          del request.session['user_id'] 
         context = {}
         return redirect('customerLogin')  
 
@@ -330,8 +362,41 @@ def searchResult(request):
 
 
 def customer_settings(request):
-    context = {}
-    return render (request, 'showout/customers/customer_settings.html', context)  
+    countries = Country.objects.all()
+    genders = Gender.objects.all()
+    if 'user_id' in request.session:
+        user_id = request.session['user_id']
+        customer = Customer.objects.get(pk=user_id)
+        context = {'countries':countries,'customer':customer,'genders':genders}
+        if request.method == 'POST':
+            # Retrieve registration data from POST request
+            email = request.POST['email']
+            fname = request.POST['fname']
+            lname = request.POST['lname']
+            mobile = request.POST['mobile']
+            genderId = request.POST['genderId']
+            countryId = request.POST['countryId']
+            address = request.POST['address']
+            customer.email = email
+            customer.firstName = fname
+            customer.lastName = lname
+            customer.countryId = countryId
+            customer.address = address
+            customer.mobile = mobile
+            customer.genderId = genderId
+            customer.save()
+            print("fname",fname)
+            print("genderId",genderId)
+            print("countryId",countryId)
+            print("email",email)
+            print("lname",lname)
+            return redirect('customer_settings')        
+        else:
+            
+            return render (request, 'showout/customers/customer_settings.html', context) 
+    else:
+         return redirect('login')
+
 
 
 # vendor views
@@ -373,13 +438,13 @@ def vendor_sign_up(request):
         mobile = request.POST['mobile']
         countryId = request.POST['countryId']
         address = request.POST['address']
-        genderId = request.POST['genderId']
+        # genderId = request.POST['genderId']
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
         image = request.FILES.get('image')
         print("image:",image)
         # Create a new Client instance and save it to the database
-        Vendors.objects.create(vendorName=vendorName, email=email, password=password, countryId=countryId, mobile=mobile,address=address,genderId=genderId,image=image)
+        Vendors.objects.create(vendorName=vendorName, email=email, password=password, countryId=countryId, mobile=mobile,address=address,genderId=1,image=image)
         vendor = authenticate_vendor(email, password)
         if vendor is not None:
             # Authentication successful, perform login manually
@@ -419,7 +484,7 @@ def vendorWishlist(request):
         context = {'wishLists':wishLists}
     return render (request, 'showout/vendor/vendor_wishlist.html', context)
 
-def vendorServices(request):
+def vendor_services(request):
     if 'vendor_id' in request.session:
         vendorId = request.session['vendor_id']
         vendor = Vendors.objects.get(pk=vendorId)
@@ -444,7 +509,7 @@ def vendor_dash(request):
         return render (request, 'showout/vendor/vendor_dash.html', {"vendorServices":listVendorServices, "wishLists":wishLists,"customers":customers})
 
     else:
-        return render (request, 'showout/vendor/vendor_login.html', {})
+        return redirect('vendor_login') 
 
 def document(request):
     context = {}
@@ -569,13 +634,120 @@ def vendor_password_reset(request):
     return render (request, 'showout/vendor/vendor_password_reset.html', context)
 
 def vendor_change_password(request):
-    context = {}
-    return render (request, 'showout/vendor/vendor_change_password.html', context) 
+  password = ''
+  confirmPassword = ''
+  email = ''
+  if request.method == 'GET':
+    email =  request.GET['email']
+    request.session['vendorEmail']  = email;
+    return render(request,'showout/vendor/vendor_change_password.html')  
+  if request.method == 'POST': 
+        password =  request.POST['password']
+        confirmPassword =  request.POST['confirm_password']
+        email = request.session['vendorEmail'] 
+        vendor = Vendors.objects.get(email=email)
+        vendor.password = password
+        vendor.save()
+        print("email",email)
+        print("password",password)
+        print("confirmPassword",confirmPassword)
+        if 'vendor_id' in request.session:
+         del request.session['vendor_id']
+        context = {}
+        return redirect('vendor_login') 
 
 def vendor_settings(request):
-    context = {}
-    return render (request, 'showout/vendor/vendor_settings.html', context)  
+    countries = Country.objects.all()
+    if 'vendor_id' in request.session:
+        vendorId = request.session['vendor_id']
+        vendor = Vendors.objects.get(pk=vendorId)
+        context = {'countries':countries,'vendor':vendor}
+        if request.method == 'POST':
+            # Retrieve registration data from POST request
+            email = request.POST['email']
+            vendorName = request.POST['vendorName']
+            mobile = request.POST['mobile']
+            countryId = request.POST['countryId']
+            address = request.POST['address']
+            aboout = request.POST['aboout']
+            website = request.POST['website']
+            # image = request.FILES.get('image')
+            vendor.email = email
+            vendor.vendorName = vendorName
+            vendor.countryId = countryId
+            vendor.mobile = mobile
+            vendor.address = address
+            vendor.aboout = aboout
+            vendor.website = website
+            vendor.save()
+            print("website",website)
+            print("aboout",aboout)
+            print("countryId",countryId)
+            print("email",email)
+            print("address",address)
+            print("vendorName",vendorName)
+            # print("image:",image)
+            return redirect('vendor_settings')        
+        else:
+            
+            return render (request, 'showout/vendor/vendor_settings.html', context) 
+    else:
+         return redirect('vendor_login')
+ 
 
 def add_service(request):
-    context = {}
-    return render (request, 'showout/vendor/add_service.html', context)
+    services = Services.objects.all();
+    if 'vendor_id' in request.session:
+        vendorId = request.session['vendor_id']
+        if request.method == 'POST':
+            serviceId = request.POST['serviceId']
+            description = request.POST['description']
+            budget = request.POST['budget']
+            vendor = Vendors.objects.get(pk=vendorId)
+            print("vendor",vendor)
+            print("vendorId",vendorId)
+            service = Services.objects.get(pk=serviceId)
+            VendorServices.objects.create(category=service.category,vendor=vendor,services=service,description=description,budget=budget)
+        context = {'services':services}
+        return render (request, 'showout/vendor/add_service.html', context)
+    else:
+        return redirect('vendor_login') 
+
+def edit_service(request,vendorServicesId):
+    services = Services.objects.all();
+    vendorService = VendorServices.objects.get(pk=vendorServicesId);
+    context = {'services':services,'vendorService':vendorService}
+    if 'vendor_id' in request.session:
+        vendorId = request.session['vendor_id']
+        if request.method == 'POST':
+            serviceId = request.POST['serviceId']
+            service = Services.objects.get(pk=serviceId)
+            description = request.POST['description']
+            budget = request.POST['budget']
+            vendor = Vendors.objects.get(pk=vendorId)
+            vendorService.description = description
+            vendorService.budget = budget
+            vendorService.vendor = vendor
+            vendorService.services = service
+            print("vendor",vendor)
+            print("vendorId",vendorId)
+            vendorService.save()
+            return redirect('vendor_services')   
+        else:
+         return render (request, 'showout/vendor/vendor_edit_service.html', context)    
+
+    else:
+        return redirect('vendor_login') 
+
+def delete_view(request):
+    if 'vendor_id' in request.session:
+        if request.method == 'POST':
+            vendorServicesId = request.GET['vendorServicesId']
+            print("vendorServicesId",vendorServicesId)
+            vendorService = VendorServices.objects.get(pk=vendorServicesId);
+            vendorService.delete()
+            return redirect('vendor_services') 
+        else:
+             return redirect('vendor_services') 
+    else:
+        return redirect('vendor_login') 

@@ -58,7 +58,7 @@
           </li>
 
           <li class="sidebar-link">
-            <a href="{% url 'vendorServices' %}" class="nav-link text-white">
+            <a href="{% url 'vendor_services' %}" class="nav-link text-white">
               <i class="bi bi-list-stars"><use xlink:href="#people-circle"/></i>
               Services
             </a>
@@ -77,28 +77,23 @@
             </a>
           </li>
           <li class="sidebar-link">
-            <a href="{% url 'vendor_settings' %}" class="nav-link text-white">
+            <a href="{% url 'vendor_settings' %}"class="nav-link text-white">
               <i class="bi bi-gear"><use xlink:href="#people-circle"/></i>
               Settings
             </a>
           </li>
-      </ul>
-      <hr>
-      <!-- Account dropdown -->
-      <div class="dropdown">
-        {% if request.session.vendor_id  %}
-        <a href="{% url 'vendorLogout' %}" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" >
-          <i class="bi bi-person-circle" alt="" width="32" height="32" class="rounded-circle me-2" style="margin-right: 0.5rem;"></i>
-          <strong>Logout</strong>
-      </a>
-        {% else %}
-        <a href="{% url 'vendorLogout' %}" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="bi bi-person-circle" alt="" width="32" height="32" class="rounded-circle me-2" style="margin-right: 0.5rem;"></i>
-          <strong>Account</strong>
-      </a>
+          {% if request.session.vendor_id  %}
+          <hr style="color: white;">
+          <li class="sidebar-link">
+            <a href="{% url 'vendorLogout' %}" class="nav-link text-white">
+              <i class="bi bi-gear"><use xlink:href="#people-circle"/></i>
+              Logout
+            </a>
+          </li>
           {% endif %}
-         
-      </div>
+      </ul>
+    
+   
   </div>
 
     <!-- Main content -->

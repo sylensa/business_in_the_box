@@ -16,12 +16,12 @@
             {% include 'showout/vendor/sidebar.html' %}
           </div>
           <div class="col-lg-10 fles-grow-1" style="padding: 0%;" width="100%">
-            <form method="POST">
+            <form method="POST" >
               {% csrf_token %}
               <div>
                 
                 <div class="service_form">
-                    <p><h4>Add Service</h4></p>
+                    <p><h4>Edit Service</h4></p>
                     <br>
                   <div class="form-group row">
                     <label  class="col-sm-2 col-form-label">Select Service:</label>
@@ -29,7 +29,7 @@
                         <select type="text" class="form-control"  name="serviceId">
                             <option disabled>Select Category</option>
                             {% for service in services %}
-                            <option value="{{service.serviceId}}">{{service.serviceName}}</option>
+                            <option value="{{service.serviceId}}" {% if vendorService.services.serviceId == service.serviceId %}selected{% else %} {% endif %}>{{service.serviceName}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -37,13 +37,13 @@
                   <div class="form-group row">
                     <label  class="col-sm-2 col-form-label">Description:</label>
                     <div class="col-sm-4">
-                        <textarea class="form-control" name="description" rows="3" ></textarea>
+                        <textarea class="form-control" name="description" rows="3" >{{vendorService.description}}</textarea>
                     </div>                    
                   </div>
                   <div class="form-group row">
                     <label  class="col-sm-2 col-form-label">Budget:</label>
                     <div class="col-sm-4">
-                        <input class="form-control" name="budget"  type="number" ></input>
+                        <input class="form-control" name="budget" value="{{vendorService.budget}}"  type="number" ></input>
                     </div>
                   </div>
                 </div> 
