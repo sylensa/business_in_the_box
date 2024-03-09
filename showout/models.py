@@ -57,6 +57,8 @@ class Vendors(models.Model):
 	image = models.ImageField(null=True, blank=True, storage=fs,upload_to='')
 	vendorId =  models.AutoField(primary_key=True,)
 	rating =  models.FloatField(primary_key=False,default=0)
+	pdfUpload = models.FileField(null=True, blank=True, storage=fs,upload_to='')
+
 
 	def __str__(self):
 		return self.vendorName
@@ -65,6 +67,14 @@ class Vendors(models.Model):
 	def imageURL(self):
 		try:
 			url = self.image.url
+		except:
+			url = ''
+		return url
+	
+	@property
+	def pdfURL(self):
+		try:
+			url = self.pdfUpload.url
 		except:
 			url = ''
 		return url
@@ -103,8 +113,17 @@ class VendorServices(models.Model):
 	budget =  models.FloatField(primary_key=False,default=0.00)
 	date_created = models.DateTimeField(auto_now_add=True)
 	vendorServicesId =  models.AutoField(primary_key=True)
+	pdfUpload = models.ImageField(null=True, blank=True, storage=fs,upload_to='')
 	def __int__(self):
 		return self.vendorServicesId
+	
+	@property
+	def pdfURL(self):
+		try:
+			url = self.pdfUpload.url
+		except:
+			url = ''
+		return url
 	
 class ReviewVendoreServices(models.Model):
 	vendor = models.ForeignKey(Vendors,  on_delete=models.SET_NULL, null=True, blank=True)

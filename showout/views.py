@@ -35,7 +35,7 @@ def my_logout_view(request):
 
 def sendEmail(request):
     if request.method == 'POST':
-        subject = 'Hello from Django'
+        subject = 'Password reset'
         to_email =  request.POST['email']  # Replace with the recipient's email address
         context = {'link': f'http://127.0.0.1:8000/changePassword/?email={to_email}'}
         template_path = 'showout/customers/email_template.html'
@@ -61,7 +61,7 @@ def sendEmail(request):
 
 def sendVendorEmail(request):
     if request.method == 'POST':
-        subject = 'Hello from Django'
+        subject = 'Password reset'
         to_email =  request.POST['email']  # Replace with the recipient's email address
         context = {'link': f'http://127.0.0.1:8000/vendor_change_password/?email={to_email}'}
         template_path = 'showout/customers/email_template.html'
@@ -217,6 +217,7 @@ def register(request):
             # Authentication successful, perform login manually
             request.session['user_id'] = user.customerId  # Store user ID in session
             # Redirect to a success page or home page
+            confirmationEmail(request,"Registration confirmation",user.email)
             return redirect('home')
         else:
             # Authentication failed, display error message
@@ -247,6 +248,7 @@ def changePassword(request):
         if 'user_id' in request.session:
           del request.session['user_id'] 
         context = {}
+        confirmationEmail(request,"Change Password confirmation",customer.email)
         return redirect('customerLogin')  
 
 def vendorPage(request,vendorId):
@@ -302,9 +304,11 @@ def wishlist(request):
         customer = Customer.objects.get(pk=customerId)
         for vendorService in listVendorServices:
          wishList = WishList.objects.create(vendorService=vendorService, customer=customer, vendor=vendorService.vendor)
-
+         confirmationEmail(request,"Delete Service",vendorService.vendor.email)
+   
         wishlistServices =  WishList.objects.filter(customer=customer)
         listWishlistServices  = getWishListVendorService(wishlistServices)
+        confirmationEmail(request,"Request Confirmation",customer.email)
 
 
         return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices})
@@ -385,6 +389,7 @@ def customer_settings(request):
             customer.mobile = mobile
             customer.genderId = genderId
             customer.save()
+            confirmationEmail(request,"Profile Update",customer.email)
             print("fname",fname)
             print("genderId",genderId)
             print("countryId",countryId)
@@ -409,6 +414,7 @@ def vendor_login(request):
         categories = Category.objects.all()
         vendorServices = VendorServices.objects.all()
         vendors = Vendors.objects.all()
+        confirmationEmail(request,"Login Confirmation",vendor.email)
         # context = {'categories':categories,'vendorServices':vendorServices,'vendors':vendors,'customer':customer}
        
         return redirect('vendor_dash')  
@@ -449,6 +455,9 @@ def vendor_sign_up(request):
             # Authentication successful, perform login manually
             request.session['vendor_id'] = vendor.vendorId  # Store user ID in session
             # Redirect to a success page or home page
+            confirmationEmail(request,"Sign Up Confirmation",vendor.email)
+            confirmationEmail(request,"New Venor","sylensa.adolf@gmail.com")
+
             return redirect('vendor_dash')
         else:
             # Authentication failed, display error message
@@ -647,6 +656,7 @@ def vendor_change_password(request):
         vendor = Vendors.objects.get(email=email)
         vendor.password = password
         vendor.save()
+        confirmationEmail(request,"Change password Service",vendor.email)
         print("email",email)
         print("password",password)
         print("confirmPassword",confirmPassword)
@@ -679,6 +689,7 @@ def vendor_settings(request):
             vendor.aboout = aboout
             vendor.website = website
             vendor.save()
+            confirmationEmail(request,"Profile Update",vendor.email)
             print("website",website)
             print("aboout",aboout)
             print("countryId",countryId)
@@ -702,11 +713,13 @@ def add_service(request):
             serviceId = request.POST['serviceId']
             description = request.POST['description']
             budget = request.POST['budget']
+            pdfUpload = request.FILES.get('pdfUpload')
             vendor = Vendors.objects.get(pk=vendorId)
             print("vendor",vendor)
             print("vendorId",vendorId)
             service = Services.objects.get(pk=serviceId)
-            VendorServices.objects.create(category=service.category,vendor=vendor,services=service,description=description,budget=budget)
+            VendorServices.objects.create(category=service.category,vendor=vendor,services=service,description=description,budget=budget,pdfUpload=pdfUpload)
+            confirmationEmail(request,"Add Service",vendor.email)
         context = {'services':services}
         return render (request, 'showout/vendor/add_service.html', context)
     else:
@@ -724,13 +737,18 @@ def edit_service(request,vendorServicesId):
             description = request.POST['description']
             budget = request.POST['budget']
             vendor = Vendors.objects.get(pk=vendorId)
+            pdfUpload = request.FILES.get('pdfUpload')
             vendorService.description = description
             vendorService.budget = budget
             vendorService.vendor = vendor
             vendorService.services = service
+            if request.FILES.get('pdfUpload'):
+             vendorService.pdfUpload = pdfUpload
+            
             print("vendor",vendor)
             print("vendorId",vendorId)
             vendorService.save()
+            confirmationEmail(request,"Delete Service",vendorService.vendor.email)
             return redirect('vendor_services')   
         else:
          return render (request, 'showout/vendor/vendor_edit_service.html', context)    
@@ -745,8 +763,35 @@ def delete_view(request):
             print("vendorServicesId",vendorServicesId)
             vendorService = VendorServices.objects.get(pk=vendorServicesId);
             vendorService.delete()
+            confirmationEmail(request,"Delete Service",vendorService.vendor.email)
             return redirect('vendor_services') 
         else:
              return redirect('vendor_services') 
     else:
         return redirect('vendor_login') 
+
+def confirmationEmail(request,topic,email):
+    if request.method == 'POST':
+        subject = topic
+        to_email =  email # Replace with the recipient's email address
+        context = {'link': f'http://127.0.0.1:8000/'}
+        template_path = 'showout/customers/email_template.html'
+        messageString = render_to_string(template_path, context)
+        from_email = 'hello@showout.studio'  # Replace with your email address
+        print("to_email",to_email)    
+        message = Mail(
+        from_email=from_email,
+        to_emails=to_email,
+        subject=subject,
+        html_content=messageString)
+        try:
+            sg = SendGridAPIClient(emailToken)
+            response = sg.send(message)
+            print(response.status_code)
+            print(response.body)
+            print(response.headers)
+            return redirect('emailSent')
+
+        except Exception as e:
+            print(e)
+       

@@ -32,13 +32,15 @@
 <p>
   {{vendor.website}}
 </p>
-    <span class="fa fa-star checked"></span>
-    <span class="fa fa-star checked"></span>
-    <span class="fa fa-star checked"></span>
-    <span class="fa fa-star"></span>
-    <span class="fa fa-star"></span>
-    <span > <a href="#" style="text-decoration:none; color: #000;"><span style="background-color: #D3D3D3;padding: 5px;">See reviews</i></span></a></span>
-       
+<p>
+  <a href="{{vendor.pdfURL}}">View Pdf</a>
+</p>
+<span class="fa fa-star {% if vendor.rating > 0 %}checked{% else %} {% endif %} "></span>
+<span class="fa fa-star {% if vendor.rating > 1 %}checked{% else %} {% endif %}"></span>
+<span class="fa fa-star {% if vendor.rating > 2 %}checked{% else %} {% endif %}"></span>
+<span class="fa fa-star {% if vendor.rating > 3 %}checked{% else %} {% endif %}"></span>
+<span class="fa fa-star {% if vendor.rating > 4 %}checked{% else %} {% endif %}"></span>
+
 </div>
 </div>
 
