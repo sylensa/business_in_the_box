@@ -1,3 +1,12 @@
+{% load static %}
+
+
+{% include 'showout/header.html' %}
+
+
+
+
+  
 
 {% load static %}
 
@@ -28,71 +37,64 @@
 <main class="d-flex flex-nowrap" style="height: 100%; ">
 
     <!-- Sidebar -->
-    <div id="sidebar" class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark">
-        
-        <br>
-        <ul class="nav nav-pills flex-column mb-auto container-fluid">
-            <!-- Sidebar links -->
-            <li class="sidebar-link" id="dashboard">
-                <a href="{% url 'vendor_dash' %}" class="nav-link" style="color: white;">
-                    <i class="bi bi-speedometer2"></i>
-                    Dashboard
-                </a>
-            </li>
-            <li class="sidebar-link">
-              <a href="{% url 'customerlist' %}" class="nav-link text-white" >
-                  <i class="bi bi-people-fill" ></i><use xlink:href="#"/></i>
-                Customers
+    <div id="sidebar" class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px; overflow: hidden;">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none" style="margin-left: 1rem;">
+          <span class="fs-4" >Showout</span>
+      </a>
+      <br>
+      <ul class="nav nav-pills flex-column mb-auto container-fluid">
+          <!-- Sidebar links -->
+          <li class="sidebar-link" id="dashboard">
+              <a href="{% url 'vendor_dash' %}" class="nav-link" style="color: white;">
+                  <i class="bi bi-speedometer2"></i>
+                  Dashboard
               </a>
-            </li>
-  
-            <li class="sidebar-link">
-              <a href="{% url 'vendorServices' %}" class="nav-link text-white">
-                <i class="bi bi-list-stars"><use xlink:href="#people-circle"/></i>
-                Services
-              </a>
-            </li>
-          
-            <li class="sidebar-link">
-              <a href="{% url 'document' %}" class="nav-link text-white">
-                  <i class="bi bi-file-earmark-text-fill"><use xlink:href="#people-circle"/></i>
-                Documents
-              </a>
-            </li>
-            <li class="sidebar-link">
-              <a href="{% url 'vendorWishlist' %}" class="nav-link text-white">
-                <i class="bi bi-list-stars"><use xlink:href="#people-circle"/></i>
-                Request
-              </a>
-            </li>
-            <li class="sidebar-link">
-              <a href="{% url 'vendor_settings' %}" class="nav-link text-white">
-                <i class="bi bi-gear"><use xlink:href="#people-circle"/></i>
-                Settings
-              </a>
-            </li>
-        </ul>
-        <hr>
-        <!-- Account dropdown -->
-        <div class="dropdown">
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle" alt="" width="32" height="32" class="rounded-circle me-2" style="margin-right: 0.5rem;"></i>
-                <strong>Account</strong>
+          </li>
+          <li class="sidebar-link">
+            <a href="{% url 'customerlist' %}" class="nav-link text-white" >
+                <i class="bi bi-people-fill" ></i><use xlink:href="#"/></i>
+              Customers
             </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                {% if request.session.vendor_id  %}
-                <li><a class="dropdown-item"  href="{% url 'vendorLogout' %}">Sign out</a></li>
+          </li>
 
-                {% else %}
-                 <li><a class="dropdown-item"  href="">Login</a></li>
-                  {% endif %}
-            </ul>
-        </div>
-    </div>
+          <li class="sidebar-link">
+            <a href="{% url 'vendor_services' %}" class="nav-link text-white">
+              <i class="bi bi-list-stars"><use xlink:href="#people-circle"/></i>
+              Services
+            </a>
+          </li>
+        
+          <li class="sidebar-link">
+            <a href="{% url 'document' %}" class="nav-link text-white">
+                <i class="bi bi-file-earmark-text-fill"><use xlink:href="#people-circle"/></i>
+              Documents
+            </a>
+          </li>
+          <li class="sidebar-link">
+            <a href="{% url 'vendorWishlist' %}" class="nav-link text-white">
+              <i class="bi bi-list-stars"><use xlink:href="#people-circle"/></i>
+              Request
+            </a>
+          </li>
+          <li class="sidebar-link">
+            <a href="{% url 'vendor_settings' %}"class="nav-link text-white">
+              <i class="bi bi-gear"><use xlink:href="#people-circle"/></i>
+              Settings
+            </a>
+          </li>
+          {% if request.session.vendor_id  %}
+          <hr style="color: white;">
+          <li class="sidebar-link">
+            <a href="{% url 'vendorLogout' %}" class="nav-link text-white">
+              <i class="bi bi-gear"><use xlink:href="#people-circle"/></i>
+              Logout
+            </a>
+          </li>
+          {% endif %}
+      </ul>
+    
+   
+  </div>
 
     <!-- Main content -->
     
@@ -109,8 +111,3 @@
       document.getElementById('sidebar').classList.toggle('show');
   });
 </script> 
-
-
-
-
-

@@ -15,60 +15,52 @@
           <div class="col-lg-2" style=" padding: 0%; margin: 0%;">
             {% include 'showout/vendor/sidebar.html' %}
           </div>
-    
           <div class="col-lg-10 fles-grow-1" style="padding: 0%;" width="100%">
-          
-            <div>
+            <form method="POST">
+              {% csrf_token %}
+              <div>
                 
                 <div class="service_form">
                     <p><h4>Add Service</h4></p>
                     <br>
-                <div class="form-group row">
-                    <label  class="col-sm-2 col-form-label">Category:</label>
-                    <div class="col-sm-4">
-                        <select type="text" class="form-control"  value="">
-                            <option>Select Category</option>
-                            <option>Category1</option>
-                            <option>Category1</option>
-                        </select>
-                    </div>
-                  </div>
                   <div class="form-group row">
-                    <label  class="col-sm-2 col-form-label">Service Name:</label>
+                    <label  class="col-sm-2 col-form-label">Select Service:</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control"  value="">
+                        <select type="text" class="form-control"  name="serviceId">
+                            <option disabled>Select Category</option>
+                            {% for service in services %}
+                            <option value="{{service.serviceId}}">{{service.serviceName}}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                   </div>
                   <div class="form-group row">
                     <label  class="col-sm-2 col-form-label">Description:</label>
                     <div class="col-sm-4">
-                        <textarea class="form-control" rows="3" ></textarea>
-                    </div>
+                        <textarea class="form-control" name="description" rows="3" ></textarea>
+                    </div>                    
                   </div>
                   <div class="form-group row">
-                    <label  class="col-sm-2 col-form-label">Upload Image:</label>
+                    <label  class="col-sm-2 col-form-label">Budget:</label>
                     <div class="col-sm-4">
-                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
-                        <button class="btn btn-secondary" onclick="document.getElementById('imageInput').click();">Choose file</button> No file Chosen
-                        
+                        <input class="form-control" name="budget"  type="number" ></input>
                     </div>
-                    
-    
                   </div>
                 </div> 
                   <div class="co-sm-6" style="background-color:#f8f8f8; padding: 1rem 0rem 1rem 15rem;" >
                     <button class="btn btn-success">Save</button>
-                    <button class="btn btn-info">Save and add another Service</button>
-                    <button class="btn btn-info">Save and continue editing</button>
-                    <button class="btn btn-danger" style="margin-left: 2rem;">Delete</button>
+              
 
                   </div>
                
                   
             </div>
+          </form> 
+          
     
       
           </div>
+          
     
          
         </div>

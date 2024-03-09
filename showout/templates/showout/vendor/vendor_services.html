@@ -1,90 +1,104 @@
 
+<!DOCTYPE html>
+<html lang="en">
+    {% include 'showout/vendor/table_links.html' %}
+<body>
+    {% include 'showout/vendor/vendor_nav.html' %}
 
-<!--end of codes-->
-
-{% load static %}
-
-{% include 'showout/vendor/table_links.html' %}
-<div>
+  <div style="height: 100%; background-color: rgba(248, 246, 245, 0.604);">
+    <div class="row">
+        <div class="col-lg-2">
+            {% include 'showout/vendor/sidebar.html' %}
+        </div>
     
-<div>{% include 'showout/vendor/vendor_nav.html' %}</div>
-
-
-<div style="height: 100%; background-color: rgba(248, 246, 245, 0.604);">
-<div class="row">
-    <div class="col-lg-2">
-        {% include 'showout/vendor/sidebar.html' %}
-    </div>
-
-    <div class="col-lg-10" style=" background-color: white; padding: 4rem; border-radius: 1rem;">
-       
-        <div class="demo-html">
-            <div id="example_wrapper" class="dataTables_wrapper">
-                
-                    
-                <div class="dt-buttons">         
-                    <button class="dt-button buttons-copy buttons-html5" tabindex="0" aria-controls="example" type="button" fdprocessedid="6lltgl">
-                       <span><i class=" bi bi-copy" style="margin-right: 2px;"></i>Copy</span></button> <button class="dt-button buttons-csv buttons-html5" tabindex="0" aria-controls="example" type="button" fdprocessedid="79dm36">
-                           <span><i class=" bi bi-filetype-csv" style="margin-right: 2px;"></i>CSV</span></button> <button class="dt-button buttons-excel buttons-html5" tabindex="0" aria-controls="example" type="button" fdprocessedid="f3yb4i">
-                               <span><i class=" bi bi-file-earmark-spreadsheet" style="margin-right: 2px;"></i>Excel</span></button> <button class="dt-button buttons-pdf buttons-html5" tabindex="0" aria-controls="example" type="button" fdprocessedid="k25gfa"><span><i class=" bi bi-file-earmark-pdf" style="margin-right: 2px;"></i>PDF</span></button> 
-                               <button class="dt-button buttons-print" tabindex="0" aria-controls="example" type="button" fdprocessedid="sol8mo"><span><i class=" bi bi-printer" style="margin-right: 2px;"></i>Print</span></button>
-
-                               <span><button class="btn btn-primary" data-toggle="modal" data-target="#document_upload" style="margin-left: 42rem;">Filter</button></span>
-                       
-                               
-                             
-               </div>
-            
-            <div class="col" style="float:right;">
-                <div id="example_filter" class="dataTables_filter"><label>Search:<input type="search" class="" placeholder="" aria-controls="example"></label></div>
-            </div>
-           
-                
-            <table  class="display nowrap dataTable" style="width: 100%;" aria-describedby="example_info" id="myTable">
+        <div class="col-lg-10" style=" background-color: white; padding: 4rem; border-radius: 1rem;">
+         <a  href="{% url 'add_service' %}"><button class="btn btn-primary" id="editButton" style="margin-right: 10rem; width: 10rem;">Add service</button></a> 
+            <table id="myTable" class="display">
                 <thead>
-                    <tr>
-                    
-                        <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 105px;">Customer Name</th>
-                        <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 170px;">Email</th>
-                        <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 77px;">Phone Number</th>
-                        <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 67px;">Edit</th>
-                        <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 57px;">Delete</th>
-                  
-                    </tr>
+                  <tr>
+                    <th>Servie name</th>
+                    <th>Category</th>
+                    <th>Cost</th>
+                    <th>Date created</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                  </tr>
                 </thead>
                 <tbody>
-                  
-                    {% for vendorService in vendorServices%}
-                    <tr class="odd">
-                       
-                        <td class="sorting_1">{{vendorService.services.serviceName}}</td>
-                        <td>{{vendorService.category.categoryName}}</td>
-                        <td>{{vendorService.date_created}}</td>
-                        <td><button type="button" class="btn btn-success"><i class="bi bi-pencil-square"></i></button></td>
-                        <td><button type="button" class="btn btn-danger"><i class="bi bi-trash3"></i></button></td>
-                       
-                    </tr>
-                    {% endfor %}
+                    {% for services in vendorServices%}
+                  <tr>
+                    <td>{{services.services.serviceName}}</td>
+                    <td>{{services.category.categoryName}}</td>
+                    <td>{{services.budget}}</td>
+                    <td>{{services.date_created}}</td>
+                    <td><a href="{% url 'vendor_edit_service' vendorServicesId=services.vendorServicesId%}" href="{% url 'vendor_edit_service' vendorServicesId=services.vendorServicesId %}"><button type="submit" class="btn btn-success"><i class="bi bi-pencil-square"></i></button></a></td>
+                    <td><button id="deleteButton" data-vendorServicesId="{{services.vendorServicesId}}" type="button" class="btn btn-danger"><i class="bi bi-trash3"></i></button></td>
+                  </tr>
+                 {% endfor %}
+                  <!-- Add more rows as needed -->
                 </tbody>
-                <tfoot>
-                 
-                    <tr>
-                        
-                        <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 105px;">Customer Name</th>
-                        <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 170px;">Email</th>
-                        <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 77px;">Phone Number</th>
-                        <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 67px;">Edit</th>
-                        <th class="" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 57px;">Delete</th>
-                   
-                   
-                    </tr>
-                </tfoot>
-            </table>
-            <div class="dataTables_info" id="example_info" role="status" aria-live="polite">Showing 51 to 57 of 57 entries</div><div class="dataTables_paginate paging_simple_numbers" id="example_paginate"><a class="paginate_button previous" aria-controls="example" role="link" data-dt-idx="previous" tabindex="0" id="example_previous">Previous</a><span>
-                <a class="paginate_button " aria-controls="example" role="link" data-dt-idx="0" tabindex="0">1</a><a class="paginate_button " aria-controls="example" role="link" data-dt-idx="1" tabindex="0">2</a><a class="paginate_button " aria-controls="example" role="link" data-dt-idx="2" tabindex="0">3</a><a class="paginate_button " aria-controls="example" role="link" data-dt-idx="3" tabindex="0">4</a><a class="paginate_button " aria-controls="example" role="link" data-dt-idx="4" tabindex="0">5</a><a class="paginate_button current" aria-controls="example" role="link" aria-current="page" data-dt-idx="5" tabindex="0">6</a></span>
-                <a class="paginate_button next disabled" aria-controls="example" aria-disabled="true" role="link" data-dt-idx="next" tabindex="-1" id="example_next">Next</a></div></div>
-        </div>
-</div>
-</div>
+              </table>
+    </div>
+    </div>
 
-</div>
+
+  <script>
+    $(document).ready(function() {
+      $('#myTable').DataTable({
+        dom: 'Bfrtip', // Add buttons to the DataTables DOM
+        buttons: [
+          'copy', // Add copy button
+          'csv', // Add CSV button
+          'excel', // Add Excel button
+          'pdf', // Add PDF button
+          'print' // Add print button
+        ]
+      });
+    });
+    
+  </script>
+
+<script>
+  document.getElementById("deleteButton").addEventListener("click", function() {
+      var vendorServicesId = this.getAttribute("data-vendorServicesId");
+      var result = confirm("Are you sure you want to delete this item?");
+      if (result) {
+          // If user confirms deletion, make an AJAX request to the server
+          var csrftoken = getCookie('csrftoken');
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "{% url 'delete_view' %}?vendorServicesId=" + vendorServicesId);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          xhr.onreadystatechange = function() {
+              if (xhr.readyState === XMLHttpRequest.DONE) {
+                  if (xhr.status === 200) {
+                      // Handle successful response from the server
+                      console.log("Item deleted successfully");
+                      location.reload()
+                  } else {
+                      // Handle error response from the server
+                      location.reload()
+                      console.error("Error deleting item:", xhr.responseText);
+                  }
+              }
+          };
+          xhr.send();
+      }
+  });
+  function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+</script>
+</body>
+</html>

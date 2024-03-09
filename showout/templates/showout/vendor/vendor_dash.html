@@ -25,7 +25,7 @@
           <div style=" justify-content: center; text-align: center; padding: 2rem;" >   
             <h1>{{wishLists|length}}</h1>       
             <p> <h5>Total Service  Request</h5></p>
-          <button  class="btn btn-light">View details</button>
+        <a href="{% url 'vendorWishlist' %}"><button  class="btn btn-light">View details</button></a>  
         </div>
 
         </div>
@@ -34,7 +34,8 @@
           <div style=" justify-content: center; text-align: center; padding: 2rem;" >   
             <h1>{{customers|length}}</h1>       
             <p> <h4>Total Customers</h4></p>
-          <button  class="btn btn-light">View details</button>
+            <a href="{% url 'customerlist' %}"><button  class="btn btn-light">View details</button>></a>
+          
         </div>
         </div>
 
@@ -42,7 +43,7 @@
           <div style=" justify-content: center; text-align: center; padding: 2rem;" >   
             <h1>{{vendorServices|length}}</h1>       
             <p> <h4>Total Services</h4></p>
-          <button  class="btn btn-light">View details</button>
+            <a href="{% url 'vendorServices' %}"><button  class="btn btn-light">View details</button>></a>
         </div>
         </div>
       </div>
@@ -51,7 +52,7 @@
         <div class="container px-4 py-5" id="featured-3" >
           <div style="display: flex;">
               <h3 class="pb-2">Most Reviewed Services</h3>
-              <button class="btn btn-primary" style="margin-left: 40rem;">View All</button>
+             <a href="{% url 'vendorServices' %}"><button class="btn btn-primary" style="margin-left: 40rem;">View All</button></a> 
             </div>
             <hr>
           <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
@@ -63,16 +64,14 @@
               </div>
               <h3 class="fs-2 text-body-emphasis">{{vendorService.services.serviceName}}</h3>
               <p>{{vendorService.services.description}}
-                <br> <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star"></span>
-              <span class="fa fa-star"></span>
+                <br> 
+                <span class="fa fa-star {% if vendorService.rating > 0 %}checked{% else %} {% endif %} "></span>
+                <span class="fa fa-star {% if vendorService.rating > 1 %}checked{% else %} {% endif %}"></span>
+                <span class="fa fa-star {% if vendorService.rating > 2 %}checked{% else %} {% endif %}"></span>
+                <span class="fa fa-star {% if vendorService.rating > 3 %}checked{% else %} {% endif %}"></span>
+                <span class="fa fa-star {% if vendorService.rating > 4 %}checked{% else %} {% endif %}"></span>
               </p>
-              <a href="#" class="icon-link">
-                View
-                <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-              </a>
+            
             </div>
             {% endfor %}
           

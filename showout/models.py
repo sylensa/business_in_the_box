@@ -17,7 +17,6 @@ class Country(models.Model):
 	def __str__(self):
 		return self.countryName
 	
-
 class Gender(models.Model):
 	genderName = models.CharField(max_length=200, null=True)
 	genderId =  models.AutoField(primary_key=True)
@@ -31,6 +30,7 @@ class Customer(models.Model):
 	email = models.CharField(max_length=200)
 	mobile = models.CharField(max_length=200, null=True)
 	password = models.CharField(max_length=200)
+	address = models.CharField(max_length=200, null=True,blank=True)
 	buget = models.CharField(max_length=200)
 	date_created = models.DateTimeField(auto_now_add=True)
 	last_login = models.DateTimeField(auto_now_add=True,null=True,)
@@ -40,7 +40,6 @@ class Customer(models.Model):
 	
 	def __str__(self):
 		return self.firstName
-	
     
 class Vendors(models.Model):
 	vendorName = models.CharField(max_length=200, null=True)
@@ -52,15 +51,10 @@ class Vendors(models.Model):
 	genderId =  models.IntegerField(null=True,)
 	aboout = models.CharField(max_length=200,null=True)
 	website = models.CharField(max_length=200,null=True)
-	facebook = models.CharField(max_length=200,null=True)
-	twitter = models.CharField(max_length=200,null=True)
-	linkedIn = models.CharField(max_length=200,null=True)
-	tiktok = models.CharField(max_length=200,null=True)
-	instagram = models.CharField(max_length=200,null=True)
 	date_created = models.DateTimeField(auto_now_add=True)
 	approved = models.BooleanField(default=False)
 	last_login = models.DateTimeField(auto_now_add=True,null=True,)
-	image = models.ImageField(null=True, blank=True, storage=fs,upload_to='images/')
+	image = models.ImageField(null=True, blank=True, storage=fs,upload_to='')
 	vendorId =  models.AutoField(primary_key=True,)
 	rating =  models.FloatField(primary_key=False,default=0)
 
@@ -83,13 +77,9 @@ class Category(models.Model):
 	def __str__(self):
 		return self.categoryName
 	
-
-	
-
 class Services(models.Model):
 	category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
 	serviceName = models.CharField(max_length=200, null=True)
-	description = models.CharField(max_length=200)
 	date_created = models.DateTimeField(auto_now_add=True)
 	serviceId = models.AutoField(primary_key=True,)
 	image = models.ImageField(null=True, blank=True)
@@ -108,7 +98,9 @@ class VendorServices(models.Model):
 	vendor = models.ForeignKey(Vendors,  on_delete=models.SET_NULL, null=True, blank=True)
 	category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
 	services = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, blank=True)
+	description = models.CharField(max_length=200,null=True,blank=True)
 	rating =  models.IntegerField(primary_key=False,default=0)
+	budget =  models.FloatField(primary_key=False,default=0.00)
 	date_created = models.DateTimeField(auto_now_add=True)
 	vendorServicesId =  models.AutoField(primary_key=True)
 	def __int__(self):
@@ -136,7 +128,7 @@ class WishList(models.Model):
 	def __str__(self):
 		return self.vendorService.services.serviceName
 	
-
-
 class Image(models.Model):
     image = models.ImageField(upload_to='images/')
+
+	

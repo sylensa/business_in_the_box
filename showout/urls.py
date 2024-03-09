@@ -23,9 +23,10 @@ urlpatterns = [
     
     path ('resetPassword/', views.resetPassword, name="reset_password"),
      path ('sendEmail/', views.sendEmail, name="sendEmail"),
+      path ('sendVendorEmail/', views.sendVendorEmail, name="sendVendorEmail"),
       path ('changePassword/', views.changePassword, name="changePassword"),
         path ('vendorWishlist/', views.vendorWishlist, name="vendorWishlist"),
-         path ('vendorServices/', views.vendorServices, name="vendorServices"),
+         path ('vendor_services/', views.vendor_services, name="vendor_services"),
      
      path ('emailSent/', views.emailSent, name="emailSent"),
 
@@ -34,6 +35,9 @@ urlpatterns = [
     path ('changePassword/', views.register, name="change_password"),
 
     path ('vendorPage/<int:vendorId>', views.vendorPage, name="vendorPage"),
+    path ('vendor_edit_service/<int:vendorServicesId>/', views.edit_service, name="vendor_edit_service"),
+    path ('delete_view', views.delete_view, name="delete_view"),
+    
 
     path ('servicePage/<int:vendorId>/<int:serviceId>', views.servicePage, name="servicePage"),
 

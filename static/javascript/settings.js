@@ -1,4 +1,21 @@
 // Store initial input values
+
+// Get reference to the form element
+var form = document.getElementById("myForm");
+
+// Get reference to the external button
+var externalButton = document.getElementById("saveButton");
+
+// Attach click event listener to the external button
+externalButton.addEventListener("click", function() {
+  // Submit the form
+  alert("Changes saved successfully.");
+
+  form.submit();
+});
+
+
+
 var initialValues = [];
 
 document.getElementById("editButton").addEventListener("click", function() {
@@ -36,3 +53,22 @@ document.getElementById("cancelButton").addEventListener("click", function() {
     document.getElementById("cancelButton").style.display = "none";
     alert("Changes saved successfully.");
 });
+
+document.getElementById("saveButton").addEventListener("click", function() {
+    var inputElements = document.querySelectorAll(".form-control");
+    
+    // Reset input values to initial values
+    inputElements.forEach(function(inputElement, index) {
+        inputElement.value = initialValues[index];
+        inputElement.disabled = true;
+    });
+    
+    // Hide save and cancel buttons, show edit button
+    document.getElementById("editButton").style.display = "inline-block";
+    document.getElementById("saveButton").style.display = "none";
+    document.getElementById("cancelButton").style.display = "none";
+    alert("Changes saved successfully.");
+});
+
+
+
