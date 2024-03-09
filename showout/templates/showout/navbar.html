@@ -23,7 +23,6 @@
                     {% if request.session.user_id  %}
                     <li><a class="dropdown-item"  href="{% url 'logout' %}">Logout</a></li>
                     <li><a class="dropdown-item" href="{% url 'wishlistHistory' %}" href="#">Request history</a></li>
-                    <!-- <li><a class="dropdown-item" href="{% url 'profile' %}" href="#">Profile</a></li> -->
                     <li><a class="dropdown-item"  href="{% url 'customer_settings' %}">Settings</a></li>
 
                     {% else %}
