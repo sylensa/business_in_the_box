@@ -254,7 +254,7 @@ def vendorPage(request,vendorId):
     vendorServices = VendorServices.objects.all()
     vendorServices = getVendorsServices(vendorServices,vendorId)
     categories = Category.objects.all()
-    context = {'vendorServices':vendorServices,'vendor':vendorServices[0].vendor,'categories':categories}
+    context = {'vendorServices':vendorServices,'vendor':vendorServices[0].vendor,'categories':categories, 'vendorServices':vendorServices}
     return render (request, 'showout/customers/vendorPage.html', context)
 
 def servicePage(request,vendorId,serviceId):
@@ -800,3 +800,5 @@ def confirmationEmail(request,topic,email):
         except Exception as e:
             print(e)
        
+
+#---------Filter---------# 
