@@ -22,10 +22,10 @@
       <a href="{% url 'vendorPage' vendorId=vendor.vendorId %}" style="text-decoration:none">
         <div class="card" style="width:600px; height: 200px;">
           <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-5">
               <img class="card-img-top" height="200px"  src="{{vendor.imageURL}}" alt="Card image">
              </div>
-             <div class="col-md-5">
+             <div class="col-md-7"  style="padding-left: 0%;">
               <div class="card-body">
                 <h4 class="card-title">{{vendor.vendorName}}</h4>
                 <div style="margin-top: 5px;" class="card-text">{{vendor.country}}</div>
