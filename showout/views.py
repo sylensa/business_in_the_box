@@ -35,7 +35,9 @@ def my_logout_view(request):
 
 def navbar(request):
     cateegories = Category.objects.all()
-    context = {'cateegories':cateegories}
+    services = Services.objects.all()
+    countries = Country.objects.all()
+    context = {'cateegories':cateegories,'services':services,'countries':countries}
     return render(request, 'showout/navbar.html', context)
 
 
@@ -176,6 +178,8 @@ def signup(request):
 def home(request):  
   
     categories = Category.objects.all()
+    countries = Country.objects.all()
+    services = Services.objects.all()
     vendorServices = VendorServices.objects.all()
     listVendorServices = appRatingToService(vendorServices)
     vendors = Vendors.objects.all()
@@ -186,7 +190,7 @@ def home(request):
         customer = Customer.objects.get(pk=customerId)
     else:
         customer = None
-    context = {'categories':categories,'vendorServices':listVendorServices,'vendors':listVendors,'customer':customer}
+    context = {'categories':categories,'vendorServices':listVendorServices,'vendors':listVendors,'customer':customer,'services':services,'countries':countries}
    
     return render(request,'showout/customers/home.html', context)
 
@@ -254,8 +258,10 @@ def vendorPage(request,vendorId):
     vendorServices = VendorServices.objects.all()
     vendor = Vendors.objects.get(pk=vendorId)
     vendorServices = getVendorsServices(vendorServices,vendorId)
+    services = Services.objects.all()
     categories = Category.objects.all()
-    context = {'vendorServices':vendorServices,'vendor':vendor,'categories':categories}
+    countries = Country.objects.all()
+    context = {'vendorServices':vendorServices,'vendor':vendor,'categories':categories,'services':services,'countries':countries},
     return render (request, 'showout/customers/vendorPage.html', context)
 
 def servicePage(request,vendorId,serviceId):
@@ -264,6 +270,8 @@ def servicePage(request,vendorId,serviceId):
     vendorServices = [];
     vendorServices = VendorServices.objects.all()
     categories = Category.objects.all()
+    services = Services.objects.all()
+    countries = Country.objects.all()
     vendorService = getVendorService(vendorServices,serviceId,vendorId)
     vendorSimilarServices = getVendorSimilarService(vendorServices,serviceId)
     average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
@@ -271,20 +279,24 @@ def servicePage(request,vendorId,serviceId):
        vendorService.rating = average_rating["rating"]
     print("average_rating",average_rating)
     reviewVendoreServices = ReviewVendoreServices.objects.filter(vendorService=vendorService)
-    context = {'vendorService':vendorService,'vendorSimilarServices':vendorSimilarServices,'categories':categories,'reviewVendoreServices':reviewVendoreServices}
+    context = {'vendorService':vendorService,'vendorSimilarServices':vendorSimilarServices,'categories':categories,'reviewVendoreServices':reviewVendoreServices,'services':services,'countries':countries}
     return render (request, 'showout/customers/servicePage.html', context)
 
 def viewServices(request,categoryId,categoryName):
     vendorServices = VendorServices.objects.all()
     categories = Category.objects.all()
+    services = Services.objects.all()
+    countries = Country.objects.all()
     servicesByCategory = getVendorsByCategory(vendorServices,categoryId)
-    context = {'servicesByCategory':servicesByCategory,'categoryName':categoryName,'categories':categories}
+    context = {'servicesByCategory':servicesByCategory,'categoryName':categoryName,'categories':categories,'services':services,'countries':countries}
     return render (request, 'showout/customers/viewServices.html', context)
 
 def viewVendors(request):
     vendors = Vendors.objects.all()
     categories = Category.objects.all()
-    context = {'vendors':vendors,'categories':categories}
+    services = Services.objects.all()
+    countries = Country.objects.all()
+    context = {'vendors':vendors,'categories':categories,'services':services,'countries':countries}
     return render (request, 'showout/customers/viewVendors.html', context)
 
 def wishlist(request):
@@ -292,6 +304,8 @@ def wishlist(request):
     listVendorServices = []
     categories = Category.objects.all()
     vendorServices = VendorServices.objects.all()
+    countries = Country.objects.all()
+    services = Services.objects.all()
     for cart in carts:
         for vendorService in vendorServices:
             if vendorService.vendorServicesId == int(cart):
@@ -299,7 +313,7 @@ def wishlist(request):
                      if average_rating:
                         vendorService.rating = average_rating["rating"]
                      listVendorServices.append(vendorService)
-    context = {'vendorServices':listVendorServices,'categories':categories}
+    context = {'vendorServices':listVendorServices,'categories':categories,'services':services,'countries':countries}
     if request.method == 'POST' and  'user_id' in request.session: 
         customerId = request.session['user_id']
         customer = Customer.objects.get(pk=customerId)
@@ -311,7 +325,7 @@ def wishlist(request):
         listWishlistServices  = getWishListVendorService(wishlistServices)
         confirmationEmail(request,"Request Confirmation",customer.email)
 
-        return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices,'categories':categories})
+        return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices,'categories':categories,'services':services,'countries':countries})
 
     else:
         return render (request, 'showout/customers/wishlist.html', context)
@@ -319,17 +333,21 @@ def wishlist(request):
 def wishlistHistory(request):
     wishlistServices = []
     categories = Category.objects.all()
+    services = Services.objects.all()
+    countries = Country.objects.all()
     if 'user_id' in request.session: 
         customerId = request.session['user_id']
         customer = Customer.objects.get(pk=customerId)
         wishlistServices =  WishList.objects.filter(customer=customer)
         listWishlistServices  = getWishListVendorService(wishlistServices)
 
-    return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices,'categories':categories})
+    return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices,'categories':categories,'services':services,'countries':countries})
     
 def topRatedServices(request):
     mostReviewedServices = []
     categories = Category.objects.all()
+    services = Services.objects.all()
+    countries = Country.objects.all()
     reviews_grouped = ReviewVendoreServices.objects.values('vendorService').annotate(rating=Avg('rating'))
     most_reviewed_services = [  
     ReviewVendoreServices.objects.filter(vendorService=item['vendorService']).first()
@@ -341,7 +359,7 @@ def topRatedServices(request):
             most_reviewed_service.vendorService.rating = average_rating["rating"]
             mostReviewedServices.append(most_reviewed_service)
     print("mostReviewedServices",most_reviewed_services)
-    return render (request, 'showout/customers/topRatedServices.html', {'mostReviewedServices':mostReviewedServices,'categories':categories})
+    return render (request, 'showout/customers/topRatedServices.html', {'mostReviewedServices':mostReviewedServices,'categories':categories,'services':services,'countries':countries})
     
 def editProfile(request):
     context = {}
@@ -349,35 +367,65 @@ def editProfile(request):
 
 def aboutUS(request):
     categories = Category.objects.all()
-    context = {'categories':categories}
+    services = Services.objects.all()
+    countries = Country.objects.all()
+    context = {'categories':categories,'services':services,'countries':countries}
     return render (request, 'showout/customers/aboutUS.html', context)
 
 def contactUS(request):
     categories = Category.objects.all()
-    context = {'categories':categories}
+    services = Services.objects.all()
+    countries = Country.objects.all()
+    context = {'categories':categories,'services':services,'countries':countries}
     return render (request, 'showout/customers/contactUS.html', context)
 
 def searchResult(request):
     context = {}
     categories = Category.objects.all()
+    services = Services.objects.all()
+    countries = Country.objects.all()
+    review_rating = 0
     if request.method == 'POST':
        query = request.POST.get('query')
+       category = request.POST.get('category')
+       service = request.POST.get('service')
+       review_rating = request.POST.get('review_rating')
+       country = request.POST.get('country')
+       budget = request.POST.get('budget')
+    #    print("review_rating",int(review_rating))
+      
     # Perform search or other processing with the query
-       searchResultsServices = fetchSearchResults(query);
-       context = {'searchResultsServices':searchResultsServices,'categories':categories}
+       searchResultsServices = fetchSearchResults(query,category,service,review_rating,country,budget);
+       context = {'searchResultsServices':searchResultsServices,'categories':categories,'services':services,'countries':countries}
     #    return HttpResponse(f'Searching for: {query}')
 
     return render (request, 'showout/customers/searchResult.html',context )
 
+def save_input_to_session(request):
+    request.session.modified = True
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        print("data",data)
+        input_value = data['inputValue']
+        if input_value is not None:
+            del request.session['input_value']
+            request.session['input_value'] = input_value
+            print("input_value",input_value)
+            return JsonResponse({'message': 'Input value saved in session.'})
+        else:
+            return JsonResponse({'error': 'Input value is missing.'}, status=400)
+    else:
+        return JsonResponse({'error': 'Invalid request method.'}, status=405)
 
 def customer_settings(request):
     countries = Country.objects.all()
     genders = Gender.objects.all()
     categories = Category.objects.all()
+    services = Services.objects.all()
     if 'user_id' in request.session:
         user_id = request.session['user_id']
         customer = Customer.objects.get(pk=user_id)
-        context = {'countries':countries,'customer':customer,'genders':genders,'categories':categories}
+        context = {'countries':countries,'customer':customer,'genders':genders,'categories':categories,'services':services}
         if request.method == 'POST':
             # Retrieve registration data from POST request
             email = request.POST['email']
@@ -602,29 +650,95 @@ def getVendorsByCategory(vendorServices,categoryId):
             print("getVendorSimilarService",vendorSimilarServices)
    return vendorSimilarServices
 
-def fetchSearchResults(userSearch):
-    services = []
-    categories = Category.objects.filter(categoryName__icontains=userSearch)
+def fetchSearchResults(userSearch,categoryId,serviceId,review_rating,countryId,budget):
+    vendorServicesLList = []
+    filterCategories = []
+    filterServices = []
+    filterCountries = []
+    filterVendorServices = []
+    filterVendors = []
+
     vendors = Vendors.objects.filter(vendorName__icontains=userSearch)
+    print("vendors",vendors)
+    categories = Category.objects.filter(categoryName__icontains=userSearch)
+    print("categories",categories)
+    if categoryId:
+        for c in categories:
+          if c.categoryId == int(categoryId):
+              filterCategories.append(c)
+    else:
+        filterCategories = categories
+
+    services = Services.objects.filter(serviceName__icontains=userSearch)
+    print("services",services)
+    if serviceId:
+        for s in services:
+            if s.serviceId == int(serviceId):
+                filterServices.append(s)
+    else:
+        filterServices = services
+
+    print("filterServices",filterServices)
+    print("serviceId",serviceId)
+    
+        
+    countries = Country.objects.filter(countryName__icontains=userSearch)
+    print("countries",countries)
+    if countryId:
+        for c in countries:
+            if c.countryId == countryId:
+                filterCountries.append(c)
+    else:
+        filterCountries = countries
+
+    
+    for filterCountry in filterCountries:
+        for vendor in vendors:
+            if filterCountry.countryId == vendor.countryId:
+                filterVendors.append(vendor)
+
+   
+    if len(filterVendors) < 1:  
+        filterVendors = vendors    
+
+
     vendorServices = VendorServices.objects.all()
-    for category in categories:
+    for category in filterCategories:
         for vendorService in vendorServices:
             if category.categoryId == vendorService.category.categoryId:
                 average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
                 if average_rating:
                     vendorService.rating = average_rating["rating"]
-                services.append(vendorService)
+                vendorServicesLList.append(vendorService)
 
-    for vendor in vendors:
+    for ser in filterServices:
+        for vendorService in vendorServices:
+            if ser.serviceId == vendorService.services.serviceId:
+                average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
+                if average_rating:
+                    vendorService.rating = average_rating["rating"]
+                vendorServicesLList.append(vendorService)
+
+    for vendor in filterVendors:
         for vendorService in vendorServices:
             if vendor.vendorId == vendorService.vendor.vendorId:
                 average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
                 if average_rating:
                     vendorService.rating = average_rating["rating"]
-                services.append(vendorService)
+                vendorServicesLList.append(vendorService)
+
+    for vendorService in vendorServices:
+        if vendorService.budget <= int(budget):
+            average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
+            if average_rating:
+                vendorService.rating = average_rating["rating"]
+            vendorServicesLList.append(vendorService)        
  
 
-    return services
+    # if len(filterVendorServices) < 1:  
+    #     filterVendorServices = vendorServices  
+
+    return vendorServicesLList
 
 def authenticate_customer(email, password):
     try:
@@ -802,4 +916,4 @@ def confirmationEmail(request,topic,email):
             print(e)
        
 
-#---------Filter---------# 
+

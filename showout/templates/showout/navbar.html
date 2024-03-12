@@ -61,7 +61,7 @@
                 </ul>
                 <form class="d-flex" method="post" action="{% url 'searchResult' %}">
                   {% csrf_token %}
-                  <input class="form-control me-2" type="text" placeholder="Search" id="query" name="query">
+                  <input class="form-control me-2" type="text"  id="inputField" placeholder="Search by filtering" id="query" name="query">
                   <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#filterModal">Filter</button>
                 </form>
 
@@ -72,7 +72,8 @@
           </nav>
 
 
-  <form  action="{% url 'searchResult' %}" method="post">        
+  <form  action="{% url 'searchResult' %}" method="post"> 
+    {% csrf_token %}      
     <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
 
       <div class="modal-dialog" role="">
@@ -91,19 +92,42 @@
               <div class="col-md-6">
                 <h6> Categories</h6>
                 
-                <select class="form-control" name="categories">
-                  {% for category in categories %}<option>{{category.categoryName}}</option> {% endfor %}
+                <select class="form-control" name="category">
+                  <option selected>Select Ccategory</option>
+                  {% for category in categories %}<option value="{{category.categoryId}}">{{category.categoryName}}</option> {% endfor %}
                   
                 </select>
                
               </div>
               <div class="col-md-6">
                 <h6> Services</h6>
-                <select class="form-control" name="services">
-                  {% for vendorService in vendorServices %}<option>{{vendorService.services.serviceName}}</option> {% endfor %}
+                <select class="form-control" name="service">
+                  <option selected>Select Service</option>
+                  {% for service in services %}<option value="{{service.serviceId}}">{{service.serviceName}}</option> {% endfor %}
                   
                 </select>
               </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-6" >
+                <h6> Reviews</h6>
+                <select class="form-control" name ="review">
+                  <option value="0">No reviews</option>
+                  {% for country in countries %}<option value="{{country.countryId}}">{{country.countryId}}</option> {% endfor %}
+                </select>
+              </div>
+              <div class="col-md-6">
+                <h6>Country</h6>
+                <select class="form-control" name="country">
+                  <option>Select Country</option>
+                  {% for country in countries %}<option value="{{country.countryId}}">{{country.countryName}}</option> {% endfor %}
+
+                
+                  
+                </select>
+              </div>
+              
             </div>
             <hr>
             <div class="row">
@@ -112,33 +136,15 @@
                 <input class="form-control" type="number" name="budget">
               </div>
               <div class="col-md-6">
-                <h6>Country</h6>
-                <select class="form-control" name="services">
-                  <option>Select Country</option>
-                  
-                </select>
-              </div>
-              
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-md-6" >
-                <h6> Reviews</h6>
-                <select class="form-control" name ="reviews">
-                  <option>No reviews</option>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                </select>
+                <h6>Search</h6>
+                <input class="form-control" type="text" value="{{ request.session.input_value }}" name="query">
               </div>
               
             </div>
             
           </div>
           <div style="padding: 1rem;" style="float: right;">
-          <button type="submit" class="btn btn-primary" style="float: right;">Apply Filter</button><br>
+          <button type="submit" class="btn btn-primary"  style="float: right;">Apply Filter</button><br>
         </div>
         </div>
       </div>

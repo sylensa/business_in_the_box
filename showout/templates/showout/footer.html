@@ -100,5 +100,48 @@
     });
   </script>
 
+
+ <script>
+        // Get input field
+        var inputField = document.getElementById("inputField");
+
+        // Add event listener to input field for capturing input
+        inputField.addEventListener("input", function() {
+            // Get the input value
+            var inputValue = inputField.value;
+            console.log("inputValue",inputValue)
+            // Send the input value to the server to save in the session
+            fetch('/save_input_to_session/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken  // Include CSRF token
+                },
+                body: JSON.stringify({ 'inputValue': inputValue })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Input value saved in session.");
+                } else {
+                    console.error("Failed to save input value in session.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+
+    
+   </script>
+    <script>
+      function reloadModal() {
+          // Assuming jQuery is included
+          $('#filterModal').load(window.location.href + ' #filterModal');
+      }
+  </script>
+
+
+
+
   </footer>
 </div>

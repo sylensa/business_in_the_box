@@ -57,6 +57,8 @@ urlpatterns = [
     path ('contactUS/', views.contactUS, name="contactUS"),
 
     path ('searchResult/', views.searchResult, name="searchResult"),
+    
+    path ('save_input_to_session/', views.save_input_to_session, name="save_input_to_session"),
    
     
     
