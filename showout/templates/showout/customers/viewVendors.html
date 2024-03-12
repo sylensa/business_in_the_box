@@ -18,6 +18,7 @@
     </div>
     <div class="row" >
       {% for vendor in vendors %}
+      {% if vendor.approved %}
     <div class="col-md-6" style="margin-top: 20px;">
       <a href="{% url 'vendorPage' vendorId=vendor.vendorId %}" style="text-decoration:none">
         <div class="card" style="width:600px; height: 200px;">
@@ -48,6 +49,7 @@
      
    
     </div>
+    {% endif %}
     {% endfor %}
       
     </div>

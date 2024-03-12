@@ -19,7 +19,7 @@ import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 # Create your views here.
-emailToken = "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"
+emailToken = "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"
 
 def is_user_logged_in(request):
     return 'user_id' in request.session
@@ -252,9 +252,10 @@ def changePassword(request):
 
 def vendorPage(request,vendorId):
     vendorServices = VendorServices.objects.all()
+    vendor = Vendors.objects.get(pk=vendorId)
     vendorServices = getVendorsServices(vendorServices,vendorId)
     categories = Category.objects.all()
-    context = {'vendorServices':vendorServices,'vendor':vendorServices[0].vendor,'categories':categories}
+    context = {'vendorServices':vendorServices,'vendor':vendor,'categories':categories}
     return render (request, 'showout/customers/vendorPage.html', context)
 
 def servicePage(request,vendorId,serviceId):
@@ -298,7 +299,7 @@ def wishlist(request):
                      if average_rating:
                         vendorService.rating = average_rating["rating"]
                      listVendorServices.append(vendorService)
-    context = {'vendorServices':listVendorServices}
+    context = {'vendorServices':listVendorServices,'categories':categories}
     if request.method == 'POST' and  'user_id' in request.session: 
         customerId = request.session['user_id']
         customer = Customer.objects.get(pk=customerId)
@@ -309,7 +310,6 @@ def wishlist(request):
         wishlistServices =  WishList.objects.filter(customer=customer)
         listWishlistServices  = getWishListVendorService(wishlistServices)
         confirmationEmail(request,"Request Confirmation",customer.email)
-
 
         return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices,'categories':categories})
 
@@ -329,6 +329,7 @@ def wishlistHistory(request):
     
 def topRatedServices(request):
     mostReviewedServices = []
+    categories = Category.objects.all()
     reviews_grouped = ReviewVendoreServices.objects.values('vendorService').annotate(rating=Avg('rating'))
     most_reviewed_services = [  
     ReviewVendoreServices.objects.filter(vendorService=item['vendorService']).first()
@@ -340,7 +341,7 @@ def topRatedServices(request):
             most_reviewed_service.vendorService.rating = average_rating["rating"]
             mostReviewedServices.append(most_reviewed_service)
     print("mostReviewedServices",most_reviewed_services)
-    return render (request, 'showout/customers/topRatedServices.html', {'mostReviewedServices':mostReviewedServices})
+    return render (request, 'showout/customers/topRatedServices.html', {'mostReviewedServices':mostReviewedServices,'categories':categories})
     
 def editProfile(request):
     context = {}
@@ -366,7 +367,7 @@ def searchResult(request):
        context = {'searchResultsServices':searchResultsServices,'categories':categories}
     #    return HttpResponse(f'Searching for: {query}')
 
-    return render (request, 'showout/customers/searchResult.html', context)
+    return render (request, 'showout/customers/searchResult.html',context )
 
 
 def customer_settings(request):
