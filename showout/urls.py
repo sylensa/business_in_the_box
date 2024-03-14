@@ -23,6 +23,8 @@ urlpatterns = [
     path('update_rating/', views.updateRating, name="update_rating"),
     
     path ('resetPassword/', views.resetPassword, name="reset_password"),
+     path ('delete_account/', views.delete_account, name="delete_account"),
+    
      path ('sendEmail/', views.sendEmail, name="sendEmail"),
       path ('sendVendorEmail/', views.sendVendorEmail, name="sendVendorEmail"),
       path ('changePassword/', views.changePassword, name="changePassword"),

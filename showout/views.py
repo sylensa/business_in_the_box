@@ -212,26 +212,28 @@ def register(request):
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
         address = request.POST['address']
-        
-        # Create a new Client instance and save it to the database
-        Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,countryId=countryId,address=address)
-        user = authenticate_customer(email, password)
-        if user is not None:
-            # Authentication successful, perform login manually
-            request.session['user_id'] = user.customerId  # Store user ID in session
-            # Redirect to a success page or home page
-            confirmationEmail(request,"Registration confirmation",user.email)
-            return redirect('home')
+        if password == confirm_password:
+            # Create a new Client instance and save it to the database
+            Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,countryId=countryId,address=address)
+            user = authenticate_customer(email, password)
+            if user is not None:
+                # Authentication successful, perform login manually
+                request.session['user_id'] = user.customerId  # Store user ID in session
+                # Redirect to a success page or home page
+                confirmationEmail(request,"Registration confirmation",user.email)
+                return redirect('home')
+            else:
+                # Authentication failed, display error message
+                messages.error(request, 'Invalid email or password')
         else:
-            # Authentication failed, display error message
-            messages.error(request, 'Invalid email or password')
+            messages.error(request, 'Password does not match')
 
     else:
         return render(request, 'showout/customers/register.html',{'genders':genders,'countries':countries})
 
 def changePassword(request):
    password = ''
-   confirmPassword = ''
+   confirmPassword = '1'
    email = ''
    if request.method == 'GET':
     email =  request.GET['email']
@@ -240,19 +242,24 @@ def changePassword(request):
    if request.method == 'POST': 
         password =  request.POST['password']
         confirmPassword =  request.POST['confirm_password']
-
-        email = request.session['customerEmail'] 
-        customer = Customer.objects.get(email=email)
-        customer.password = password
-        customer.save()
-        print("email",email)
-        print("password",password)
-        print("confirmPassword",confirmPassword)
-        if 'user_id' in request.session:
-          del request.session['user_id'] 
-        context = {}
-        confirmationEmail(request,"Change Password confirmation",customer.email)
-        return redirect('customerLogin')  
+        if password == confirmPassword:
+            email = request.session['customerEmail'] 
+            customer = Customer.objects.get(email=email)
+            customer.password = password
+            customer.save()
+            print("email",email)
+            print("password",password)
+            print("confirmPassword",confirmPassword)
+            if 'user_id' in request.session:
+                del request.session['user_id'] 
+            context = {}
+            confirmationEmail(request,"Change Password confirmation",customer.email)
+            return redirect('customerLogin') 
+        else:
+          messages.error(request, 'Password does not match')  
+          return render(request,'showout/customers/changePassword.html')  
+    
+         
 
 def vendorPage(request,vendorId):
     vendorServices = VendorServices.objects.all()
@@ -372,6 +379,32 @@ def aboutUS(request):
     context = {'categories':categories,'services':services,'countries':countries}
     return render (request, 'showout/customers/aboutUS.html', context)
 
+def delete_account(request):
+    if request.method == 'POST':
+        accountType = request.POST.get('accountType')
+        if accountType == "Customer":
+            if 'user_id' in request.session:
+                user_id = request.session['user_id']
+                customer = Customer.objects.get(pk=user_id)
+                if customer:
+                    customer.delete()
+                    return redirect('home') 
+                else:
+                    messages.error(request,"User does not exist")
+            else:
+                messages.error(request,"User does not exist")
+        elif accountType == "Vendor":
+            if 'vendor_id' in request.session:
+                vendor_id = request.session['vendor_id']
+                vendor = Vendors.objects.get(pk=vendor_id)
+                if vendor:
+                    vendor.delete()
+                    return redirect('vendor_login') 
+                else:
+                    messages.error(request,"User does not exist")
+            else:
+                messages.error(request,"User does not exist")
+
 def contactUS(request):
     categories = Category.objects.all()
     services = Services.objects.all()
@@ -396,7 +429,7 @@ def searchResult(request):
       
     # Perform search or other processing with the query
        searchResultsServices = fetchSearchResults(query,category,service,review_rating,country,budget);
-       context = {'searchResultsServices':searchResultsServices,'categories':categories,'services':services,'countries':countries}
+       context = {'searchResultsServices':searchResultsServices,'categories':categories,'services':services,'countries':countries,'review_rating':review_rating}
     #    return HttpResponse(f'Searching for: {query}')
 
     return render (request, 'showout/customers/searchResult.html',context )
@@ -503,19 +536,23 @@ def vendor_sign_up(request):
         image = request.FILES.get('image')
         print("image:",image)
         # Create a new Client instance and save it to the database
-        Vendors.objects.create(vendorName=vendorName, email=email, password=password, countryId=countryId, mobile=mobile,address=address,genderId=1,image=image)
-        vendor = authenticate_vendor(email, password)
-        if vendor is not None:
-            # Authentication successful, perform login manually
-            request.session['vendor_id'] = vendor.vendorId  # Store user ID in session
-            # Redirect to a success page or home page
-            confirmationEmail(request,"Sign Up Confirmation",vendor.email)
-            confirmationEmail(request,"New Venor","sylensa.adolf@gmail.com")
+        if confirm_password == password:
+            Vendors.objects.create(vendorName=vendorName, email=email, password=password, countryId=countryId, mobile=mobile,address=address,genderId=1,image=image)
+            vendor = authenticate_vendor(email, password)
+            if vendor is not None:
+                # Authentication successful, perform login manually
+                request.session['vendor_id'] = vendor.vendorId  # Store user ID in session
+                # Redirect to a success page or home page
+                confirmationEmail(request,"Sign Up Confirmation",vendor.email)
+                confirmationEmail(request,"New Venor","sylensa.adolf@gmail.com")
 
-            return redirect('vendor_dash')
+                return redirect('vendor_dash')
+            else:
+                # Authentication failed, display error message
+                messages.error(request, 'Invalid email or password')
         else:
-            # Authentication failed, display error message
-            messages.error(request, 'Invalid email or password')
+             messages.error(request, 'Password does not match')
+
     else:
         countries = Country.objects.all()
         genders = Gender.objects.all()
@@ -533,8 +570,10 @@ def customerlist(request):
             ]
         print("wishLists",allCustomers)
    
-    context = {'wishLists':allCustomers}
-    return render (request, 'showout/vendor/customerlist.html', context)
+        context = {'wishLists':allCustomers}
+        return render (request, 'showout/vendor/customerlist.html', context)
+    else:
+        return redirect('vendor_login') 
 
 def vendorWishlist(request):
     if 'vendor_id' in request.session:
@@ -544,8 +583,10 @@ def vendorWishlist(request):
        
    
         context = {'wishLists':wishLists}
-    return render (request, 'showout/vendor/vendor_wishlist.html', context)
-
+        return render (request, 'showout/vendor/vendor_wishlist.html', context)
+    else:
+        return redirect('vendor_login') 
+    
 def vendor_services(request):
     if 'vendor_id' in request.session:
         vendorId = request.session['vendor_id']
@@ -553,8 +594,10 @@ def vendor_services(request):
         vendorServices = VendorServices.objects.filter(vendor=vendor)
        
    
-    context = {'vendorServices':vendorServices}
-    return render (request, 'showout/vendor/vendor_services.html', context)
+        context = {'vendorServices':vendorServices}
+        return render (request, 'showout/vendor/vendor_services.html', context)
+    else:
+        return redirect('vendor_login') 
 
 def vendor_dash(request):
     listVendorServices = []
@@ -662,6 +705,8 @@ def fetchSearchResults(userSearch,categoryId,serviceId,review_rating,countryId,b
     print("vendors",vendors)
     categories = Category.objects.filter(categoryName__icontains=userSearch)
     print("categories",categories)
+ 
+   
     if categoryId:
         for c in categories:
           if c.categoryId == int(categoryId):
@@ -726,13 +771,13 @@ def fetchSearchResults(userSearch,categoryId,serviceId,review_rating,countryId,b
                 if average_rating:
                     vendorService.rating = average_rating["rating"]
                 vendorServicesLList.append(vendorService)
-
-    for vendorService in vendorServices:
-        if vendorService.budget <= int(budget):
-            average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
-            if average_rating:
-                vendorService.rating = average_rating["rating"]
-            vendorServicesLList.append(vendorService)        
+    if budget:
+        for vendorService in vendorServices:
+            if vendorService.budget <= float(budget):
+                average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
+                if average_rating:
+                    vendorService.rating = average_rating["rating"]
+                vendorServicesLList.append(vendorService)        
  
 
     # if len(filterVendorServices) < 1:  
@@ -772,18 +817,22 @@ def vendor_change_password(request):
   if request.method == 'POST': 
         password =  request.POST['password']
         confirmPassword =  request.POST['confirm_password']
-        email = request.session['vendorEmail'] 
-        vendor = Vendors.objects.get(email=email)
-        vendor.password = password
-        vendor.save()
-        confirmationEmail(request,"Change password Service",vendor.email)
-        print("email",email)
-        print("password",password)
-        print("confirmPassword",confirmPassword)
-        if 'vendor_id' in request.session:
-         del request.session['vendor_id']
-        context = {}
-        return redirect('vendor_login') 
+        if password == confirmPassword:
+            email = request.session['vendorEmail'] 
+            vendor = Vendors.objects.get(email=email)
+            vendor.password = password
+            vendor.save()
+            confirmationEmail(request,"Change password Service",vendor.email)
+            print("email",email)
+            print("password",password)
+            print("confirmPassword",confirmPassword)
+            if 'vendor_id' in request.session:
+                del request.session['vendor_id']
+            context = {}
+            return redirect('vendor_login') 
+        else: 
+            messages.error(request,"Password does not match")
+            return render(request,'showout/vendor/vendor_change_password.html')  
 
 def vendor_settings(request):
     countries = Country.objects.all()
