@@ -211,10 +211,10 @@ def register(request):
         countryId = request.POST['countryId']
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
-        address = request.POST['address']
+        # address = request.POST['address']
         if password == confirm_password:
             # Create a new Client instance and save it to the database
-            Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,countryId=countryId,address=address)
+            Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,countryId=countryId,)
             user = authenticate_customer(email, password)
             if user is not None:
                 # Authentication successful, perform login manually
@@ -381,13 +381,17 @@ def aboutUS(request):
 
 def delete_account(request):
     if request.method == 'POST':
-        accountType = request.POST.get('accountType')
+        print("accountType",request.GET['accountType'])
+        accountType = request.GET['accountType']
+        print("accountType",accountType)
         if accountType == "Customer":
             if 'user_id' in request.session:
                 user_id = request.session['user_id']
                 customer = Customer.objects.get(pk=user_id)
                 if customer:
+                    del request.session['user_id'] 
                     customer.delete()
+                   # Remove user ID from session
                     return redirect('home') 
                 else:
                     messages.error(request,"User does not exist")
@@ -398,7 +402,9 @@ def delete_account(request):
                 vendor_id = request.session['vendor_id']
                 vendor = Vendors.objects.get(pk=vendor_id)
                 if vendor:
+                    del request.session['vendor_id'] 
                     vendor.delete()
+                        # Remove user ID from session
                     return redirect('vendor_login') 
                 else:
                     messages.error(request,"User does not exist")
@@ -484,10 +490,9 @@ def customer_settings(request):
             print("lname",lname)
             return redirect('customer_settings')        
         else:
-            
             return render (request, 'showout/customers/customer_settings.html', context) 
     else:
-         return redirect('login')
+         return redirect('customerLogin')
 
 
 
