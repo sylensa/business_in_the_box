@@ -35,7 +35,7 @@ class Customer(models.Model):
 	date_created = models.DateTimeField(auto_now_add=True)
 	last_login = models.DateTimeField(auto_now_add=True,null=True,)
 	customerId =  models.AutoField(primary_key=True,)
-	countryId =  models.IntegerField(null=True,)
+	country =  models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, blank=True)
 	genderId =  models.IntegerField(null=True,)
 	
 	def __str__(self):
@@ -47,7 +47,7 @@ class Vendors(models.Model):
 	password = models.CharField(max_length=200,null=True)
 	mobile = models.CharField(max_length=200,null=True)
 	address = models.CharField(max_length=200,null=True)
-	countryId =  models.IntegerField(null=True,)
+	country =  models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, blank=True)
 	genderId =  models.IntegerField(null=True,)
 	aboout = models.CharField(max_length=200,null=True)
 	website = models.CharField(max_length=200,null=True)

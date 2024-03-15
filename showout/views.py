@@ -211,10 +211,11 @@ def register(request):
         countryId = request.POST['countryId']
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
+        country = Country.objects.get(pk=countryId)
         # address = request.POST['address']
         if password == confirm_password:
             # Create a new Client instance and save it to the database
-            Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,countryId=countryId,)
+            Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,country=country,)
             user = authenticate_customer(email, password)
             if user is not None:
                 # Authentication successful, perform login manually
@@ -474,10 +475,12 @@ def customer_settings(request):
             genderId = request.POST['genderId']
             countryId = request.POST['countryId']
             address = request.POST['address']
+            country = Country.objects.get(pk=countryId)
+
             customer.email = email
             customer.firstName = fname
             customer.lastName = lname
-            customer.countryId = countryId
+            customer.country = country
             customer.address = address
             customer.mobile = mobile
             customer.genderId = genderId
@@ -539,10 +542,11 @@ def vendor_sign_up(request):
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
         image = request.FILES.get('image')
+        country = Country.objects.get(pk=countryId)
         print("image:",image)
         # Create a new Client instance and save it to the database
         if confirm_password == password:
-            Vendors.objects.create(vendorName=vendorName, email=email, password=password, countryId=countryId, mobile=mobile,address=address,genderId=1,image=image)
+            Vendors.objects.create(vendorName=vendorName, email=email, password=password, country=country, mobile=mobile,address=address,genderId=1,image=image)
             vendor = authenticate_vendor(email, password)
             if vendor is not None:
                 # Authentication successful, perform login manually
@@ -854,10 +858,11 @@ def vendor_settings(request):
             address = request.POST['address']
             aboout = request.POST['aboout']
             website = request.POST['website']
+            country = Country.objects.get(pk=countryId)
             # image = request.FILES.get('image')
             vendor.email = email
             vendor.vendorName = vendorName
-            vendor.countryId = countryId
+            vendor.country = country
             vendor.mobile = mobile
             vendor.address = address
             vendor.aboout = aboout
