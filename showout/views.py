@@ -269,7 +269,7 @@ def vendorPage(request,vendorId):
     services = Services.objects.all()
     categories = Category.objects.all()
     countries = Country.objects.all()
-    context = {'vendorServices':vendorServices,'vendor':vendor,'categories':categories,'services':services,'countries':countries},
+    context = {'vendorServices':vendorServices,'vendor':vendor,'categories':categories,'services':services,'countries':countries}
     return render (request, 'showout/customers/vendorPage.html', context)
 
 def servicePage(request,vendorId,serviceId):
