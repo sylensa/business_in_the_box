@@ -81,17 +81,18 @@
 </style>
 
    <div class="login">
-      {% if messages %}
-         <ul class="messages">
-            {% for message in messages %}
-               <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-         </ul>
-      {% endif %}
+   
     <form class="login_form" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
             <div class="form_body">
             <h2>Create Account</h2>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
             <input type="text"  name="vendorName" class="form-control" placeholder="Company Name" required>
             <input type="email" name="email" class="form-control" placeholder="Email" required>
             <input type="text"  name="mobile" class="form-control" placeholder="Phone Number" required>

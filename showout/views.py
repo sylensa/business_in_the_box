@@ -609,6 +609,8 @@ def vendor_sign_up(request):
                     return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries,'genders':genders})
         else:
              messages.error(request, 'Account with this email already exist') 
+             return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries,'genders':genders})
+
 
 
     else:
@@ -853,8 +855,8 @@ def authenticate_vendor(email, password):
     try:
         vendor = Vendors.objects.get(email=email)
         if vendor.password == password:
-            return vendor
-    except vendor.DoesNotExist:
+                return vendor
+    except Vendors.DoesNotExist:
         return None
     
 

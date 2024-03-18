@@ -83,13 +83,7 @@
 </style>
 
    <div class="login">
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+   
 
     <form class="login_form" method="POST">
         {% csrf_token %}
@@ -97,6 +91,13 @@
                 <img src="{% static 'images/logo2.png' %}" style="width: 30%; height: 30%;" class="img-fluid mx-auto d-block">
 
                 <p>Login into account</p>
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
 
             <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
