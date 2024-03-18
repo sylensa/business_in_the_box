@@ -170,10 +170,6 @@ def customerLogin(request):
                 messages.error(request, 'Invalid email or password')
         return render(request, 'showout/customers/login.html')
 
-def signup(request):
-
-    context = {}
-    return render(request, 'showout/customers/signup.html', context)
 
 def home(request):  
   
@@ -213,21 +209,30 @@ def register(request):
         password = request.POST['password']
         country = Country.objects.get(pk=countryId)
         # address = request.POST['address']
-        if password == confirm_password:
-            # Create a new Client instance and save it to the database
-            Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,country=country,)
-            user = authenticate_customer(email, password)
-            if user is not None:
-                # Authentication successful, perform login manually
-                request.session['user_id'] = user.customerId  # Store user ID in session
-                # Redirect to a success page or home page
-                confirmationEmail(request,"Registration confirmation",user.email)
-                return redirect('home')
+        customer =  Customer.objects.get(email=email)
+        if customer is not None:
+            messages.error(request, 'Account with this email already exist')
+            return render(request, 'showout/customers/register.html',{'genders':genders,'countries':countries})
+
+        else:    
+            if password == confirm_password:
+                # Create a new Client instance and save it to the database
+                Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,country=country,)
+                user = authenticate_customer(email, password)
+                if user is not None:
+                    # Authentication successful, perform login manually
+                    request.session['user_id'] = user.customerId  # Store user ID in session
+                    # Redirect to a success page or home page
+                    confirmationEmail(request,"Registration confirmation",user.email)
+                    return redirect('home')
+                else:
+                    # Authentication failed, display error message
+                    messages.error(request, 'Login failed try again')
+                    return redirect('customerLogin') 
             else:
-                # Authentication failed, display error message
-                messages.error(request, 'Invalid email or password')
-        else:
-            messages.error(request, 'Password does not match')
+                messages.error(request, 'Password does not match')
+                return render(request, 'showout/customers/register.html',{'genders':genders,'countries':countries})
+
 
     else:
         return render(request, 'showout/customers/register.html',{'genders':genders,'countries':countries})
@@ -246,22 +251,26 @@ def changePassword(request):
         if password == confirmPassword:
             email = request.session['customerEmail'] 
             customer = Customer.objects.get(email=email)
-            customer.password = password
-            customer.save()
-            print("email",email)
-            print("password",password)
-            print("confirmPassword",confirmPassword)
-            if 'user_id' in request.session:
-                del request.session['user_id'] 
-            context = {}
-            confirmationEmail(request,"Change Password confirmation",customer.email)
-            return redirect('customerLogin') 
+            if customer is not None:
+                customer.password = password
+                customer.save()
+                print("email",email)
+                print("password",password)
+                print("confirmPassword",confirmPassword)
+                if 'user_id' in request.session:
+                    del request.session['user_id'] 
+                context = {}
+                confirmationEmail(request,"Change Password confirmation",customer.email)
+                return redirect('customerLogin') 
+            else:
+                messages.error(request, 'Account does not exist')
+                return render(request,'showout/customers/changePassword.html') 
+
         else:
           messages.error(request, 'Password does not match')  
           return render(request,'showout/customers/changePassword.html')  
     
-         
-
+        
 def vendorPage(request,vendorId):
     vendorServices = VendorServices.objects.all()
     vendor = Vendors.objects.get(pk=vendorId)
@@ -465,35 +474,39 @@ def customer_settings(request):
     if 'user_id' in request.session:
         user_id = request.session['user_id']
         customer = Customer.objects.get(pk=user_id)
-        context = {'countries':countries,'customer':customer,'genders':genders,'categories':categories,'services':services}
-        if request.method == 'POST':
-            # Retrieve registration data from POST request
-            email = request.POST['email']
-            fname = request.POST['fname']
-            lname = request.POST['lname']
-            mobile = request.POST['mobile']
-            genderId = request.POST['genderId']
-            countryId = request.POST['countryId']
-            address = request.POST['address']
-            country = Country.objects.get(pk=countryId)
+        if customer is not None:
+            context = {'countries':countries,'customer':customer,'genders':genders,'categories':categories,'services':services}
+            if request.method == 'POST':
+                # Retrieve registration data from POST request
+                email = request.POST['email']
+                fname = request.POST['fname']
+                lname = request.POST['lname']
+                mobile = request.POST['mobile']
+                genderId = request.POST['genderId']
+                countryId = request.POST['countryId']
+                address = request.POST['address']
+                country = Country.objects.get(pk=countryId)
 
-            customer.email = email
-            customer.firstName = fname
-            customer.lastName = lname
-            customer.country = country
-            customer.address = address
-            customer.mobile = mobile
-            customer.genderId = genderId
-            customer.save()
-            confirmationEmail(request,"Profile Update",customer.email)
-            print("fname",fname)
-            print("genderId",genderId)
-            print("countryId",countryId)
-            print("email",email)
-            print("lname",lname)
-            return redirect('customer_settings')        
+                customer.email = email
+                customer.firstName = fname
+                customer.lastName = lname
+                customer.country = country
+                customer.address = address
+                customer.mobile = mobile
+                customer.genderId = genderId
+                customer.save()
+                confirmationEmail(request,"Profile Update",customer.email)
+                print("fname",fname)
+                print("genderId",genderId)
+                print("countryId",countryId)
+                print("email",email)
+                print("lname",lname)
+                return redirect('customer_settings')        
+            else:
+                return render (request, 'showout/customers/customer_settings.html', context) 
         else:
-            return render (request, 'showout/customers/customer_settings.html', context) 
+             messages.error(request, 'Account does not exist')
+             return redirect('customerLogin')   
     else:
          return redirect('customerLogin')
 
@@ -506,13 +519,17 @@ def vendor_login(request):
         print("hello1")
         vendorId = request.session['vendor_id']
         vendor = Vendors.objects.get(pk=vendorId)
-        categories = Category.objects.all()
-        vendorServices = VendorServices.objects.all()
-        vendors = Vendors.objects.all()
-        confirmationEmail(request,"Login Confirmation",vendor.email)
-        # context = {'categories':categories,'vendorServices':vendorServices,'vendors':vendors,'customer':customer}
-       
-        return redirect('vendor_dash')  
+        if vendor is not None:
+            categories = Category.objects.all()
+            vendorServices = VendorServices.objects.all()
+            vendors = Vendors.objects.all()
+            confirmationEmail(request,"Login Confirmation",vendor.email)
+            # context = {'categories':categories,'vendorServices':vendorServices,'vendors':vendors,'customer':customer}
+        
+            return redirect('vendor_dash')  
+        else:
+             messages.error(request, 'Account does not exist')
+             return redirect('vendor_login')
     else:
        
         if request.method == 'POST':
@@ -532,6 +549,8 @@ def vendor_login(request):
         return render(request, 'showout/vendor/vendor_login.html')
 
 def vendor_sign_up(request):
+    countries = Country.objects.all()
+    genders = Gender.objects.all()
     if request.method == 'POST':
         # Retrieve registration data from POST request
         email = request.POST['email']
@@ -545,26 +564,32 @@ def vendor_sign_up(request):
         country = Country.objects.get(pk=countryId)
         print("image:",image)
         # Create a new Client instance and save it to the database
-        if confirm_password == password:
-            Vendors.objects.create(vendorName=vendorName, email=email, password=password, country=country, mobile=mobile,address=address,genderId=1,image=image)
-            vendor = authenticate_vendor(email, password)
-            if vendor is not None:
-                # Authentication successful, perform login manually
-                request.session['vendor_id'] = vendor.vendorId  # Store user ID in session
-                # Redirect to a success page or home page
-                confirmationEmail(request,"Sign Up Confirmation",vendor.email)
-                confirmationEmail(request,"New Venor","sylensa.adolf@gmail.com")
-
-                return redirect('vendor_dash')
-            else:
-                # Authentication failed, display error message
-                messages.error(request, 'Invalid email or password')
+        exist = Vendors.objects.get(email=email)
+        if exist is not None :
+            messages.error(request, 'Account with this email already exist')   
+            return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries,'genders':genders})
         else:
-             messages.error(request, 'Password does not match')
+            if confirm_password == password:
+                Vendors.objects.create(vendorName=vendorName, email=email, password=password, country=country, mobile=mobile,address=address,genderId=1,image=image)
+                vendor = authenticate_vendor(email, password)
+                if vendor is not None:
+                    # Authentication successful, perform login manually
+                    request.session['vendor_id'] = vendor.vendorId  # Store user ID in session
+                    # Redirect to a success page or home page
+                    confirmationEmail(request,"Sign Up Confirmation",vendor.email)
+                    confirmationEmail(request,"New Venor","sylensa.adolf@gmail.com")
+                    return redirect('vendor_dash')
+                else:
+                    # Authentication failed, display error message
+                    messages.error(request, 'Invalid email or password')
+                    return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries,'genders':genders})
+
+            else:
+                messages.error(request, 'Password does not match')
+                return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries,'genders':genders})
+
 
     else:
-        countries = Country.objects.all()
-        genders = Gender.objects.all()
         return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries,'genders':genders})
 
 def customerlist(request):

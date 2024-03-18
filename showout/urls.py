@@ -14,7 +14,6 @@ urlpatterns = [
     #customer urls
     path('customerLogin/', views.customerLogin, name= "customerLogin"),
      path ('customer_settings/', views.customer_settings, name="customer_settings"),
-    path('signup/', views.signup, name= "signup"),
     path('logout/', views.my_logout_view, name='logout'),
     path('navbar/', views.navbar, name='navbar'),
     
