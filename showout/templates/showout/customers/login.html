@@ -49,8 +49,8 @@
       {% endif %}
         <form class="text-center" method="POST">
           {% csrf_token %}
-          <input type="email" id="email" name="email" class="textField" placeholder="Email" ><br><br>
-          <input type="password" id="password" name="password" class="textField" placeholder="Password"><br><br>
+          <input type="email" id="email" name="email"  class="textField" placeholder="Email" required><br><br>
+          <input type="password" id="password" name="password" class="textField" placeholder="Password" required><br><br>
           <div class="row" style="padding-left: 50px;padding-right: 50px;">
             <div class="col-md-6">
               <input type="checkbox" >
