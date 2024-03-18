@@ -30,6 +30,8 @@ def my_logout_view(request):
     
     if 'user_id' in request.session:
         del request.session['user_id']  # Remove user ID from session
+    if 'customerName' in request.session:
+        del request.session['customerName'] 
     if 'cart' in request.session:    
         del request.session['cart'] 
     # Redirect to a logout success page or any other desired page
@@ -102,6 +104,8 @@ def emailSent(request):
 def vendor_logout_view(request):
     if 'vendor_id' in request.session:
         del request.session['vendor_id']  # Remove user ID from session
+    if 'vendorName' in request.session:
+        del request.session['vendorName'] 
     # Redirect to a logout success page or any other desired page
     return redirect('vendor_login')
 

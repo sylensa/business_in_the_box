@@ -37,7 +37,7 @@
           <img src="{% static 'images/logo2.png' %}"  style="width: 25%; height: 25;"  class="img-fluid mx-auto d-block"> 
       
       <p class="text-center">Sign up into your account</p>
-      <a  href="{% url 'customerLogin' %}"> <p class="text-center" >Already have an account? Login here</p></a><br>
+      <a  href="{% url 'customerLogin' %}" style="text-decoration: none;"> <p class="text-center" >Already have an account? Login here</p></a><br>
             {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
@@ -52,14 +52,14 @@
           <input type="email" id="email" name="email" class="textField" placeholder="Email" ><br><br>
           <input type="number" id="mobile" name="mobile" class="textField" placeholder="Contact number" ><br><br>
           <select class="textField"name="countryId"  required><br><br>
-            <option  selected>Select Country</option>
+            <option value="0" selected disabled>Select Country</option>
             {% for country in countries %}
             <option value="{{country.countryId}}">{{country.countryName}}</option>
             {% endfor %}
 
          </select><br><br>
          <select class="textField"name="genderId" required>
-          <option value="0" selected>Select Gender</option>
+          <option value="0" selected disabled>Select Gender</option>
           {% for gender in genders %}
           <option value="{{gender.genderId}}">{{gender.genderName}}</option>
           {% endfor %}
