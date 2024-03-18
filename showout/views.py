@@ -165,6 +165,7 @@ def customerLogin(request):
             if user is not None:
                 # Authentication successful, perform login manually
                 request.session['user_id'] = user.customerId  # Store user ID in session
+                request.session['customerName'] = user.firstName + " " +  user.lastName
                 # Redirect to a success page or home page
                 return redirect('home')
             else:
@@ -224,6 +225,7 @@ def register(request):
                     if user is not None:
                         # Authentication successful, perform login manually
                         request.session['user_id'] = user.customerId  # Store user ID in session
+                        request.session['customerName'] = user.firstName + " " +  user.lastName
                         # Redirect to a success page or home page
                         confirmationEmail(request,"Registration confirmation",user.email)
                         return redirect('home')
@@ -554,6 +556,7 @@ def vendor_login(request):
             if vendor is not None:
                 # Authentication successful, perform login manually
                 request.session['vendor_id'] = vendor.vendorId  # Store user ID in session
+                request.session['vendorName'] = vendor.vendorName
                 # Redirect to a success page or home page
                 confirmationEmail(request,"Login Confirmation",vendor.email)
                 return redirect('vendor_dash')
@@ -591,6 +594,7 @@ def vendor_sign_up(request):
                     if vendor is not None:
                         # Authentication successful, perform login manually
                         request.session['vendor_id'] = vendor.vendorId  # Store user ID in session
+                        request.session['vendorName'] = vendor.vendorName
                         # Redirect to a success page or home page
                         confirmationEmail(request,"Sign Up Confirmation",vendor.email)
                         confirmationEmail(request,"New Venor","sylensa.adolf@gmail.com")

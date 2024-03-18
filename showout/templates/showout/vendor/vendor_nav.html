@@ -16,7 +16,11 @@
         <li class="nav-item">
           <a class="nav-link"  href="{% url 'aboutUS' %}">About Us</a>
         </li>
-
+        {% if request.session.vendorName  %}
+        <li class="nav-item">
+          <a  class="nav-link" href="{% url 'vendor_settings' %}"  style="color: white;">Welcome {{request.session.vendorName}}! </a>
+        </li>
+        {% endif %}
       </ul>
        
 

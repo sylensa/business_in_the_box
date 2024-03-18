@@ -17,8 +17,12 @@
                   </li>
     
                 </ul>
+                {% if request.session.customerName  %}
+                <a  href="{% url 'customer_settings' %}"  style="color: white;">Welcome back {{request.session.customerName}}! </a>
+                {% endif %}
                 <div  class="nav-item dropdown"style="margin-right: 20px;">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: white;">Account</a>
+               
                   <ul class="dropdown-menu  bg-light" >
                     {% if request.session.user_id  %}
                     <li><a class="dropdown-item"  href="{% url 'logout' %}">Logout</a></li>
