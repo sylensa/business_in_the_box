@@ -18,6 +18,8 @@ from django.template.loader import render_to_string
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+
+
 # Create your views here.
 emailToken = "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"
 
@@ -207,10 +209,10 @@ def register(request):
         countryId = request.POST['countryId']
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
-        address = request.POST['address']
+        #address = request.POST['address']
         
         # Create a new Client instance and save it to the database
-        Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,countryId=countryId,address=address)
+        Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,countryId=countryId)
         user = authenticate_customer(email, password)
         if user is not None:
             # Authentication successful, perform login manually
@@ -802,3 +804,19 @@ def confirmationEmail(request,topic,email):
        
 
 #---------Filter---------# 
+
+
+
+
+
+#--------Delete---------#
+def delete_service(request, serviceId):
+    serviceId = request.POST.get('serviceId')
+    try: 
+        service = VendorServices.objects.get(pk = serviceId)
+        service.delete()
+
+        return JsonResponse({'message': 'Service deleted successfully.'})
+   
+    except VendorServices.DoesNotExist:
+        return JsonResponse({'error': 'Service not found.'}, status=404)
