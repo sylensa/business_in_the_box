@@ -18,6 +18,8 @@ from django.template.loader import render_to_string
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+
+
 # Create your views here.
 emailToken = "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"
 
@@ -999,5 +1001,4 @@ def confirmationEmail(request,topic,email):
         except Exception as e:
             print(e)
        
-
 

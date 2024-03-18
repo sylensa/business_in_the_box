@@ -13,24 +13,25 @@
         <div class="modal-body">
           <form action="#" method="post" id="ratingForm">
             {% csrf_token %}
-            <div class="form-group">
+            <div class="form-group">  
               <label for="rating">Rating:</label>
               <!-- Rating Stars -->
               <div class="rating">
-                <input type="radio" id="star5" name="rating" value="5">
-                <label for="star5"><i class="fas fa-star"></i></label>
-                <input type="radio" id="star4" name="rating" value="4">
-                <label for="star4"><i class="fas fa-star"></i></label>
-                <input type="radio" id="star3" name="rating" value="3">
-                <label for="star3"><i class="fas fa-star"></i></label>
-                <input type="radio" id="star2" name="rating" value="2">
-                <label for="star2"><i class="fas fa-star"></i></label>
-                <input type="radio" id="star1" name="rating" value="1">
+                   
+                
                 <label for="star1"><i class="fas fa-star"></i></label>
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star2"><i class="fas fa-star"></i></label>
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star3"><i class="fas fa-star"></i></label>
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star4"><i class="fas fa-star"></i></label>
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star5"><i class="fas fa-star"></i></label>
                 <input type="hidden" id="vendorServicesId" name="vendorServicesId" value="{{vendorService.vendorServicesId}}">
             </div>
             </div>
-            <input type="text" id="review" name="review" class="textField" placeholder="Comment" ><br><br>
+            <textarea type="text" id="review" name="review" class="form-control" placeholder="Comment"></textarea><br><br>
 
             <button type="submit" class="btn btn-primary">Submit Rating</button>
           </form>
