@@ -47,7 +47,7 @@
                           <select class="form-select"name="countryId" style="margin-top: 1rem;" required>
                             <option  disabled>Select Country</option>
                             {% for country in countries %}
-                            <option value="{{country.countryId}}" {% if customer.countryId == country.countryId %}selected{% else %} {% endif %}>{{country.countryName}}</option>
+                            <option value="{{country.countryId}}" {% if customer.country.countryId == country.countryId %}selected{% else %} {% endif %}>{{country.countryName}}</option>
                             {% endfor %}
              
                          </select>
@@ -114,6 +114,13 @@
                            <a href="{% url 'reset_password' %}"> <button class="btn btn-secondary" style="width: 100%;">Change password</button></a>
                           </div>
                         </div>
+
+                        <div class="form-group row">
+                         
+                          <div class="col-sm-10">
+                           <button id="deleteButton" class="btn btn-danger" style="width: 100%; color:white;">Delete Account</button>
+                          </div>
+                        </div>
     
                    
                       
@@ -151,4 +158,46 @@
     </div>
     {% include 'showout/footer.html' %}
     <script src="{% static 'javascript/settings.js' %}"></script>
+    <script>
+       document.getElementById("deleteButton").addEventListener("click", function() {
+      var accountType = "Customer";
+      var result = confirm("Are you sure you want to delete this item?");
+      if (result) {
+          // If user confirms deletion, make an AJAX request to the server
+          var csrftoken = getCookie('csrftoken');
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "{% url 'delete_account' %}?accountType=" + accountType);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          xhr.onreadystatechange = function() {
+              if (xhr.readyState === XMLHttpRequest.DONE) {
+                  if (xhr.status === 200) {
+                      // Handle successful response from the server
+                      console.log("Item deleted successfully");
+                      location.reload()
+                  } else {
+                      // Handle error response from the server
+                      location.reload()
+                      console.error("Error deleting item:", xhr.responseText);
+                  }
+              }
+          };
+          xhr.send();
+      }
+  });
+  function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
 </body>

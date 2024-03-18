@@ -14,7 +14,6 @@ urlpatterns = [
     #customer urls
     path('customerLogin/', views.customerLogin, name= "customerLogin"),
      path ('customer_settings/', views.customer_settings, name="customer_settings"),
-    path('signup/', views.signup, name= "signup"),
     path('logout/', views.my_logout_view, name='logout'),
     path('navbar/', views.navbar, name='navbar'),
     
@@ -23,6 +22,8 @@ urlpatterns = [
     path('update_rating/', views.updateRating, name="update_rating"),
     
     path ('resetPassword/', views.resetPassword, name="reset_password"),
+     path ('delete_account/', views.delete_account, name="delete_account"),
+    
      path ('sendEmail/', views.sendEmail, name="sendEmail"),
       path ('sendVendorEmail/', views.sendVendorEmail, name="sendVendorEmail"),
       path ('changePassword/', views.changePassword, name="changePassword"),
@@ -57,6 +58,8 @@ urlpatterns = [
     path ('contactUS/', views.contactUS, name="contactUS"),
 
     path ('searchResult/', views.searchResult, name="searchResult"),
+    
+    path ('save_input_to_session/', views.save_input_to_session, name="save_input_to_session"),
    
     
     
