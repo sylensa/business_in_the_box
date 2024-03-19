@@ -332,38 +332,44 @@ def viewVendors(request):
     context = {'vendors':vendors,'categories':categories,'services':services,'countries':countries}
     return render (request, 'showout/customers/viewVendors.html', context)
 
-def wishlist(request):
-    carts =  request.session['cart'] 
-    listVendorServices = []
+def requests(request):
     categories = Category.objects.all()
     vendorServices = VendorServices.objects.all()
     countries = Country.objects.all()
     services = Services.objects.all()
-    for cart in carts:
-        for vendorService in vendorServices:
-            if vendorService.vendorServicesId == int(cart):
-                     average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
-                     if average_rating:
-                        vendorService.rating = average_rating["rating"]
-                     listVendorServices.append(vendorService)
-    context = {'vendorServices':listVendorServices,'categories':categories,'services':services,'countries':countries}
-    if request.method == 'POST' and  'user_id' in request.session: 
-        customerId = request.session['user_id']
-        customer = Customer.objects.get(pk=customerId)
-        for vendorService in listVendorServices:
-         wishList = WishList.objects.create(vendorService=vendorService, customer=customer, vendor=vendorService.vendor)
-         confirmationEmail(request,"Request email",vendorService.vendor.email)
-   
-        wishlistServices =  WishList.objects.filter(customer=customer)
-        listWishlistServices  = getWishListVendorService(wishlistServices)
-        confirmationEmail(request,"Request Confirmation",customer.email)
+    listVendorServices = []
+    if 'carts' in request.session:
+        carts =  request.session['cart'] 
+        for cart in carts:
+            for vendorService in vendorServices:
+                if vendorService.vendorServicesId == int(cart):
+                        average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
+                        if average_rating:
+                            vendorService.rating = average_rating["rating"]
+                        listVendorServices.append(vendorService)
+        context = {'vendorServices':listVendorServices,'categories':categories,'services':services,'countries':countries}
+        if request.method == 'POST' and  'user_id' in request.session: 
+            customerId = request.session['user_id']
+            customer = Customer.objects.get(pk=customerId)
+            for vendorService in listVendorServices:
+                wishList = CustomerRequests.objects.create(vendorService=vendorService, customer=customer, vendor=vendorService.vendor)
+                confirmationEmail(request,"Request email",vendorService.vendor.email)
+        
+            wishlistServices =  CustomerRequests.objects.filter(customer=customer)
+            listWishlistServices  = getWishListVendorService(wishlistServices)
+            confirmationEmail(request,"Request Confirmation",customer.email)
 
-        return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices,'categories':categories,'services':services,'countries':countries})
+            return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices,'categories':categories,'services':services,'countries':countries})
 
+        else:
+            return render (request, 'showout/customers/requests.html', context)
     else:
-        return render (request, 'showout/customers/wishlist.html', context)
+        context = {'vendorServices':listVendorServices,'categories':categories,'services':services,'countries':countries}
 
-def wishlistHistory(request):
+        return render (request, 'showout/customers/requests.html', context)
+
+
+def requestsHistory(request):
     wishlistServices = []
     categories = Category.objects.all()
     services = Services.objects.all()
@@ -371,10 +377,10 @@ def wishlistHistory(request):
     if 'user_id' in request.session: 
         customerId = request.session['user_id']
         customer = Customer.objects.get(pk=customerId)
-        wishlistServices =  WishList.objects.filter(customer=customer)
+        wishlistServices =  CustomerRequests.objects.filter(customer=customer)
         listWishlistServices  = getWishListVendorService(wishlistServices)
 
-    return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices,'categories':categories,'services':services,'countries':countries})
+    return render (request, 'showout/customers/requestsHistory.html', {'wishlistServices':listWishlistServices,'categories':categories,'services':services,'countries':countries})
     
 def topRatedServices(request):
     mostReviewedServices = []
@@ -626,10 +632,10 @@ def customerlist(request):
     if 'vendor_id' in request.session:
         vendorId = request.session['vendor_id']
         vendor = Vendors.objects.get(pk=vendorId)
-        wishLists = WishList.objects.filter(vendor=vendor)
+        wishLists = CustomerRequests.objects.filter(vendor=vendor)
         customers = wishLists.values('customer').annotate(count=Count('customer'))
         allCustomers = [  
-        WishList.objects.filter(customer=item['customer']).first()
+        CustomerRequests.objects.filter(customer=item['customer']).first()
         for item in customers
             ]
         print("wishLists",allCustomers)
@@ -643,7 +649,7 @@ def vendorWishlist(request):
     if 'vendor_id' in request.session:
         vendorId = request.session['vendor_id']
         vendor = Vendors.objects.get(pk=vendorId)
-        wishLists = WishList.objects.filter(vendor=vendor)
+        wishLists = CustomerRequests.objects.filter(vendor=vendor)
        
    
         context = {'wishLists':wishLists}
@@ -672,7 +678,7 @@ def vendor_dash(request):
         print("vendorId",vendorId)
         vendorServices = VendorServices.objects.filter(vendor=vendor)
         listVendorServices = appRatingToService(vendorServices)
-        wishLists = WishList.objects.filter(vendor=vendor)
+        wishLists = CustomerRequests.objects.filter(vendor=vendor)
         customers = wishLists.values('customer').annotate(count=Count('customer'))
         print("customers",customers)
         return render (request, 'showout/vendor/vendor_dash.html', {"vendorServices":listVendorServices, "wishLists":wishLists,"customers":customers})

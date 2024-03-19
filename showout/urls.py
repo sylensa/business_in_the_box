@@ -47,8 +47,8 @@ urlpatterns = [
 
     path ('viewVendors/', views.viewVendors, name="viewVendors"),
 
-    path ('wishlist/', views.wishlist, name="wishlist"),
-     path ('wishlistHistory/', views.wishlistHistory, name="wishlistHistory"),
+    path ('requests/', views.requests, name="requests"),
+     path ('requestsHistory/', views.requestsHistory, name="requestsHistory"),
      path ('topRatedServices/', views.topRatedServices, name="topRatedServices"),
 
     path ('editProfile/', views.editProfile, name="editProfile"),

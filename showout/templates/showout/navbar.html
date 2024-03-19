@@ -26,7 +26,7 @@
                   <ul class="dropdown-menu  bg-light" >
                     {% if request.session.user_id  %}
                     <li><a class="dropdown-item"  href="{% url 'logout' %}">Logout</a></li>
-                    <li><a class="dropdown-item" href="{% url 'wishlistHistory' %}" href="#">Request history</a></li>
+                    <li><a class="dropdown-item" href="{% url 'requestsHistory' %}" href="#">Request history</a></li>
                     <li><a class="dropdown-item"  href="{% url 'customer_settings' %}">Settings</a></li>
 
                     {% else %}
@@ -36,7 +36,7 @@
                   </ul>
                 </div> 
 
-                  <a style="text-decoration: none;" href="{% url 'wishlist' %}"> <div ><button class="btn btn-light"><i  href="#" style="color: red;">{{ request.session.cart|length }} </i>Requests</button></div></a>
+                  <a style="text-decoration: none;" href="{% url 'requests' %}"> <div ><button class="btn btn-light"><i  href="#" style="color: red;">{{ request.session.cart|length }} </i>Requests</button></div></a>
             
               
             

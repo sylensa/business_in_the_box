@@ -137,12 +137,12 @@ class ReviewVendoreServices(models.Model):
 	def __int__(self):
 		return self.reviewVendoreServicesId	
 	
-class WishList(models.Model):
+class CustomerRequests(models.Model):
 	vendor = models.ForeignKey(Vendors,  on_delete=models.SET_NULL, null=True, blank=True)
 	vendorService = models.ForeignKey(VendorServices,  on_delete=models.SET_NULL, null=True, blank=True)
 	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
 	date_created = models.DateTimeField(auto_now_add=True)
-	wishListId =  models.AutoField(primary_key=True)
+	requestId =  models.AutoField(primary_key=True)
 
 	def __str__(self):
 		return self.vendorService.services.serviceName
