@@ -34,10 +34,10 @@
     <div class="col-md-6" style="padding-top: 4rem ">
       <div class="column">
         
-          <img src="{% static 'images/logo2.png' %}"  style="width: 25%; height: 25;"  class="img-fluid mx-auto d-block"> 
+        <a href="{% url 'home' %}" > <img src="{% static 'images/logo2.png' %}" style="width: 25%; height: 25;" class="img-fluid mx-auto d-block"> </a> 
       
       <p class="text-center">Sign up into your account</p>
-      <a  href="{% url 'customerLogin' %}"> <p class="text-center" >Already have an account? Login here</p></a><br>
+      <a  href="{% url 'customerLogin' %}" style="text-decoration: none;"> <p class="text-center" >Already have an account? Login here</p></a><br>
             {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
@@ -52,14 +52,14 @@
           <input type="email" id="email" name="email" class="textField" placeholder="Email" ><br><br>
           <input type="number" id="mobile" name="mobile" class="textField" placeholder="Contact number" ><br><br>
           <select class="textField"name="countryId"  required><br><br>
-            <option  selected>Select Country</option>
+            <option value="0" selected disabled>Select Country</option>
             {% for country in countries %}
             <option value="{{country.countryId}}">{{country.countryName}}</option>
             {% endfor %}
 
          </select><br><br>
          <select class="textField"name="genderId" required>
-          <option value="0" selected>Select Gender</option>
+          <option value="0" selected disabled>Select Gender</option>
           {% for gender in genders %}
           <option value="{{gender.genderId}}">{{gender.genderName}}</option>
           {% endfor %}
@@ -67,7 +67,8 @@
        </select><br><br>
           <input type="password" id="password" name="password" class="textField" placeholder="Password"><br><br>
           <input type="password" id="confirm_password" name="confirm_password" class="textField" placeholder="Confirm password"><br><br>
-         
+          <a  href="{% url 'vendor_sign_up' %}" style="text-decoration: none;"> <p class="text-center" >Click here to register as a vendor? </p></a>
+
           <button  type="submit"  class="btn btn-primary" style="width: 20rem;">Sign Up</button>
         </form>
       </div>
