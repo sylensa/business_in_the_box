@@ -34,7 +34,7 @@
 
    form{
     background-color: white;
-    height: 60%;
+    height: 70%;
     width: 30%;
     border-radius: 10px;
     padding-right: 2rem;
@@ -92,7 +92,7 @@
 
                 <p>Login into account</p>
                 {% if messages %}
-                <ul class="messages">
+                <ul class="messages" style=" list-style: none;color: red;">
                     {% for message in messages %}
                         <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                     {% endfor %}
@@ -102,19 +102,20 @@
             <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
             <div class="row" style="padding-left: 50px;padding-right: 50px;">
-            <div style="display:flex; margin-bottom: 8px;">
-                <input type="checkbox"  style="margin-left: 0px;">
+            <div style="display:flex; padding-left: 0px;">
+                <input type="checkbox"  style="margin-left:0px;">
                 <label for="vehicle1" style="margin-left: 5px;"> Remember me</label><br>
 
             </div>
             <div >
+                <br>
                 <a  href="{% url 'vendor_password_reset' %}"> Forgot password</a>
                 <hr>
 
                <p>Don't have an account?<a  href="{% url 'vendor_sign_up' %}"> Sign up</a></p> 
             </div>
             </div>
-            <br>
+            
             <a  href="{% url 'customerLogin' %}" style="text-decoration: none;"> <p class="text-center" >Click here to login as a Customer? </p></a>
 
             <a href="">

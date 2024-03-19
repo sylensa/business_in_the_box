@@ -111,11 +111,12 @@
       <div class="col-sm-6 col-md-6 col-lg-6">
         <h3 style="text-align: left;">{{category.categoryName}}</h3>
       </div>
+      
       <div class="col-sm-6 col-md-6 col-lg-6">
         <a href="{% url 'viewServices' categoryId=category.categoryId categoryName=category.categoryName %}" style="text-decoration:none"> <p style="margin-left: 33rem;"><button  class="btn btn-primary">View all</button></p></a>
       </div>
     </div>
-
+   
     <div class="row" style="margin-top: 20px;" >
       {% for vendorService in vendorServices %}
       {% if vendorService.category.categoryId == category.categoryId and vendorService.vendor.approved == True %}
@@ -128,9 +129,7 @@
 
 </div>
 
-<div style="margin-top: 100px;">
 
-</div>
 
  
 {% include 'showout/footer.html' %}
