@@ -18,7 +18,7 @@
     </figure>
       
 </div>
-<div class="col-md-6" style="margin-top: 2.9rem;">
+<div class="col-md-3" style="margin-top: 2.9rem;">
     <h5>Service details</h5>
    <p>
     {{vendorService.description}}
@@ -47,6 +47,15 @@
    <p>{{reviewVendoreServices|length}} review(s)</p>
    {% endif %}
     <br><br> <button style="font-size:24=px;margin-left: 0px; width: 15rem;" data-service="{{vendorService.vendorServicesId}}" data-action="add" class="btn btn-success update-cart">Add to wishlist <i class="material-icons">favorite</i></button>
+
+</div>
+<div class="col-md-3" style="margin-top: 2.9rem;">
+  <h5>All Reviews</h5>
+  {% for review in reviewVendoreServices %}
+ <p>
+  Comment: {{review.review}}({{review.rating}})
+</p>
+{% endfor %}
 
 </div>
 </div>

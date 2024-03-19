@@ -242,7 +242,7 @@ def register(request):
                     return render(request, 'showout/customers/register.html',{'genders':genders,'countries':countries})
 
         else:
-              messages.error(request, 'Password length should be longer than 6')
+              messages.error(request, 'Password length should be atleast 7 characters')  
               return render(request, 'showout/customers/register.html',{'genders':genders,'countries':countries})
            
 
@@ -283,7 +283,7 @@ def changePassword(request):
                 messages.error(request, 'Password does not match')  
                 return render(request,'showout/customers/changePassword.html')  
         else:
-                messages.error(request, 'Password length should be longer than 6')  
+                messages.error(request, 'Password length should be atleast 7 characters')  
                 return render(request,'showout/customers/changePassword.html')  
 
         
@@ -467,7 +467,9 @@ def searchResult(request):
       
     # Perform search or other processing with the query
        searchResultsServices = fetchSearchResults(query,category,service,review_rating,country,budget);
-       context = {'searchResultsServices':searchResultsServices,'categories':categories,'services':services,'countries':countries,'review_rating':review_rating}
+       vendorServices = VendorServices.objects.all()
+       vendorSimilarServices = appRatingToService(vendorServices)
+       context = {'searchResultsServices':searchResultsServices,'categories':categories,'services':services,'countries':countries,'review_rating':review_rating,'vendorSimilarServices':vendorSimilarServices}
     #    return HttpResponse(f'Searching for: {query}')
 
     return render (request, 'showout/customers/searchResult.html',context )
@@ -902,7 +904,8 @@ def vendor_change_password(request):
                 messages.error(request,"Password does not match")
                 return render(request,'showout/vendor/vendor_change_password.html')  
         else:
-                messages.error(request,"Password length should be longer than 6")
+                messages.error(request, 'Password length should be atleast 7 characters')  
+
                 return render(request,'showout/vendor/vendor_change_password.html')  
 
 
