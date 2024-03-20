@@ -24,7 +24,6 @@ class Gender(models.Model):
 		return self.genderName
 	
 class Customer(models.Model):
-	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
 	firstName = models.CharField(max_length=200, null=True)
 	lastName = models.CharField(max_length=200, null=True)
 	email = models.CharField(max_length=200)

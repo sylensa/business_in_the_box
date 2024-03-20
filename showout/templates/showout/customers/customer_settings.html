@@ -45,7 +45,7 @@
                         <label class="col-sm-3 col-form-label">Country</label>
                         <div class="col-sm-9">
                           <select class="form-control" name="countryId" style="margin-top: 1rem;" disabled>
-                            <option  disabled>Select Country</option>
+                            <option value="0"  selected>Select Country</option>
                             {% for country in countries %}
                             <option value="{{country.countryId}}" {% if customer.country.countryId == country.countryId %}selected{% else %} {% endif %}>{{country.countryName}}</option>
                             {% endfor %}
@@ -57,7 +57,7 @@
                         <label class="col-sm-3 col-form-label">Gender</label>
                         <div class="col-sm-9">
                           <select class="form-control" name="genderId" style="margin-top: 1rem;" disabled>
-                            <option  disabled>Select Gender</option>
+                            <option value="0"  selected>Select Gender</option>
                             {% for gender in genders %}
                             <option value="{{gender.genderId}}" {% if customer.genderId == gender.genderId %}selected{% else %} {% endif %}>{{gender.genderName}}</option>
                             {% endfor %}
