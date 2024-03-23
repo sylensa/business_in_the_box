@@ -490,7 +490,7 @@ def searchResult(request):
     #    print("review_rating",int(review_rating))
       
     # Perform search or other processing with the query
-       searchResultsServices = fetchSearchResults(query,category,service,review_rating,country,budget);
+       searchResultsServices = fetchSearchResults(query,category,service,country,budget);
        vendorServices = VendorServices.objects.all()
        vendorSimilarServices = appRatingToService(vendorServices)
        context = {'searchResultsServices':searchResultsServices,'categories':categories,'services':services,'countries':countries,'review_rating':review_rating,'vendorSimilarServices':vendorSimilarServices}
@@ -810,13 +810,14 @@ def getVendorsByCategory(vendorServices,categoryId):
             print("getVendorSimilarService",vendorSimilarServices)
    return vendorSimilarServices
 
-def fetchSearchResults(userSearch,categoryId,serviceId,review_rating,countryId,budget):
+def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget):
     vendorServicesLList = []
     filterCategories = []
     filterServices = []
     filterCountries = []
     filterVendorServices = []
     filterVendors = []
+    
 
     vendors = Vendors.objects.filter(vendorName__icontains=userSearch)
     print("vendors",vendors)
@@ -824,7 +825,7 @@ def fetchSearchResults(userSearch,categoryId,serviceId,review_rating,countryId,b
     print("categories",categories)
  
    
-    if categoryId:
+    if categoryId != "0":
         for c in categories:
           if c.categoryId == int(categoryId):
               filterCategories.append(c)
@@ -832,13 +833,16 @@ def fetchSearchResults(userSearch,categoryId,serviceId,review_rating,countryId,b
         filterCategories = categories
 
     services = Services.objects.filter(serviceName__icontains=userSearch)
+    print("userSearch",userSearch)
+    print("serviceId",serviceId)
     print("services",services)
-    if serviceId:
+    if serviceId != "0":
         for s in services:
             if s.serviceId == int(serviceId):
+                print("same",s.serviceId)
                 filterServices.append(s)
     else:
-        filterServices = services
+        filterServices.extend(services) 
 
     print("filterServices",filterServices)
     print("serviceId",serviceId)
@@ -846,7 +850,7 @@ def fetchSearchResults(userSearch,categoryId,serviceId,review_rating,countryId,b
         
     countries = Country.objects.filter(countryName__icontains=userSearch)
     print("countries",countries)
-    if countryId:
+    if countryId != "0":
         for c in countries:
             if c.countryId == countryId:
                 filterCountries.append(c)
