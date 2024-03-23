@@ -375,7 +375,7 @@ def requests(request):
             listWishlistServices  = getWishListVendorService(wishlistServices)
             confirmationEmail(request,"Request Confirmation",customer.email)
 
-            return render (request, 'showout/customers/wishlistHistory.html', {'wishlistServices':listWishlistServices,'categories':categories,'services':services,'countries':countries})
+            return render (request, 'showout/customers/requestsHistory.html', {'wishlistServices':listWishlistServices,'categories':categories,'services':services,'countries':countries})
 
         else:
             return render (request, 'showout/customers/requests.html', context)
