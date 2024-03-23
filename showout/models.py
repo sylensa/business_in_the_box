@@ -13,6 +13,7 @@ fs = FileSystemStorage(location=MEDIA_ROOT)
 
 class Country(models.Model):
 	countryName = models.CharField(max_length=200, null=True)
+	countryCode = models.CharField(max_length=200, null=True)
 	countryId =  models.AutoField(primary_key=True)
 	def __str__(self):
 		return self.countryName
