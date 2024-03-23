@@ -1,16 +1,17 @@
 {% load static %}
   {% if vendorService %}
+
   <div class="col-md-6">
         
-    <div class="card" style="width:600px; height: 230px;">
+    <div class="card" style="width:100%; height: 230px; margin: 0rem 0rem 1rem 0rem;">
       <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-5">
           <a href="{% url 'servicePage' vendorId=vendorService.vendor.vendorId serviceId=vendorService.services.serviceId%}" style="text-decoration:none">
           <img class="card-img-top" height="230px" src="{{vendorService.services.imageURL}}" alt="Card image">
         </a>
          </div>
          
-         <div class="col-md-5">
+         <div class="col-md-7">
           <div class="card-body">
             <h4 class="card-title">{{vendorService.service.serviceName}}</h4>
             <div style="margin-top: 5px;" class="card-text">{{vendorService.vendor.vendorName}}</div>
@@ -26,7 +27,7 @@
           
             </div>
             <div style="margin-top: 10px;">
-              <button data-service="{{vendorService.vendorServicesId}}" data-action="add" class="btn btn-success update-cart">Add to wishlist <i class="material-icons">favorite</i></button>
+              <button data-service="{{vendorService.vendorServicesId}}" data-action="add" class="btn btn-success update-cart">Add to requests <i class="material-icons">favorite</i></button>
           
             </div>
           </div>
@@ -38,4 +39,5 @@
   
   
   </div>
+
   {% endif %}
