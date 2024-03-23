@@ -48,6 +48,7 @@
     <div class="row"  style="width: 100%;padding-top: 20px;">
       <div class="col-sm-6 col-md-6 col-lg-6">
         <h3 style="text-align: left;">Vendors</h3>
+        
       </div>
       <div class="col-sm-6 col-md-6 col-lg-6" style="padding-left: 40rem;">
         <a href="{% url 'viewVendors'  %}" style="text-decoration:none">  <button  class="btn btn-primary" >View all</button></a>
@@ -96,14 +97,17 @@
 
 
 <br>
-<br>
-    <!-- Categories -->
 <hr>
+<br> 
+<div style="background-color: rgba(162, 159, 159, 0.116); height: 4rem; padding: 1rem 0rem 0rem 1rem;"><h3>Services</h3></div>
+    <!-- Categories -->
+
     {% for category in categories %}
     <div class="row"  style="width: 100%;padding-top: 40px;">
       <div class="col-sm-6 col-md-6 col-lg-6">
         <h3 style="text-align: left;">{{category.categoryName}}</h3>
       </div>
+      
       
       <div class="col-sm-6 col-md-6 col-lg-6"  style="padding-left: 40rem;">
         <a href="{% url 'viewServices' categoryId=category.categoryId categoryName=category.categoryName %}" style="text-decoration:none"><button  class="btn btn-primary">View all</button></a>
@@ -112,7 +116,7 @@
     
    
     
-      
+     
      
     <div class="row">
       <hr>

@@ -1,6 +1,16 @@
 <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ratingModal">
     Open Rating Modal
   </button> -->
+  <style>
+    
+    .rating {
+        direction: rtl; 
+    }
+    .rating i {
+        display: inline-block;
+        transform: scaleX(-1); 
+    }
+</style>
 <div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -19,16 +29,16 @@
               <div class="rating">
                    
                 
-                <label for="star1"><i class="fas fa-star"></i></label>
-                <input type="radio" id="star1" name="rating" value="1">
-                <label for="star2"><i class="fas fa-star"></i></label>
-                <input type="radio" id="star2" name="rating" value="2">
-                <label for="star3"><i class="fas fa-star"></i></label>
-                <input type="radio" id="star3" name="rating" value="3">
-                <label for="star4"><i class="fas fa-star"></i></label>
-                <input type="radio" id="star4" name="rating" value="4">
-                <label for="star5"><i class="fas fa-star"></i></label>
                 <input type="hidden" id="vendorServicesId" name="vendorServicesId" value="{{vendorService.vendorServicesId}}">
+                <label for="star1"><i class="fa fa-star"></i></label>
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star2"><i class="fa fa-star"></i></label>
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star3"><i class="fa fa-star"></i></label>
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star4"><i class="fa fa-star"></i></label>
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star5"><i class="fa fa-star"></i></label>
             </div>
             </div>
             <textarea type="text" id="review" name="review" class="form-control" placeholder="Comment"></textarea><br><br>

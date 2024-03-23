@@ -14,7 +14,7 @@
 <div class="col-md-6" >
     <h3>{{vendorService.services.serviceName}}</h3>
     <figure class="figure-style">
-        <img src="{{vendorService.services.imageURL}}" style="margin-top: 1.5rem; height: 25rem"  class="img-fluid mx-auto float-none d-block"> 
+        <img src="{{vendorService.services.imageURL}}" style="margin-top: 1.5rem; height: 35rem; width:100%;"  class="img-fluid mx-auto float-none d-block"> 
     </figure>
       
 </div>
@@ -46,13 +46,13 @@
    <a href="#" data-toggle="modal" data-target="#ratingModal" style="text-decoration: none;"> Review service </a>
    <p>{{reviewVendoreServices|length}} review(s)</p>
    {% endif %}
-    <br><br> <button style="font-size:24=px;margin-left: 0px; width: 15rem;" data-service="{{vendorService.vendorServicesId}}" data-action="add" class="btn btn-success update-cart">Add to wishlist <i class="material-icons">favorite</i></button>
+    <br><br> <button style="font-size:24=px;margin-left: 0px; width: 15rem;" data-service="{{vendorService.vendorServicesId}}" data-action="add" class="btn btn-success update-cart">Add to requests <i class="material-icons">favorite</i></button>
 
 </div>
-<div class="col-md-3" style="margin-top: 2.9rem;">
+<div class="col-md-3" style="margin-top: 2.9rem; border-left: solid rgba(123, 119, 119, 0.067);  padding-top: 1rem;">
   <h5>All Reviews</h5>
   {% for review in reviewVendoreServices %}
- <p>
+ <p style="background-color:  rgba(145, 143, 143, 0.067);padding: 1rem; border-radius: 10px;">
   Comment: {{review.review}}({{review.rating}})
 </p>
 {% endfor %}
