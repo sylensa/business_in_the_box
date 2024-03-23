@@ -97,19 +97,12 @@
             <input type="email" name="email" class="form-control" placeholder="Email" required>
             <input type="text"  name="mobile" class="form-control" placeholder="Phone Number" required>
             <select class="form-select"name="countryId" style="margin-top: 1rem;" required>
-               <option  selected>Select Country</option>
+               <option value="0"  selected >Select Country</option>
                {% for country in countries %}
                <option value="{{country.countryId}}">{{country.countryName}}</option>
                {% endfor %}
 
             </select>
-            <!-- <select class="form-select"name="genderId" style="margin-top: 1rem;" required>
-               <option value="0"  selected>Select Gender</option>
-               {% for gender in genders %}
-               <option value="{{gender.genderId}}">{{gender.genderName}}</option>
-               {% endfor %}
-
-            </select> -->
             <input type="text"  name="address" class="form-control" placeholder="Address" required>
             <input type="file"  name="image" class="form-control" placeholder="Image" required>
             <input type="password"  name="password" class="form-control" placeholder="Password" type="hidden" required>

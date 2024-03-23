@@ -204,6 +204,7 @@ def resetPassword(request):
 def register(request):
     countries = Country.objects.all(); 
     genders = Gender.objects.all(); 
+    country = None
     if request.method == 'POST':
         # Retrieve registration data from POST request
         email = request.POST['email']
@@ -212,9 +213,12 @@ def register(request):
         mobile = request.POST['mobile']
         genderId = request.POST['genderId']
         countryId = request.POST['countryId']
+        if int(genderId) == 0:
+            genderId = 0
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
-        country = Country.objects.get(pk=countryId)
+        if int(countryId) != 0:
+         country = Country.objects.get(pk=countryId)
         if len(password) > 6 and len(confirm_password) > 6:   
             try:
                 customer =  Customer.objects.get(email=email)
@@ -501,6 +505,7 @@ def customer_settings(request):
     genders = Gender.objects.all()
     categories = Category.objects.all()
     services = Services.objects.all()
+    country = None
     if 'user_id' in request.session:
         user_id = request.session['user_id']
         try:
@@ -513,7 +518,11 @@ def customer_settings(request):
                 lname = request.POST['lname']
                 mobile = request.POST['mobile']
                 genderId = request.POST['genderId']
+                if int(genderId) == 0:
+                    genderId = 0
                 countryId = request.POST['countryId']
+                if int(countryId) != 0:
+                 country = Country.objects.get(pk=countryId)
                 address = request.POST['address']
                 country = Country.objects.get(pk=countryId)
 
@@ -580,6 +589,7 @@ def vendor_login(request):
 
 def vendor_sign_up(request):
     countries = Country.objects.all()
+    country = None
     genders = Gender.objects.all()
     if request.method == 'POST':
         # Retrieve registration data from POST request
@@ -587,11 +597,13 @@ def vendor_sign_up(request):
         vendorName = request.POST['vendorName']
         mobile = request.POST['mobile']
         countryId = request.POST['countryId']
+        if int(countryId) != 0:
+         country = Country.objects.get(pk=countryId)
         address = request.POST['address']
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
         image = request.FILES.get('image')
-        country = Country.objects.get(pk=countryId)
+       
         print("image:",image)
         # Create a new Client instance and save it to the database
         if len(password) > 6 and len(confirm_password) > 6: 
@@ -620,7 +632,7 @@ def vendor_sign_up(request):
                     messages.error(request, 'Password does not match')
                     return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries,'genders':genders})
         else:
-             messages.error(request, 'Account with this email already exist') 
+             messages.error(request, 'Password length should be atleast 7 characters')
              return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries,'genders':genders})
 
 
@@ -917,6 +929,7 @@ def vendor_change_password(request):
 
 def vendor_settings(request):
     countries = Country.objects.all()
+    country = None
     if 'vendor_id' in request.session:
         vendorId = request.session['vendor_id']
         try:
@@ -928,10 +941,12 @@ def vendor_settings(request):
                 vendorName = request.POST['vendorName']
                 mobile = request.POST['mobile']
                 countryId = request.POST['countryId']
+                if int(countryId) != 0:
+                 country = Country.objects.get(pk=countryId)
                 address = request.POST['address']
                 aboout = request.POST['aboout']
                 website = request.POST['website']
-                country = Country.objects.get(pk=countryId)
+                
                 # image = request.FILES.get('image')
                 vendor.email = email
                 vendor.vendorName = vendorName
