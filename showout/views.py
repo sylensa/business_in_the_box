@@ -774,7 +774,6 @@ def filterVendorServices(category):
         if vendorServ:
             vendoerServices.extend(vendorServ)
         
-
     return vendoerServices
 
 
