@@ -18,6 +18,10 @@ from django.template.loader import render_to_string
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from django.conf import settings
+import hashlib
+import random
+from passlib.hash import pbkdf2_sha256
 
 
 # Create your views here.
@@ -179,21 +183,23 @@ def customerLogin(request):
 
 
 def home(request):  
-  
+    listCategories = []
     categories = Category.objects.all()
     countries = Country.objects.all()
     services = Services.objects.all()
-    vendorServices = VendorServices.objects.all()
+    vendorServices = filterVendorServices(categories)
     listVendorServices = appRatingToService(vendorServices)
     vendors = Vendors.objects.all()
     listVendors = appRatingToVendors(vendors)
+    listCategories = filterCategory(categories)
+
     user = None
     if 'user_id' in request.session:
         customerId = request.session['user_id']
         customer = Customer.objects.get(pk=customerId)
     else:
         customer = None
-    context = {'categories':categories,'vendorServices':listVendorServices,'vendors':listVendors,'customer':customer,'services':services,'countries':countries}
+    context = {'categories':listCategories,'vendorServices':listVendorServices,'vendors':listVendors,'customer':customer,'services':services,'countries':countries}
    
     return render(request,'showout/customers/home.html', context)
 
@@ -217,6 +223,7 @@ def register(request):
             genderId = 0
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
+        hashed_password = pbkdf2_sha256.hash(password)
         if int(countryId) != 0:
          country = Country.objects.get(pk=countryId)
         if len(password) > 6 and len(confirm_password) > 6:   
@@ -228,7 +235,7 @@ def register(request):
             except Customer.DoesNotExist:  
                 if password == confirm_password:
                     # Create a new Client instance and save it to the database
-                    Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,country=country,)
+                    Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,country=country,hashed_password=hashed_password)
                     user = authenticate_customer(email, password)
                     if user is not None:
                         # Authentication successful, perform login manually
@@ -264,12 +271,14 @@ def changePassword(request):
    if request.method == 'POST': 
         password =  request.POST['password']
         confirmPassword =  request.POST['confirm_password']
+        hashed_password = pbkdf2_sha256.hash(password)
         if len(password) > 6 and len(confirmPassword) > 6:    
             if password == confirmPassword:
                 email = request.session['customerEmail'] 
                 try:
                     customer =  Customer.objects.get(email=email)
                     customer.password = password
+                    customer.hashed_password = hashed_password
                     customer.save()
                     print("email",email)
                     print("password",password)
@@ -342,9 +351,11 @@ def requests(request):
     countries = Country.objects.all()
     services = Services.objects.all()
     listVendorServices = []
-    if 'carts' in request.session:
+    context = {}
+    if 'cart' in request.session:
         carts =  request.session['cart'] 
         for cart in carts:
+            
             for vendorService in vendorServices:
                 if vendorService.vendorServicesId == int(cart):
                         average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
@@ -352,6 +363,7 @@ def requests(request):
                             vendorService.rating = average_rating["rating"]
                         listVendorServices.append(vendorService)
         context = {'vendorServices':listVendorServices,'categories':categories,'services':services,'countries':countries}
+        print("context",context)
         if request.method == 'POST' and  'user_id' in request.session: 
             customerId = request.session['user_id']
             customer = Customer.objects.get(pk=customerId)
@@ -371,6 +383,8 @@ def requests(request):
         context = {'vendorServices':listVendorServices,'categories':categories,'services':services,'countries':countries}
 
         return render (request, 'showout/customers/requests.html', context)
+    
+
 
 
 def requestsHistory(request):
@@ -602,6 +616,7 @@ def vendor_sign_up(request):
         address = request.POST['address']
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
+        hashed_password = pbkdf2_sha256.hash(password)
         image = request.FILES.get('image')
        
         print("image:",image)
@@ -613,7 +628,7 @@ def vendor_sign_up(request):
                 return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries,'genders':genders})
             except:
                 if confirm_password == password:
-                    Vendors.objects.create(vendorName=vendorName, email=email, password=password, country=country, mobile=mobile,address=address,genderId=1,image=image)
+                    Vendors.objects.create(vendorName=vendorName, email=email, password=password, country=country, mobile=mobile,address=address,genderId=1,image=image,hashed_password=hashed_password)
                     vendor = authenticate_vendor(email, password)
                     if vendor is not None:
                         # Authentication successful, perform login manually
@@ -741,6 +756,27 @@ def appRatingToVendors(vendors):
         listVendors.append(vendor)
 
     return listVendors
+
+def filterCategory(category):
+    categories = []
+    for cat in category:
+        vendorServ = VendorServices.objects.filter(category=cat)
+        if vendorServ:
+            categories.append(cat)
+        
+
+    return categories
+
+def filterVendorServices(category):
+    vendoerServices = []
+    for cat in category:
+        vendorServ = VendorServices.objects.filter(category=cat)[:4]
+        if vendorServ:
+            vendoerServices.extend(vendorServ)
+        
+
+    return vendoerServices
+
 
 def getVendorSimilarService(vendorServices,serviceId):
    vendorSimilarServices = [];
@@ -870,7 +906,7 @@ def fetchSearchResults(userSearch,categoryId,serviceId,review_rating,countryId,b
 def authenticate_customer(email, password):
     try:
         customer = Customer.objects.get(email=email)
-        if customer.password == password:
+        if customer.password == password and passlib_encryption_verify(password, customer.hashed_password):
             return customer
     except Customer.DoesNotExist:
         return None
@@ -878,11 +914,20 @@ def authenticate_customer(email, password):
 def authenticate_vendor(email, password):
     try:
         vendor = Vendors.objects.get(email=email)
-        if vendor.password == password:
+        
+        if vendor.password == password  and passlib_encryption_verify(password, vendor.hashed_password):
                 return vendor
     except Vendors.DoesNotExist:
         return None
     
+def passlib_encryption_verify(raw_password, enc_password):
+	if raw_password and enc_password:
+		# verifying the password
+		response = pbkdf2_sha256.verify(raw_password, enc_password)
+	else:
+		response = None;
+	
+	return response
 
 def vendor_password_reset(request):
     context = {}
@@ -899,12 +944,14 @@ def vendor_change_password(request):
   if request.method == 'POST': 
         password =  request.POST['password']
         confirmPassword =  request.POST['confirm_password']
+        hashed_password = pbkdf2_sha256.hash(password)
         if len(password) > 6 and len(confirmPassword) > 6: 
             if password == confirmPassword:
                 email = request.session['vendorEmail'] 
                 try:
                     vendor = Vendors.objects.get(email=email)
                     vendor.password = password
+                    vendor.hashed_password = hashed_password
                     vendor.save()
                     confirmationEmail(request,"Change password Service",vendor.email)
                     print("email",email)
