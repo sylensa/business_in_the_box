@@ -82,7 +82,7 @@
                           </div>
                         
                           <select class="form-select"name="countryId" style="margin-top: 1rem;" required>
-                            <option  disabled>Select Country</option>
+                            <option value="0" selected>Select Country</option>
                             {% for country in countries %}
                             <option value="{{country.countryId}}" {% if vendor.country.countryId == country.countryId %}selected{% else %} {% endif %}>{{country.countryName}}</option>
                             {% endfor %}

@@ -25,12 +25,12 @@ class Gender(models.Model):
 		return self.genderName
 	
 class Customer(models.Model):
-	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
 	firstName = models.CharField(max_length=200, null=True)
 	lastName = models.CharField(max_length=200, null=True)
 	email = models.CharField(max_length=200)
 	mobile = models.CharField(max_length=200, null=True)
 	password = models.CharField(max_length=200)
+	hashed_password = models.CharField(max_length=200,null=True,blank=True)
 	address = models.CharField(max_length=200, null=True,blank=True)
 	buget = models.CharField(max_length=200)
 	date_created = models.DateTimeField(auto_now_add=True)
@@ -46,6 +46,8 @@ class Vendors(models.Model):
 	vendorName = models.CharField(max_length=200, null=True)
 	email = models.CharField(max_length=200,null=True)
 	password = models.CharField(max_length=200,null=True)
+	hashed_password = models.CharField(max_length=200,null=True)
+
 	mobile = models.CharField(max_length=200,null=True)
 	address = models.CharField(max_length=200,null=True)
 	country =  models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, blank=True)

@@ -48,9 +48,7 @@
                   <span class="fa fa-star {% if vendorService.rating > 2 %}checked{% else %} {% endif %}"></span>
                   <span class="fa fa-star {% if vendorService.rating > 3 %}checked{% else %} {% endif %}"></span>
                   <span class="fa fa-star {% if vendorService.rating > 4 %}checked{% else %} {% endif %}"></span>
-                  {% if request.session.user_id  %}
                   <button  style="margin-top: 10px;" data-service="{{vendorService.vendorServicesId}}" data-action="remove" class="btn btn-success update-cart">Remove<i class="material-icons">delete</i></button>
-                 {% endif %}
               
                 </div>
                 <div style="margin-top: 10px;">

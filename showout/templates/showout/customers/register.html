@@ -51,20 +51,39 @@
           <input type="text" id="lname" name="lname" class="textField" placeholder="Last name" ><br><br>
           <input type="email" id="email" name="email" class="textField" placeholder="Email" ><br><br>
           <input type="number" id="mobile" name="mobile" class="textField" placeholder="Contact number" ><br><br>
-          <select class=".form-control"name="countryId"  required><br><br>
-            <option value="0" selected disabled>Select Country</option>
-            {% for country in countries %}
-            <option value="{{country.countryId}}">{{country.countryName}}</option>
-            {% endfor %}
-
-         </select><br><br>
-         <select class=".form-control"name="genderId" required>
-          <option value="0" selected disabled>Select Gender</option>
-          {% for gender in genders %}
-          <option value="{{gender.genderId}}">{{gender.genderName}}</option>
-          {% endfor %}
-
-       </select><br><br>
+          <div class="row text-center">
+            <div class="row col-2">
+              </div>
+              <div class="col-9">
+                <select class="form-select"name="countryId"  required><br><br>
+                  <option value="0" selected >Select Country</option>
+                  {% for country in countries %}
+                  <option value="{{country.countryId}}">{{country.countryName}}</option>
+                  {% endfor %}
+      
+               </select><br>
+              </div>
+              <div class="row col-1">
+              </div>
+           </div>
+          
+         
+         <div class="row text-center">
+          <div class="row col-2">
+            </div>
+            <div class="col-9">
+              <select class="form-select"name="genderId" required>
+                <option value="0" selected >Select Gender</option>
+                {% for gender in genders %}
+                <option value="{{gender.genderId}}">{{gender.genderName}}</option>
+                {% endfor %}
+      
+             </select>
+            </div>
+            <div class="row col-1">
+            </div>
+         </div>
+         <br>
           <input type="password" id="password" name="password" class="textField" placeholder="Password"><br><br>
           <input type="password" id="confirm_password" name="confirm_password" class="textField" placeholder="Confirm password"><br><br>
           <a  href="{% url 'vendor_sign_up' %}" style="text-decoration: none;"> <p class="text-center" >Click here to register as a vendor? </p></a>
