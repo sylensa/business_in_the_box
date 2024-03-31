@@ -860,7 +860,7 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget):
     
     for filterCountry in filterCountries:
         for vendor in vendors:
-            if filterCountry.countryId == vendor.countryId:
+            if filterCountry.countryId == vendor.country.countryId:
                 filterVendors.append(vendor)
 
    
