@@ -33,7 +33,7 @@
                     <td>{{services.budget}}</td>
                     <td>{{services.date_created}}</td>
                     <td><a href="{% url 'vendor_edit_service' vendorServicesId=services.vendorServicesId%}" href="{% url 'vendor_edit_service' vendorServicesId=services.vendorServicesId %}"><button type="submit" class="btn btn-success"><i class="bi bi-pencil-square"></i></button></a></td>
-                    <td><button id="deleteButton" data-vendorServicesId="{{services.vendorServicesId}}" type="button" class="btn btn-danger"><i class="bi bi-trash3"></i></button></td>
+                    <td><button data-vendorServicesId="{{services.vendorServicesId}}" type="button" class="btn btn-danger deleteButton"><i class="bi bi-trash3"></i></button></td>
                   </tr>
                  {% endfor %}
                   <!-- Add more rows as needed -->
@@ -43,23 +43,29 @@
     </div>
 
 
-  <script>
-    $(document).ready(function() {
-      $('#myTable').DataTable({
-        dom: 'Bfrtip', // Add buttons to the DataTables DOM
-        buttons: [
-          'copy', // Add copy button
-          'csv', // Add CSV button
-          'excel', // Add Excel button
-          'pdf', // Add PDF button
-          'print' // Add print button
-        ]
-      });
+
+
+<script>
+  $(document).ready(function() {
+          console.log("clickd")
+
+    $('#myTable').DataTable({
+      dom: 'Bfrtip', // Add buttons to the DataTables DOM
+      buttons: [
+        'copy', // Add copy button
+        'csv', // Add CSV button
+        'excel', // Add Excel button
+        'pdf', // Add PDF button
+        'print' // Add print button
+      ]
     });
+
     
-  </script>
-  <script>
-    document.getElementById("deleteButton").addEventListener("click", function() {
+  });
+  
+  document.querySelectorAll('.deleteButton').forEach(cell => {
+    cell.addEventListener('click', function() {
+      console.log("clickd")
         var vendorServicesId = this.getAttribute("data-vendorServicesId");
         var result = confirm("Are you sure you want to delete this service?");
         if (result) {
@@ -85,6 +91,10 @@
             xhr.send();
         }
     });
+  });
+
+  
+  
     function getCookie(name) {
               var cookieValue = null;
               if (document.cookie && document.cookie !== '') {
@@ -99,8 +109,7 @@
               }
               return cookieValue;
           }
-  </script>
-
-
+ 
+</script>
 </body>
 </html>
