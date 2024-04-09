@@ -10,7 +10,7 @@ var externalButton = document.getElementById("saveButton");
 // Attach click event listener to the external button
 externalButton.addEventListener("click", function() {
   // Submit the form
-  alert("Changes saved successfully.");
+//   alert("Changes saved successfully.");
   form.submit();
 });
 
@@ -84,5 +84,5 @@ document.getElementById("saveButton").addEventListener("click", function() {
     document.getElementById("editButton").style.display = "inline-block";
     document.getElementById("saveButton").style.display = "none";
     document.getElementById("cancelButton").style.display = "none";
-    alert("Changes saved successfully.");
+    // alert("Changes saved successfully.");
 });

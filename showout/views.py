@@ -53,26 +53,29 @@ def sendEmail(request):
     if request.method == 'POST':
         subject = 'Password reset'
         to_email =  request.POST['email']  # Replace with the recipient's email address
-        context = {'link': f'http://127.0.0.1:8000/changePassword/?email={to_email}'}
-        template_path = 'showout/customers/email_template.html'
-        messageString = render_to_string(template_path, context)
-        from_email = 'hello@showout.studio'  # Replace with your email address
-        print("to_email",to_email)    
-        message = Mail(
-        from_email=from_email,
-        to_emails=to_email,
-        subject=subject,
-        html_content=messageString)
-        try:
-            sg = SendGridAPIClient(emailToken)
-            response = sg.send(message)
-            print(response.status_code)
-            print(response.body)
-            print(response.headers)
-            return redirect('emailSent')
+        cusstomer = Customer.objects.filter(email=to_email.lower())
+        if cusstomer:
+            context = {'link': f'http://127.0.0.1:8000/changePassword/?email={to_email}'}
+            template_path = 'showout/customers/email_template.html'
+            messageString = render_to_string(template_path, context)
+            from_email = 'hello@showout.studio'  # Replace with your email address
+            print("to_email",to_email)    
+            message = Mail(
+            from_email=from_email,
+            to_emails=to_email,
+            subject=subject,
+            html_content=messageString)
+            try:
+                sg = SendGridAPIClient(emailToken)
+                response = sg.send(message)
+                print(response.status_code)
+                print(response.body)
+                print(response.headers)
+                return redirect('emailSent')
 
-        except Exception as e:
-            print(e)
+            except Exception as e:
+                print(e)
+        messages.error(request, 'Account with this email does not exist')        
         return redirect('reset_password')   
 
 def sendVendorEmail(request):
@@ -228,14 +231,14 @@ def register(request):
          country = Country.objects.get(pk=countryId)
         if len(password) > 6 and len(confirm_password) > 6:   
             try:
-                customer =  Customer.objects.get(email=email)
+                customer =  Customer.objects.get(email=email.lower())
                 messages.error(request, 'Account with this email already exist')
                 return render(request, 'showout/customers/register.html',{'genders':genders,'countries':countries})
            
             except Customer.DoesNotExist:  
                 if password == confirm_password:
                     # Create a new Client instance and save it to the database
-                    Customer.objects.create(firstName=fname, email=email, password=password, lastName=lname, mobile=mobile,genderId=genderId,country=country,hashed_password=hashed_password)
+                    Customer.objects.create(firstName=fname, email=email.lower(), password=password, lastName=lname, mobile=mobile,genderId=genderId,country=country,hashed_password=hashed_password)
                     user = authenticate_customer(email, password)
                     if user is not None:
                         # Authentication successful, perform login manually
@@ -276,7 +279,7 @@ def changePassword(request):
             if password == confirmPassword:
                 email = request.session['customerEmail'] 
                 try:
-                    customer =  Customer.objects.get(email=email)
+                    customer =  Customer.objects.get(email=email.lower())
                     customer.password = password
                     customer.hashed_password = hashed_password
                     customer.save()
@@ -531,35 +534,41 @@ def customer_settings(request):
                 fname = request.POST['fname']
                 lname = request.POST['lname']
                 mobile = request.POST['mobile']
-                genderId = request.POST['genderId']
-                if int(genderId) == 0:
-                    genderId = 0
-                countryId = request.POST['countryId']
-                if int(countryId) != 0:
-                 country = Country.objects.get(pk=countryId)
-                address = request.POST['address']
-                country = Country.objects.get(pk=countryId)
+                if email and fname and lname and mobile:
+                    genderId = request.POST['genderId']
+                    if int(genderId) == 0:
+                        genderId = 0
+                    countryId = request.POST['countryId']
+                    if int(countryId) != 0:
+                     country = Country.objects.get(pk=countryId)
+                    address = request.POST['address']
+                    country = Country.objects.get(pk=countryId)
 
-                customer.email = email
-                customer.firstName = fname
-                customer.lastName = lname
-                customer.country = country
-                customer.address = address
-                customer.mobile = mobile
-                customer.genderId = genderId
-                customer.save()
-                confirmationEmail(request,"Profile Update",customer.email)
-                print("fname",fname)
-                print("genderId",genderId)
-                print("countryId",countryId)
-                print("email",email)
-                print("lname",lname)
-                return redirect('customer_settings')        
+                    customer.email = email.lower()
+                    customer.firstName = fname
+                    customer.lastName = lname
+                    customer.country = country
+                    customer.address = address
+                    customer.mobile = mobile
+                    customer.genderId = genderId
+                    customer.save()
+                    confirmationEmail(request,"Profile Update",customer.email)
+                    print("fname",fname)
+                    print("genderId",genderId)
+                    print("countryId",countryId)
+                    print("email",email)
+                    print("lname",lname)
+                    messages.error(request, 'Information updated successfully') 
+                    return redirect('customer_settings')  
+                else:
+                   messages.error(request, 'All fields are reequired')   
+                   return render (request, 'showout/customers/customer_settings.html', context)      
             else:
                 return render (request, 'showout/customers/customer_settings.html', context) 
         except:
              messages.error(request, 'Account does not exist')
-             return redirect('customerLogin')   
+             return render (request, 'showout/customers/customer_settings.html', context) 
+  
     else:
          return redirect('customerLogin')
 
@@ -623,12 +632,12 @@ def vendor_sign_up(request):
         # Create a new Client instance and save it to the database
         if len(password) > 6 and len(confirm_password) > 6: 
             try :
-                exist = Vendors.objects.get(email=email)
+                exist = Vendors.objects.get(email=email.lower())
                 messages.error(request, 'Account with this email already exist')   
                 return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries,'genders':genders})
             except:
                 if confirm_password == password:
-                    Vendors.objects.create(vendorName=vendorName, email=email, password=password, country=country, mobile=mobile,address=address,genderId=1,image=image,hashed_password=hashed_password)
+                    Vendors.objects.create(vendorName=vendorName, email=email.lower(), password=password, country=country, mobile=mobile,address=address,genderId=1,image=image,hashed_password=hashed_password)
                     vendor = authenticate_vendor(email, password)
                     if vendor is not None:
                         # Authentication successful, perform login manually
@@ -908,7 +917,7 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget):
 
 def authenticate_customer(email, password):
     try:
-        customer = Customer.objects.get(email=email)
+        customer = Customer.objects.get(email=email.lower())
         if customer.password == password and passlib_encryption_verify(password, customer.hashed_password):
             return customer
     except Customer.DoesNotExist:
@@ -916,7 +925,7 @@ def authenticate_customer(email, password):
     
 def authenticate_vendor(email, password):
     try:
-        vendor = Vendors.objects.get(email=email)
+        vendor = Vendors.objects.get(email=email.lower())
         
         if vendor.password == password  and passlib_encryption_verify(password, vendor.hashed_password):
                 return vendor
@@ -942,7 +951,7 @@ def vendor_change_password(request):
   email = ''
   if request.method == 'GET':
     email =  request.GET['email']
-    request.session['vendorEmail']  = email;
+    request.session['vendorEmail']  = email
     return render(request,'showout/vendor/vendor_change_password.html')  
   if request.method == 'POST': 
         password =  request.POST['password']
@@ -952,7 +961,7 @@ def vendor_change_password(request):
             if password == confirmPassword:
                 email = request.session['vendorEmail'] 
                 try:
-                    vendor = Vendors.objects.get(email=email)
+                    vendor = Vendors.objects.get(email=email.lower())
                     vendor.password = password
                     vendor.hashed_password = hashed_password
                     vendor.save()
@@ -996,25 +1005,31 @@ def vendor_settings(request):
                 address = request.POST['address']
                 aboout = request.POST['aboout']
                 website = request.POST['website']
+                if email and vendorName and mobile and address and aboout and website:
                 
-                # image = request.FILES.get('image')
-                vendor.email = email
-                vendor.vendorName = vendorName
-                vendor.country = country
-                vendor.mobile = mobile
-                vendor.address = address
-                vendor.aboout = aboout
-                vendor.website = website
-                vendor.save()
-                confirmationEmail(request,"Profile Update",vendor.email)
-                print("website",website)
-                print("aboout",aboout)
-                print("countryId",countryId)
-                print("email",email)
-                print("address",address)
-                print("vendorName",vendorName)
-                # print("image:",image)
-                return redirect('vendor_settings')        
+                    # image = request.FILES.get('image')
+                    vendor.email = email.lower()
+                    vendor.vendorName = vendorName
+                    vendor.country = country
+                    vendor.mobile = mobile
+                    vendor.address = address
+                    vendor.aboout = aboout
+                    vendor.website = website
+                    vendor.save()
+                    confirmationEmail(request,"Profile Update",vendor.email)
+                    print("website",website)
+                    print("aboout",aboout)
+                    print("countryId",countryId)
+                    print("email",email)
+                    print("address",address)
+                    print("vendorName",vendorName)
+                    # print("image:",image)
+                    messages.error(request,"Information updated successfully")
+                    return redirect('vendor_settings') 
+                else:
+                    messages.error(request,"All fields are required")
+                    return render (request, 'showout/vendor/vendor_settings.html', context) 
+
             else:
                 return render (request, 'showout/vendor/vendor_settings.html', context) 
         except:
@@ -1040,6 +1055,7 @@ def add_service(request):
             print("vendorId",vendorId)
             service = Services.objects.get(pk=serviceId)
             VendorServices.objects.create(category=service.category,vendor=vendor,services=service,description=description,budget=budget,pdfUpload=pdfUpload)
+            messages.success(request,"Service Added successufully")
             confirmationEmail(request,"Add Service",vendor.email)
         context = {'services':services}
         return render (request, 'showout/vendor/add_service.html', context)
@@ -1070,7 +1086,9 @@ def edit_service(request,vendorServicesId):
             print("vendorId",vendorId)
             vendorService.save()
             confirmationEmail(request,"Delete Service",vendorService.vendor.email)
-            return redirect('vendor_services')   
+            messages.success(request,"Service Updated successufully")
+            return render (request, 'showout/vendor/vendor_edit_service.html', context)    
+ 
         else:
          return render (request, 'showout/vendor/vendor_edit_service.html', context)    
 
