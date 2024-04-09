@@ -21,6 +21,13 @@
                  <button class="btn btn-danger" id="cancelButton" style="display: none">Cancel</button></p></div>
 
         </div>
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: red;text-align: center;">{{ message }}</p>
+            {% endfor %}
+        </div>
+       {% endif %}
    
         <form method="POST" id="myForm">
               
@@ -32,19 +39,19 @@
                     <div class="form-group row">
                         <label  class="col-sm-3 col-form-label">First Name</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="fname"  value="{{customer.firstName}}" disabled>
+                            <input type="text" class="form-control" name="fname"  value="{{customer.firstName}}" required disabled>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Email</label>
                         <div class="col-sm-9">
-                          <input type="email" class="form-control" name="email"  value="{{customer.email}}" disabled>
+                          <input type="email" class="form-control" name="email"  value="{{customer.email}}" required disabled>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Country</label>
                         <div class="col-sm-9">
-                          <select class="form-control" name="countryId" style="margin-top: 1rem;" disabled>
+                          <select class="form-control" name="countryId" style="margin-top: 1rem;" required disabled>
                             <option value="0"  selected>Select Country</option>
                             {% for country in countries %}
                             <option value="{{country.countryId}}" {% if customer.country.countryId == country.countryId %}selected{% else %} {% endif %}>{{country.countryName}}</option>
@@ -75,13 +82,13 @@
                     <div class="form-group row">
                         <label  class="col-sm-3 col-form-label">Last Name</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="lname"  value="{{customer.lastName}}" disabled>
+                            <input type="text" class="form-control" name="lname"  value="{{customer.lastName}}"required disabled>
                         </div>
                       </div>
                     <div class="form-group row">
                         <label  class="col-sm-3 col-form-label">Phone</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="mobile" value="{{customer.mobile}}" disabled>
+                            <input type="text" class="form-control" name="mobile" value="{{customer.mobile}}" required disabled>
                         </div>
                       </div>
                       <div class="form-group row">

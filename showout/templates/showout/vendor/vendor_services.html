@@ -80,7 +80,13 @@
                     if (xhr.status === 200) {
                         // Handle successful response from the server
                         console.log("Item deleted successfully");
-                        location.reload()
+                        alert("Item deleted successfully")
+                        setTimeout(()=>{
+                          location.reload();
+                         
+                        }, 1000);
+                       
+
                     } else {
                         // Handle error response from the server
                         location.reload()
