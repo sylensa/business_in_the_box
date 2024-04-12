@@ -316,13 +316,13 @@ def vendorPage(request,vendorId):
 def servicePage(request,vendorId,serviceId):
     print("vendorId",  vendorId)
     print("serviceId",  serviceId)
-    vendorServices = [];
+    vendorServices = []
     vendorServices = VendorServices.objects.all()
     categories = Category.objects.all()
     services = Services.objects.all()
     countries = Country.objects.all()
     vendorService = getVendorService(vendorServices,serviceId,vendorId)
-    vendorSimilarServices = getVendorSimilarService(vendorServices,serviceId)
+    vendorSimilarServices = getVendorSimilarService(vendorServices,vendorService)
     average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
     if average_rating:
        vendorService.rating = average_rating["rating"]
@@ -479,6 +479,7 @@ def contactUS(request):
 
 def searchResult(request):
     context = {}
+    vendorRecommendedServices = []
     categories = Category.objects.all()
     services = Services.objects.all()
     countries = Country.objects.all()
@@ -494,9 +495,14 @@ def searchResult(request):
       
     # Perform search or other processing with the query
        searchResultsServices = fetchSearchResults(query,category,service,country,budget,review_rating)
-       vendorServices = VendorServices.objects.all()
+       vendorServices = VendorServices.objects.all()[:8]
        vendorSimilarServices = appRatingToService(vendorServices)
-       context = {'searchResultsServices':searchResultsServices,'categories':categories,'services':services,'countries':countries,'review_rating':review_rating,'vendorSimilarServices':vendorSimilarServices}
+       for vendorSimilarService in vendorSimilarServices:
+           if vendorSimilarService not in searchResultsServices:
+             vendorRecommendedServices.append(vendorSimilarService)
+
+               
+    context = {'searchResultsServices':searchResultsServices,'categories':categories,'services':services,'countries':countries,'review_rating':review_rating,'vendorSimilarServices':vendorRecommendedServices}
     #    return HttpResponse(f'Searching for: {query}')
 
     return render (request, 'showout/customers/searchResult.html',context )
@@ -508,7 +514,7 @@ def save_input_to_session(request):
         print("data",data)
         input_value = data['inputValue']
         if input_value is not None:
-            del request.session['input_value']
+            # del request.session['input_value']
             request.session['input_value'] = input_value
             print("input_value",input_value)
             return JsonResponse({'message': 'Input value saved in session.'})
@@ -786,10 +792,10 @@ def filterVendorServices(category):
     return vendoerServices
 
 
-def getVendorSimilarService(vendorServices,serviceId):
-   vendorSimilarServices = [];
+def getVendorSimilarService(vendorServices,vendorSelectedService):
+   vendorSimilarServices = []
    for vendorService in vendorServices:
-        if vendorService.services.serviceId == serviceId :
+        if vendorService.category.categoryId == vendorSelectedService.category.categoryId and vendorService.services.serviceId != vendorSelectedService.services.serviceId:
             average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
             if average_rating:
                 vendorService.rating = average_rating["rating"]

@@ -54,11 +54,16 @@
 </div>
 <div class="col-md-3" style="margin-top: 2.9rem;border-left: solid rgba(123, 119, 119, 0.067);  padding-top: 1rem; margin-left: 5rem;">
   <h5>All Reviews</h5>
+  {% if reviewVendoreServices %}
   {% for review in reviewVendoreServices %}
  <p>
   Comment: {{review.review}}({{review.rating}})
 </p>
 {% endfor %}
+{% else %}
+<!-- List is empty: Display a message -->
+<p>No reviews</p>
+{% endif %}
 
 </div>
 </div>
@@ -105,9 +110,14 @@
       </div>
       
       <div class="row" style="margin-top: 20px; margin-left: 1rem;" >
+        {% if vendorSimilarServices %}
         {% for vendorSimilarService in vendorSimilarServices %}
         {% include 'showout/customers/service_componeent.html' with vendorService=vendorSimilarService %}
         {% endfor %}
+        {% else %}
+        <!-- List is empty: Display a message -->
+        <p>Empty results</p>
+    {% endif %}
       </div>
 
 </div>

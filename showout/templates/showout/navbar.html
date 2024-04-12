@@ -65,7 +65,7 @@
                 </ul>
                 <form class="d-flex" method="post" action="{% url 'searchResult' %}">
                   {% csrf_token %}
-                  <input class="form-control me-2" type="text"  id="inputField" placeholder="Search by filtering" id="query" name="query">
+                  <input class="form-control me-2" type="text"  id="inputField"  placeholder="Click on the filter to search" id="query" name="query" disabled>
                   <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#filterModal">Filter</button>
                 </form>
 
@@ -144,7 +144,7 @@
                 <input class="form-control" type="number" name="budget">
               </div>
               <div class="col-md-6">
-                <h6>Search</h6>
+                <h6>Search Query</h6>
                 <input class="form-control" type="text" value="{{ request.session.input_value }}" name="query">
               </div>
               

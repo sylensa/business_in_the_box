@@ -39,9 +39,14 @@
       </div>
       
       <div class="row" style="margin-top: 20px;" >
+        {% if vendorSimilarServices %}
         {% for vendorSimilarService in vendorSimilarServices %}
         {% include 'showout/customers/service_componeent.html' with vendorService=vendorSimilarService %}
         {% endfor %}
+        {% else %}
+        <!-- List is empty: Display a message -->
+        <p>No Reccommended for this service</p>
+    {% endif %}
       </div>
 
 </div>
