@@ -18,9 +18,14 @@
       </div>
     </div>
     <div class="row" style="margin-top: 20px;" >
+    {% if searchResultsServices %}
     {% for vendorService in searchResultsServices %}
       {% include 'showout/customers/service_componeent.html' with vendorService=vendorService %}
     {% endfor %}
+    {% else %}
+    <!-- List is empty: Display a message -->
+    <p>Empty search results</p>
+{% endif %}
   </div>
 
 

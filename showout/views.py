@@ -908,7 +908,7 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget,review_r
                     vendorServicesLList.append(vendorService)        
  
 
-    if review_rating:  
+    if review_rating != '0':  
         for vendorService in vendorServices:
                 average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
                 if average_rating:
