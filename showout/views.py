@@ -487,13 +487,13 @@ def searchResult(request):
        query = request.POST.get('query')
        category = request.POST.get('category')
        service = request.POST.get('service')
-       review_rating = request.POST.get('review_rating')
+       review_rating = request.POST.get('review')
        country = request.POST.get('country')
        budget = request.POST.get('budget')
-    #    print("review_rating",int(review_rating))
+       print("review_rating",int(review_rating))
       
     # Perform search or other processing with the query
-       searchResultsServices = fetchSearchResults(query,category,service,country,budget);
+       searchResultsServices = fetchSearchResults(query,category,service,country,budget,review_rating)
        vendorServices = VendorServices.objects.all()
        vendorSimilarServices = appRatingToService(vendorServices)
        context = {'searchResultsServices':searchResultsServices,'categories':categories,'services':services,'countries':countries,'review_rating':review_rating,'vendorSimilarServices':vendorSimilarServices}
@@ -819,7 +819,7 @@ def getVendorsByCategory(vendorServices,categoryId):
             print("getVendorSimilarService",vendorSimilarServices)
    return vendorSimilarServices
 
-def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget):
+def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget,review_rating):
     vendorServicesLList = []
     filterCategories = []
     filterServices = []
@@ -838,8 +838,7 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget):
         for c in categories:
           if c.categoryId == int(categoryId):
               filterCategories.append(c)
-    else:
-        filterCategories = categories
+
 
     services = Services.objects.filter(serviceName__icontains=userSearch)
     print("userSearch",userSearch)
@@ -850,8 +849,7 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget):
             if s.serviceId == int(serviceId):
                 print("same",s.serviceId)
                 filterServices.append(s)
-    else:
-        filterServices.extend(services) 
+
 
     print("filterServices",filterServices)
     print("serviceId",serviceId)
@@ -859,12 +857,12 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget):
         
     countries = Country.objects.filter(countryName__icontains=userSearch)
     print("countries",countries)
+    print("countryId",countryId)
     if countryId != "0":
         for c in countries:
-            if c.countryId == countryId:
+            if c.countryId == int(countryId):
                 filterCountries.append(c)
-    else:
-        filterCountries = countries
+
 
     
     for filterCountry in filterCountries:
@@ -872,11 +870,7 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget):
             if filterCountry.countryId == vendor.country.countryId:
                 filterVendors.append(vendor)
 
-   
-    if len(filterVendors) < 1:  
-        filterVendors = vendors    
-
-
+    print("filterCountries",filterCountries)
     vendorServices = VendorServices.objects.all()
     for category in filterCategories:
         for vendorService in vendorServices:
@@ -884,7 +878,8 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget):
                 average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
                 if average_rating:
                     vendorService.rating = average_rating["rating"]
-                vendorServicesLList.append(vendorService)
+                if vendorService not in vendorServicesLList:
+                    vendorServicesLList.append(vendorService) 
 
     for ser in filterServices:
         for vendorService in vendorServices:
@@ -892,7 +887,8 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget):
                 average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
                 if average_rating:
                     vendorService.rating = average_rating["rating"]
-                vendorServicesLList.append(vendorService)
+                if vendorService not in vendorServicesLList:
+                    vendorServicesLList.append(vendorService) 
 
     for vendor in filterVendors:
         for vendorService in vendorServices:
@@ -900,18 +896,29 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget):
                 average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
                 if average_rating:
                     vendorService.rating = average_rating["rating"]
-                vendorServicesLList.append(vendorService)
+                if vendorService not in vendorServicesLList:
+                    vendorServicesLList.append(vendorService) 
     if budget:
         for vendorService in vendorServices:
             if vendorService.budget <= float(budget):
                 average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
                 if average_rating:
                     vendorService.rating = average_rating["rating"]
-                vendorServicesLList.append(vendorService)        
+                if vendorService not in vendorServicesLList:
+                    vendorServicesLList.append(vendorService)        
  
 
-    # if len(filterVendorServices) < 1:  
-    #     filterVendorServices = vendorServices  
+    if review_rating:  
+        for vendorService in vendorServices:
+                average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
+                if average_rating:
+                    print("average_rating",average_rating)
+                    if average_rating["rating"]:
+                        vendorService.rating = int(average_rating["rating"])
+                        if vendorService.rating >= int(review_rating):
+                            if vendorService not in vendorServicesLList:
+                              vendorServicesLList.append(vendorService) 
+
 
     return vendorServicesLList
 
