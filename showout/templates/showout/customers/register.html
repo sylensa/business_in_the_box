@@ -47,15 +47,14 @@
         {% endif %}
         <form class="text-center" method="POST" enctype="multipart/form-data">
           {% csrf_token %}
-            <input type="text" id="fname" name="fname" class="textField" placeholder="First name" ><br><br>
-          <input type="text" id="lname" name="lname" class="textField" placeholder="Last name" ><br><br>
-          <input type="email" id="email" name="email" class="textField" placeholder="Email" ><br><br>
-          <input type="number" id="mobile" name="mobile" class="textField" placeholder="Contact number" ><br><br>
+            <input type="text" id="fname" name="fname" class="textField" placeholder="First name" required ><br><br>
+          <input type="text" id="lname" name="lname" class="textField" placeholder="Last name" required><br><br>
+          <input type="email" id="email" name="email" class="textField" placeholder="Email" required><br><br>
+          <input type="number" id="mobile" name="mobile" class="textField" placeholder="Contact number" required><br><br>
           <div class="row text-center">
-            <div class="row col-2">
-              </div>
-              <div class="col-9">
-                <select class="form-select"name="countryId"  required><br><br>
+            
+              <div class="col-12" style="margin-bottom: 1rem;">
+                <select class="textField"name="countryId"  required><br><br>
                   <option value="0" selected >Select Country</option>
                   {% for country in countries %}
                   <option value="{{country.countryId}}">{{country.countryName}}</option>
@@ -63,16 +62,14 @@
       
                </select><br>
               </div>
-              <div class="row col-1">
-              </div>
+            
            </div>
           
          
          <div class="row text-center">
-          <div class="row col-2">
-            </div>
-            <div class="col-9">
-              <select class="form-select"name="genderId" required>
+         
+            <div class="col-12">
+              <select class="textField"name="genderId" required>
                 <option value="0" selected >Select Gender</option>
                 {% for gender in genders %}
                 <option value="{{gender.genderId}}">{{gender.genderName}}</option>
@@ -80,12 +77,11 @@
       
              </select>
             </div>
-            <div class="row col-1">
-            </div>
+           
          </div>
          <br>
-          <input type="password" id="password" name="password" class="textField" placeholder="Password"><br><br>
-          <input type="password" id="confirm_password" name="confirm_password" class="textField" placeholder="Confirm password"><br><br>
+          <input type="password" id="password" name="password" class="textField" placeholder="Password" required><br><br>
+          <input type="password" id="confirm_password" name="confirm_password" class="textField" placeholder="Confirm password" required><br><br>
           <a  href="{% url 'vendor_sign_up' %}" style="text-decoration: none;"> <p class="text-center" >Click here to register as a vendor? </p></a>
 
           <button  type="submit"  class="btn btn-primary" style="width: 20rem;">Sign Up</button>
