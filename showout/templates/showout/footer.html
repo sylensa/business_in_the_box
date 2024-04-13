@@ -49,12 +49,25 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
+      document.querySelectorAll('.fa-star').forEach((star, index, stars) => {
+                star.addEventListener('click', () => {
+                  stars.forEach((otherStar, otherIndex) => {
+                    if (otherIndex <= index) {
+                      otherStar.classList.remove('fa-regular');
+                      otherStar.classList.add('fa-solid');
+                    } else {
+                      otherStar.classList.add('fa-regular');
+                      otherStar.classList.remove('fa-solid');
+                    }
+                  });
+                });
+              });
         $('#ratingForm').on('submit', function(event) {
             event.preventDefault();
             var ratingValue = $('input[name="rating"]:checked').val();
             var vendorServicesId = $('input[name="vendorServicesId"]').val();
             var review = $('textarea[name="review"]').val();
-            
+           
             
             console.log("Selected rating value:", ratingValue);
             var url = '/update_rating/'

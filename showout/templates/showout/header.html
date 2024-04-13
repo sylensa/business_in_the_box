@@ -88,20 +88,29 @@
   <!-- Custom CSS -->
 
   <style>
-    .rating input[type="radio"] {
-        display: none;
-    }
-    .rating label {
-        cursor: pointer;
-    }
-    .rating label:hover,
-    .rating label:hover ~ label {
-        color: orange;
-    }
-    .rating input[type="radio"]:checked ~ label,
-    .rating input[type="radio"]:checked ~ label:hover ~ label {
-        color: orange;
-    }
+   .rating input[type="radio"] {
+    display: none;
+}
+
+.rating label {
+    cursor: pointer;
+}
+
+/* Hover effect for all labels following the hovered label including the hovered one */
+.rating label:hover,
+.rating label:hover ~ label {
+    color: orange;
+}
+
+/* Style labels after a checked radio button */
+.rating input[type="radio"]:checked ~ label {
+    color: orange;
+}
+
+/* If you hover on labels after the checked radio, keep the earlier labels orange */
+.rating input[type="radio"]:checked ~ label:hover ~ label {
+    color: orange;
+}
 </style>
         
     </head>
