@@ -415,6 +415,7 @@ def topRatedServices(request):
     for most_reviewed_service in most_reviewed_services:
         average_rating = ReviewVendoreServices.objects.filter(vendorService=most_reviewed_service.vendorService).aggregate(rating=Avg('rating'))
         if average_rating:
+            print("most_reviewed_service.vendorService",most_reviewed_service.vendorService)
             most_reviewed_service.vendorService.rating = average_rating["rating"]
             mostReviewedServices.append(most_reviewed_service)
     print("mostReviewedServices",most_reviewed_services)
@@ -846,6 +847,8 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget,review_r
         for c in categories:
           if c.categoryId == int(categoryId):
               filterCategories.append(c)
+    else:
+     filterCategories = categories
 
 
     services = Services.objects.filter(serviceName__icontains=userSearch)
@@ -857,6 +860,8 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget,review_r
             if s.serviceId == int(serviceId):
                 print("same",s.serviceId)
                 filterServices.append(s)
+    else:
+       filterServices =  services
 
 
     print("filterServices",filterServices)
@@ -871,12 +876,12 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget,review_r
             if c.countryId == int(countryId):
                 filterCountries.append(c)
 
-
+    else:
+        filterCountries = countries
     
-    for filterCountry in filterCountries:
-        for vendor in vendors:
-            if filterCountry.countryId == vendor.country.countryId:
-                filterVendors.append(vendor)
+
+    if vendors:
+        filterVendors = vendors
 
     print("filterCountries",filterCountries)
     vendorServices = VendorServices.objects.all()
