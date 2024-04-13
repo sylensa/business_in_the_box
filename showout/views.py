@@ -322,6 +322,7 @@ def servicePage(request,vendorId,serviceId):
     services = Services.objects.all()
     countries = Country.objects.all()
     vendorService = getVendorService(vendorServices,serviceId,vendorId)
+    print("vendorService vendor",vendorService.vendor.vendorId)
     vendorSimilarServices = getVendorSimilarService(vendorServices,vendorService)
     average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
     if average_rating:
@@ -387,8 +388,6 @@ def requests(request):
 
         return render (request, 'showout/customers/requests.html', context)
     
-
-
 
 def requestsHistory(request):
     wishlistServices = []
@@ -584,7 +583,6 @@ def customer_settings(request):
 
 def vendor_login(request):
     if 'vendor_id' in request.session:
-        print("hello1")
         vendorId = request.session['vendor_id']
         try:
             vendor = Vendors.objects.get(pk=vendorId)
@@ -594,7 +592,8 @@ def vendor_login(request):
             # context = {'categories':categories,'vendorServices':vendorServices,'vendors':vendors,'customer':customer}
             return redirect('vendor_dash')  
         except:
-             messages.error(request, 'Account does not exist')
+             print("hello1")
+             del  request.session['vendor_id'] 
              return redirect('vendor_login')
     else:
        
@@ -793,9 +792,11 @@ def filterVendorServices(category):
 
 
 def getVendorSimilarService(vendorServices,vendorSelectedService):
+  
    vendorSimilarServices = []
    for vendorService in vendorServices:
-        if vendorService.category.categoryId == vendorSelectedService.category.categoryId and vendorService.services.serviceId != vendorSelectedService.services.serviceId:
+        print("vendorSelectedService.services.category",vendorService.services.category.categoryId)
+        if vendorService.services.category.categoryId == vendorSelectedService.services.category.categoryId and vendorService.services.serviceId != vendorSelectedService.services.serviceId:
             average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
             if average_rating:
                 vendorService.rating = average_rating["rating"]
@@ -804,8 +805,9 @@ def getVendorSimilarService(vendorServices,vendorSelectedService):
    return vendorSimilarServices
 
 def getVendorsServices(vendorServices,vendorId):
-   vendorSimilarServices = [];
+   vendorSimilarServices = []
    for vendorService in vendorServices:
+        print("vendorService.vendor",vendorService.vendor)
         if vendorService.vendor.vendorId == vendorId:
             average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
             if average_rating:
