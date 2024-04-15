@@ -152,10 +152,28 @@
         </div>
         </div>
       </div>
-      <script>
-      
-
-        </script>
+      <script type="text/javascript">
+        function getToken(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+              var cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+       
+  
+      var csrftoken = getToken('csrftoken')
+      console.log("csrftoken",csrftoken)
+  
+      </script>
       <script src="{% static 'javascript/settings.js' %}"></script>
       <script>
         document.getElementById("deleteButton").addEventListener("click", function() {
@@ -163,7 +181,7 @@
        var result = confirm("Are you sure you want to perminently delete your account?");
        if (result) {
            // If user confirms deletion, make an AJAX request to the server
-           var csrftoken = getCookie('csrftoken');
+           var csrftoken = getToken('csrftoken');
            var xhr = new XMLHttpRequest();
            xhr.open("POST", "{% url 'delete_account' %}?accountType=" + accountType);
            xhr.setRequestHeader("Content-Type", "application/json");
