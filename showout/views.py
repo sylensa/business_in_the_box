@@ -198,8 +198,10 @@ def home(request):
 
     user = None
     if 'user_id' in request.session:
-        customerId = request.session['user_id']
-        customer = Customer.objects.get(pk=customerId)
+        #customerId = request.session['user_id']
+        #customer = Customer.objects.get(pk=customerId)
+        print('anything')
+        customer = None
     else:
         customer = None
     context = {'categories':listCategories,'vendorServices':listVendorServices,'vendors':listVendors,'customer':customer,'services':services,'countries':countries}
@@ -443,11 +445,14 @@ def delete_account(request):
                 try:
                     customer = Customer.objects.get(pk=user_id)
                     del request.session['user_id'] 
+                    del request.session['customerName']
                     customer.delete()
                    # Remove user ID from session
                     return redirect('home') 
+                    
                 except:
                     del request.session['user_id'] 
+                    del request.session['customerName']
                     messages.error(request,"User does not exist")
                     return redirect('vendor_login') 
 
@@ -459,11 +464,13 @@ def delete_account(request):
                     vendor_id = request.session['vendor_id']
                     vendor = Vendors.objects.get(pk=vendor_id)
                     del request.session['vendor_id'] 
+                    del request.session['vendorName']
                     vendor.delete()
                         # Remove user ID from session
                     return redirect('vendor_login') 
                 except:
-                    del request.session['user_id'] 
+                    del request.session['vendor_id'] 
+                    del request.session['vendorName']
                     messages.error(request,"User does not exist")
                     return redirect('vendor_login')                 
                
