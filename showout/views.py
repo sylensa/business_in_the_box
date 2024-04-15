@@ -752,12 +752,13 @@ def getWishListVendorService(wishlistServices):
         
 def getVendorService(vendorServices,serviceId,vendorId):
    for vendorService in vendorServices:
-        if vendorService.services.serviceId == serviceId and vendorService.vendor.vendorId == vendorId:
-            average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
-            if average_rating:
-                vendorService.rating = average_rating["rating"]
-            return vendorService
-            break
+        if vendorService.vendor:
+            if vendorService.services.serviceId == serviceId and vendorService.vendor.vendorId == vendorId:
+                average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
+                if average_rating:
+                    vendorService.rating = average_rating["rating"]
+                return vendorService
+                break
 
 def appRatingToService(vendorServices):
     listVendorServices = []
@@ -816,12 +817,13 @@ def getVendorsServices(vendorServices,vendorId):
    vendorSimilarServices = []
    for vendorService in vendorServices:
         print("vendorService.vendor",vendorService.vendor)
-        if vendorService.vendor.vendorId == vendorId:
-            average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
-            if average_rating:
-                vendorService.rating = average_rating["rating"]
-            vendorSimilarServices.append(vendorService)
-            print("getVendorSimilarService",vendorSimilarServices)
+        if vendorService.vendor:
+            if vendorService.vendor.vendorId == vendorId:
+                average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
+                if average_rating:
+                    vendorService.rating = average_rating["rating"]
+                vendorSimilarServices.append(vendorService)
+                print("getVendorSimilarService",vendorSimilarServices)
    return vendorSimilarServices
 
 def getVendorsByCategory(vendorServices,categoryId):
@@ -912,12 +914,13 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget,review_r
 
     for vendor in filterVendors:
         for vendorService in vendorServices:
-            if vendor.vendorId == vendorService.vendor.vendorId:
-                average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
-                if average_rating:
-                    vendorService.rating = average_rating["rating"]
-                if vendorService not in vendorServicesLList:
-                    vendorServicesLList.append(vendorService) 
+            if vendorService.vendor:
+                if vendor.vendorId == vendorService.vendor.vendorId:
+                    average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
+                    if average_rating:
+                        vendorService.rating = average_rating["rating"]
+                    if vendorService not in vendorServicesLList:
+                        vendorServicesLList.append(vendorService) 
     if budget:
         for vendorService in vendorServices:
             if vendorService.budget <= float(budget):
