@@ -11,6 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 fs = FileSystemStorage(location=MEDIA_ROOT)
 
+# country model
 class Country(models.Model):
 	countryName = models.CharField(max_length=200, null=True)
 	countryCode = models.CharField(max_length=200, null=True)
@@ -18,12 +19,14 @@ class Country(models.Model):
 	def __str__(self):
 		return self.countryName
 	
+	# Gender model
 class Gender(models.Model):
 	genderName = models.CharField(max_length=200, null=True)
 	genderId =  models.AutoField(primary_key=True)
 	def __str__(self):
 		return self.genderName
 	
+	# Customer model
 class Customer(models.Model):
 	firstName = models.CharField(max_length=200, null=True)
 	lastName = models.CharField(max_length=200, null=True)
@@ -42,6 +45,7 @@ class Customer(models.Model):
 	def __str__(self):
 		return self.firstName
     
+	# Vendors model
 class Vendors(models.Model):
 	vendorName = models.CharField(max_length=200, null=True)
 	email = models.CharField(max_length=200,null=True)
@@ -82,7 +86,7 @@ class Vendors(models.Model):
 			url = ''
 		return url
 	
-
+# Category model
 class Category(models.Model):
 	categoryName = models.CharField(max_length=200, null=True)
 	date_created = models.DateTimeField(auto_now_add=True)
@@ -90,6 +94,7 @@ class Category(models.Model):
 	def __str__(self):
 		return self.categoryName
 	
+	# Services model
 class Services(models.Model):
 	category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
 	serviceName = models.CharField(max_length=200, null=True)
@@ -107,6 +112,7 @@ class Services(models.Model):
 			url = ''
 		return url
 	
+	# VendorServices model
 class VendorServices(models.Model):
 	vendor = models.ForeignKey(Vendors,  on_delete=models.SET_NULL, null=True, blank=True)
 	category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
@@ -128,6 +134,7 @@ class VendorServices(models.Model):
 			url = ''
 		return url
 	
+	# ReviewVendoreServices model
 class ReviewVendoreServices(models.Model):
 	vendor = models.ForeignKey(Vendors,  on_delete=models.SET_NULL, null=True, blank=True)
 	vendorService = models.ForeignKey(VendorServices,  on_delete=models.SET_NULL, null=True, blank=True)
@@ -140,6 +147,7 @@ class ReviewVendoreServices(models.Model):
 	def __int__(self):
 		return self.reviewVendoreServicesId	
 	
+	# CustomerRequests model
 class CustomerRequests(models.Model):
 	vendor = models.ForeignKey(Vendors,  on_delete=models.SET_NULL, null=True, blank=True)
 	vendorService = models.ForeignKey(VendorServices,  on_delete=models.SET_NULL, null=True, blank=True)
@@ -150,6 +158,7 @@ class CustomerRequests(models.Model):
 	def __str__(self):
 		return self.vendorService.services.serviceName
 	
+	# Image model
 class Image(models.Model):
     image = models.ImageField(upload_to='images/')
 

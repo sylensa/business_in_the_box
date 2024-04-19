@@ -50,7 +50,7 @@ def navbar(request):
 
 
 def sendEmail(request):
-    if request.method == 'POST':
+    if request.method == 'POST': # check if the html form method is post
         subject = 'Password reset'
         to_email =  request.POST['email']  # Replace with the recipient's email address
         cusstomer = Customer.objects.filter(email=to_email.lower())
@@ -59,18 +59,21 @@ def sendEmail(request):
             template_path = 'showout/customers/email_template.html'
             messageString = render_to_string(template_path, context)
             from_email = 'hello@showout.studio'  # Replace with your email address
-            print("to_email",to_email)    
+            print("to_email",to_email)   
+              # create mail message  
             message = Mail(
             from_email=from_email,
             to_emails=to_email,
             subject=subject,
             html_content=messageString)
             try:
+                 # send email using send grid by passing the token
                 sg = SendGridAPIClient(emailToken)
                 response = sg.send(message)
                 print(response.status_code)
                 print(response.body)
                 print(response.headers)
+                 # return to email sent page
                 return redirect('emailSent')
 
             except Exception as e:
@@ -79,7 +82,7 @@ def sendEmail(request):
         return redirect('reset_password')   
 
 def sendVendorEmail(request):
-    if request.method == 'POST':
+    if request.method == 'POST': # check if the html form method is post
         subject = 'Password reset'
         to_email =  request.POST['email']  # Replace with the recipient's email address
         context = {'link': f'http://127.0.0.1:8000/vendor_change_password/?email={to_email}'}
@@ -87,17 +90,20 @@ def sendVendorEmail(request):
         messageString = render_to_string(template_path, context)
         from_email = 'hello@showout.studio'  # Replace with your email address
         print("to_email",to_email)    
+          # create mail message  
         message = Mail(
         from_email=from_email,
         to_emails=to_email,
         subject=subject,
         html_content=messageString)
         try:
+            # send email using send grid by passing the token
             sg = SendGridAPIClient(emailToken)
             response = sg.send(message)
             print(response.status_code)
             print(response.body)
             print(response.headers)
+             # return to email sent page
             return redirect('emailSent')
 
         except Exception as e:
@@ -119,20 +125,26 @@ def vendor_logout_view(request):
 def updateItem(request):
     request.session.modified = True
 
-    data = json.loads(request.body)
+    data = json.loads(request.body) # get the data through ajax call from cart.js
+    # retrieve values from the ajax call
     vendorServicesId = data['vendorServicesId']
     vendorService = VendorServices.objects.get(vendorServicesId=vendorServicesId)
     action = data['action']
     print('Action:', action)
     print('vendorService:', vendorService)
+    # deleting the cart in the session
     cart = request.session.get('cart', {})
+    # inserting a vendor service id to the session
     cart_item = cart.get(vendorService.vendorServicesId, {'quantity': 0})
+    # check if the action is add, then increase the quantity 
     if action == 'add':
       cart_item['quantity'] += 1
+        # check if the action is remove, then decrease the quantity 
     elif action == 'remove':
       cart_item['quantity'] -= 1
     cart[vendorService.vendorServicesId] = cart_item
     request.session['cart'] = cart
+      # if the quantoty is less than  or equall to 0, then delete the vendor service id
     if cart_item['quantity'] <= 0 :
         del  request.session['cart'][vendorService.vendorServicesId] 
         del  request.session['cart'][str(vendorService.vendorServicesId)]
@@ -141,22 +153,25 @@ def updateItem(request):
     return JsonResponse('Item was added', safe=False)
 
 def updateRating(request):
-    if 'user_id' in request.session:
+    if 'user_id' in request.session: # check if the user is loggedin 
+        # this block is to get the values coming frorm the reeview form
         data = json.loads(request.body)
         ratingValue = data['ratingValue']
         vendorServicesId = data['vendorServicesId']
         customerId = request.session['user_id']
         review = data['review']
+        # get the vendor service 
         vendorService = VendorServices.objects.get(vendorServicesId=vendorServicesId)
+         # get the customer  
         customer = Customer.objects.get(customerId=customerId)
         print("ratingValue",ratingValue)
         print("vendorServicesId",vendorServicesId)
         print("customerId",customerId)
         print("review",review)
-
+        # save customer reeview 
         reviewVendoreServices = ReviewVendoreServices.objects.create(vendorService=vendorService, customer=customer, rating=ratingValue, review=review,vendorServicesId=vendorServicesId,vendor=vendorService.vendor)
 
-   
+    # return success message to the html
     return JsonResponse('Service rated succcessfully', safe=False)
 
 def customerLogin(request): 
@@ -186,25 +201,17 @@ def customerLogin(request):
 
 
 def home(request):  
-    listCategories = []
-    categories = Category.objects.all()
-    countries = Country.objects.all()
-    services = Services.objects.all()
-    vendorServices = filterVendorServices(categories)
-    listVendorServices = appRatingToService(vendorServices)
-    vendors = Vendors.objects.all()
-    listVendors = appRatingToVendors(vendors)
-    listCategories = filterCategory(categories)
+    listCategories = [] # varibal to hold the list of categories
+    categories = Category.objects.all() # this line of code fetches all categories from the categories table
+    countries = Country.objects.all() # this line of code fetches all countries from the countries table
+    services = Services.objects.all() # this section fetcched all services from the service table
+    vendorServices = filterVendorServices(categories) # this function return the first 4 VendorServices for each cateegory. the function expect list of categories as a parameter
+    listVendorServices = appRatingToService(vendorServices) # this function acceept list of vendor services and assign the avearge rating value to each vendor service and return the list of vendor services
+    vendors = Vendors.objects.all() # this line of code fetches all vendors
+    listVendors = appRatingToVendors(vendors) # this function accept list of vendors and assign average rating of al veendor service created by each vendor
+    listCategories = filterByCategory(categories) # this function accept categories and retuurns list of vendor services for each category
 
-    user = None
-    if 'user_id' in request.session:
-        #customerId = request.session['user_id']
-        #customer = Customer.objects.get(pk=customerId)
-        print('anything')
-        customer = None
-    else:
-        customer = None
-    context = {'categories':listCategories,'vendorServices':listVendorServices,'vendors':listVendors,'customer':customer,'services':services,'countries':countries}
+    context = {'categories':listCategories,'vendorServices':listVendorServices,'vendors':listVendors,'services':services,'countries':countries}
    
     return render(request,'showout/customers/home.html', context)
 
@@ -213,10 +220,11 @@ def resetPassword(request):
     return render (request, 'showout/customers/resetPassword.html', context)
 
 def register(request):
-    countries = Country.objects.all(); 
-    genders = Gender.objects.all(); 
+
+    countries = Country.objects.all() # get all countries from country table
+    genders = Gender.objects.all() # get all gender from gender table
     country = None
-    if request.method == 'POST':
+    if request.method == 'POST': # check if the html form method is POST
         # Retrieve registration data from POST request
         email = request.POST['email']
         fname = request.POST['fname']
@@ -228,20 +236,24 @@ def register(request):
             genderId = 0
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
+        # encrypt the password
         hashed_password = pbkdf2_sha256.hash(password)
         if int(countryId) != 0:
          country = Country.objects.get(pk=countryId)
+         # to check if the password leength is bigger than 6
         if len(password) > 6 and len(confirm_password) > 6:   
             try:
+                # cheeck if theres an accouunt with this email
                 customer =  Customer.objects.get(email=email.lower())
                 messages.error(request, 'Account with this email already exist')
                 return render(request, 'showout/customers/register.html',{'genders':genders,'countries':countries})
            
             except Customer.DoesNotExist:  
+                # if the customer does not exist, i check if the password andd confirm password are the same
                 if password == confirm_password:
-                    # Create a new Client instance and save it to the database
+                    # Create a new Customer instance and save it to the database
                     Customer.objects.create(firstName=fname, email=email.lower(), password=password, lastName=lname, mobile=mobile,genderId=genderId,country=country,hashed_password=hashed_password)
-                    user = authenticate_customer(email, password)
+                    user = authenticate_customer(email, password) # this function authenticate the user by accepting email and password and return a customeer object
                     if user is not None:
                         # Authentication successful, perform login manually
                         request.session['user_id'] = user.customerId  # Store user ID in session
@@ -352,33 +364,41 @@ def viewVendors(request):
     return render (request, 'showout/customers/viewVendors.html', context)
 
 def requests(request):
-    categories = Category.objects.all()
-    vendorServices = VendorServices.objects.all()
-    countries = Country.objects.all()
-    services = Services.objects.all()
+    vendorServices = VendorServices.objects.all() # fetch all vendor services
+    categories = Category.objects.all()  # this line of code fetches all categories from the categories table
+    services = Services.objects.all()  # this section fetcched all services from the service table
+    countries = Country.objects.all() # this line of code fetches all countries from the countries table
+   
     listVendorServices = []
     context = {}
-    if 'cart' in request.session:
-        carts =  request.session['cart'] 
-        for cart in carts:
-            
-            for vendorService in vendorServices:
+    if 'cart' in request.session: # check if theree is item in the cart session
+        carts =  request.session['cart'] # get thee carts from the session
+        for cart in carts: # loop through the carts
+
+            # loop through the vendor services
+            for vendorService in vendorServices: 
+                # cheeck if the vendor service id in the cart is equal to any of the vendor services
                 if vendorService.vendorServicesId == int(cart):
+                        # assign average rating to the vendor service
                         average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
                         if average_rating:
                             vendorService.rating = average_rating["rating"]
                         listVendorServices.append(vendorService)
         context = {'vendorServices':listVendorServices,'categories':categories,'services':services,'countries':countries}
         print("context",context)
-        if request.method == 'POST' and  'user_id' in request.session: 
-            customerId = request.session['user_id']
-            customer = Customer.objects.get(pk=customerId)
+        # submit a user request to vendors
+        if request.method == 'POST' and  'user_id' in request.session: # check if the customer is loggedin andd the method is post
+            customerId = request.session['user_id'] # get customer id from the session
+            customer = Customer.objects.get(pk=customerId) # get customer by primary key
             for vendorService in listVendorServices:
+                # insert customer reequest into the CustomerRequests model table
                 wishList = CustomerRequests.objects.create(vendorService=vendorService, customer=customer, vendor=vendorService.vendor)
+                # send confirmation email to veendor
                 confirmationEmail(request,"Request email",vendorService.vendor.email)
         
             wishlistServices =  CustomerRequests.objects.filter(customer=customer)
             listWishlistServices  = getWishListVendorService(wishlistServices)
+              # send confirmation email to customer
             confirmationEmail(request,"Request Confirmation",customer.email)
 
             return render (request, 'showout/customers/requestsHistory.html', {'wishlistServices':listWishlistServices,'categories':categories,'services':services,'countries':countries})
@@ -487,12 +507,14 @@ def contactUS(request):
 def searchResult(request):
     context = {}
     vendorRecommendedServices = []
-    categories = Category.objects.all()
-    services = Services.objects.all()
-    countries = Country.objects.all()
+    categories = Category.objects.all()  # this line of code fetches all categories from the categories table
+    services = Services.objects.all()  # this section fetcched all services from the service table
+    countries = Country.objects.all() # this line of code fetches all countries from the countries table
+   
     review_rating = 0
-    if request.method == 'POST':
-       query = request.POST.get('query')
+    if request.method == 'POST': # this line of code is to check if the form method is post
+       # this block of code is to get the values coming from the search filter modal form
+       query = request.POST.get('query') 
        category = request.POST.get('category')
        service = request.POST.get('service')
        review_rating = request.POST.get('review')
@@ -502,8 +524,12 @@ def searchResult(request):
       
     # Perform search or other processing with the query
        searchResultsServices = fetchSearchResults(query,category,service,country,budget,review_rating)
+       print('searchResultsServices',searchResultsServices)
+         # fetch all vendor services with limit 8
        vendorServices = VendorServices.objects.all()[:8]
+        # assigning average rating to each vendor service by passing vendorServices to the function appRatingToService
        vendorSimilarServices = appRatingToService(vendorServices)
+       # this block of code is to filter recommenced service to the customer base on the service they click 
        for vendorSimilarService in vendorSimilarServices:
            if vendorSimilarService not in searchResultsServices:
              vendorRecommendedServices.append(vendorSimilarService)
@@ -590,14 +616,10 @@ def customer_settings(request):
 # vendor views
 
 def vendor_login(request):
-    if 'vendor_id' in request.session:
-        vendorId = request.session['vendor_id']
+    if 'vendor_id' in request.session: # check if the vendor is loggedin
+        vendorId = request.session['vendor_id'] # get the vendor id from the session
         try:
-            vendor = Vendors.objects.get(pk=vendorId)
-            categories = Category.objects.all()
-            vendorServices = VendorServices.objects.all()
-            vendors = Vendors.objects.all()
-            # context = {'categories':categories,'vendorServices':vendorServices,'vendors':vendors,'customer':customer}
+            vendor = Vendors.objects.get(pk=vendorId) # get vendor by passsing the vendor id to the primary kkey
             return redirect('vendor_dash')  
         except:
              print("hello1")
@@ -605,10 +627,12 @@ def vendor_login(request):
              return redirect('vendor_login')
     else:
        
-        if request.method == 'POST':
+        if request.method == 'POST': # check if the method is post from the html form method
             print("hello")
+            # retireve values from the form
             email = request.POST['email']
             password = request.POST['password']
+            # authenticate the vendor
             vendor = authenticate_vendor(email, password)
             if vendor is not None:
                 # Authentication successful, perform login manually
@@ -624,10 +648,10 @@ def vendor_login(request):
         return render(request, 'showout/vendor/vendor_login.html')
 
 def vendor_sign_up(request):
-    countries = Country.objects.all()
+    countries = Country.objects.all() # get all countries
     country = None
-    genders = Gender.objects.all()
-    if request.method == 'POST':
+    genders = Gender.objects.all() # get all gender
+    if request.method == 'POST': # ccheckk if the form post method is post
         # Retrieve registration data from POST request
         email = request.POST['email']
         vendorName = request.POST['vendorName']
@@ -638,20 +662,24 @@ def vendor_sign_up(request):
         address = request.POST['address']
         confirm_password = request.POST['confirm_password']
         password = request.POST['password']
+         # encrypt the password
         hashed_password = pbkdf2_sha256.hash(password)
         image = request.FILES.get('image')
        
         print("image:",image)
-        # Create a new Client instance and save it to the database
+         # to check if the password leength is bigger than 6
         if len(password) > 6 and len(confirm_password) > 6: 
             try :
                 exist = Vendors.objects.get(email=email.lower())
                 messages.error(request, 'Account with this email already exist')   
                 return render(request, 'showout/vendor/vendor_sign_up.html',{'countries':countries,'genders':genders})
             except:
+                  # if the customer does not exist, i check if the password andd confirm password are the same
                 if confirm_password == password:
+                     # Create a new Vendor instance and save it to the database
                     Vendors.objects.create(vendorName=vendorName, email=email.lower(), password=password, country=country, mobile=mobile,address=address,genderId=1,image=image,hashed_password=hashed_password)
                     vendor = authenticate_vendor(email, password)
+                     # if the vendor does not exist, 
                     if vendor is not None:
                         # Authentication successful, perform login manually
                         request.session['vendor_id'] = vendor.vendorId  # Store user ID in session
@@ -720,14 +748,18 @@ def vendor_services(request):
 
 def vendor_dash(request):
     listVendorServices = []
-    if 'vendor_id' in request.session:
-        vendorId = request.session['vendor_id']
-        vendor = Vendors.objects.get(pk=vendorId)
+    if 'vendor_id' in request.session: # check if the vendor is loggedin 
+        vendorId = request.session['vendor_id'] # get vendor id from sesssion
+        vendor = Vendors.objects.get(pk=vendorId) # retirieve vendor information
         print("vendor",vendor)
         print("vendorId",vendorId)
-        vendorServices = VendorServices.objects.filter(vendor=vendor)
+        # fetch vendor service for the loggedin vendor
+        vendorServices = VendorServices.objects.filter(vendor=vendor) 
+        # assign ratings to the vendor services
         listVendorServices = appRatingToService(vendorServices)
+        # feetch all request for loggedin vendor
         wishLists = CustomerRequests.objects.filter(vendor=vendor)
+           # feetch all customers for loggedin vendor
         customers = wishLists.values('customer').annotate(count=Count('customer'))
         print("customers",customers)
         return render (request, 'showout/vendor/vendor_dash.html', {"vendorServices":listVendorServices, "wishLists":wishLists,"customers":customers})
@@ -763,41 +795,44 @@ def getVendorService(vendorServices,serviceId,vendorId):
 def appRatingToService(vendorServices):
     listVendorServices = []
     for vendorService in vendorServices:
+        # this block of code is to assign the average rating for each vendor service 
         average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
         if average_rating:
-            vendorService.rating = average_rating["rating"]
+            vendorService.rating = average_rating["rating"] # this is where the average rating valu is assign to the vendor service
         listVendorServices.append(vendorService)
-
+    # return the list of VendorServices
     return listVendorServices
 
 def appRatingToVendors(vendors):
     listVendors = []
     for vendor in vendors:
+        # this block of code  assign average rating of all vendor service created by each vendor
         average_rating = ReviewVendoreServices.objects.filter(vendor=vendor).aggregate(rating=Avg('rating'))
         if average_rating:
             vendor.rating = average_rating["rating"]
         listVendors.append(vendor)
-
+    # return list of vendors
     return listVendors
 
-def filterCategory(category):
-    categories = []
+def filterByCategory(category):
+    vendorServervices = []
     for cat in category:
+        # this bllock of code fetch all vendor service base on category
         vendorServ = VendorServices.objects.filter(category=cat)
         if vendorServ:
-            categories.append(cat)
+            vendorServervices.append(cat)
         
-
-    return categories
+    # return list vendorServervice
+    return vendorServervices
 
 def filterVendorServices(category):
-    vendoerServices = []
+    vendoerServices = [] # variballe to hold list of services
     for cat in category:
-        vendorServ = VendorServices.objects.filter(category=cat)[:4]
-        if vendorServ:
-            vendoerServices.extend(vendorServ)
+        vendorServ = VendorServices.objects.filter(category=cat)[:4] # this line of code fetches the first 4 vendor services for each category from the VendorService table
+        if vendorServ: # this line is to check if the vendorServ is not empty
+            vendoerServices.extend(vendorServ) # this line of code append all the data from vendorServ to vendoerServices
         
-    return vendoerServices
+    return vendoerServices # vendoerServices is return by the function
 
 
 def getVendorSimilarService(vendorServices,vendorSelectedService):
@@ -845,55 +880,28 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget,review_r
     filterVendorServices = []
     filterVendors = []
     
-
-    vendors = Vendors.objects.filter(vendorName__icontains=userSearch)
-    print("vendors",vendors)
-    categories = Category.objects.filter(categoryName__icontains=userSearch)
-    print("categories",categories)
+    # this block of code check if the userSearch is not eempty, then fetch all vendors with such name from the filter search query
+    if userSearch:    
+        vendors = Vendors.objects.filter(vendorName__icontains=userSearch)
+        if vendors:
+            filterVendors = vendors
  
-   
+   # this block of code check if the customer selected a category, then fetch all cateegories base on the category selected
     if categoryId != "0":
-        for c in categories:
-          if c.categoryId == int(categoryId):
-              filterCategories.append(c)
-    else:
-     filterCategories = categories
+        filterCategories =  Category.objects.filter(pk=int(categoryId))
 
-
-    services = Services.objects.filter(serviceName__icontains=userSearch)
-    print("userSearch",userSearch)
-    print("serviceId",serviceId)
-    print("services",services)
+     # this block of code check if the customer selected a service, then fetch all services base on the service selected
     if serviceId != "0":
-        for s in services:
-            if s.serviceId == int(serviceId):
-                print("same",s.serviceId)
-                filterServices.append(s)
-    else:
-       filterServices =  services
+        filterServices = Services.objects.filter(pk=int(serviceId))
 
-
-    print("filterServices",filterServices)
-    print("serviceId",serviceId)
-    
-        
-    countries = Country.objects.filter(countryName__icontains=userSearch)
-    print("countries",countries)
-    print("countryId",countryId)
+       # this block of code check if the customer selected a country, then fetch all countries base on the country selected
     if countryId != "0":
-        for c in countries:
-            if c.countryId == int(countryId):
-                filterCountries.append(c)
-
-    else:
-        filterCountries = countries
+       filterCountries = Country.objects.filter(pk=int(countryId))
     
-
-    if vendors:
-        filterVendors = vendors
-
-    print("filterCountries",filterCountries)
+    # fetch all vendor services
     vendorServices = VendorServices.objects.all()
+
+    # filter the vendor service base on the categories selected
     for category in filterCategories:
         for vendorService in vendorServices:
             if category.categoryId == vendorService.category.categoryId:
@@ -903,6 +911,7 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget,review_r
                 if vendorService not in vendorServicesLList:
                     vendorServicesLList.append(vendorService) 
 
+   # filter the vendor service base on the services selected
     for ser in filterServices:
         for vendorService in vendorServices:
             if ser.serviceId == vendorService.services.serviceId:
@@ -912,6 +921,7 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget,review_r
                 if vendorService not in vendorServicesLList:
                     vendorServicesLList.append(vendorService) 
 
+   # filter the vendor service base on the vendors
     for vendor in filterVendors:
         for vendorService in vendorServices:
             if vendorService.vendor:
@@ -921,6 +931,7 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget,review_r
                         vendorService.rating = average_rating["rating"]
                     if vendorService not in vendorServicesLList:
                         vendorServicesLList.append(vendorService) 
+      # filter the vendor service base on the budget entered
     if budget:
         for vendorService in vendorServices:
             if vendorService.budget <= float(budget):
@@ -930,7 +941,7 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget,review_r
                 if vendorService not in vendorServicesLList:
                     vendorServicesLList.append(vendorService)        
  
-
+  # filter the vendor service base on the ratings selected
     if review_rating != '0':  
         for vendorService in vendorServices:
                 average_rating = ReviewVendoreServices.objects.filter(vendorService=vendorService).aggregate(rating=Avg('rating'))
@@ -939,13 +950,18 @@ def fetchSearchResults(userSearch,categoryId,serviceId,countryId,budget,review_r
                     if average_rating["rating"]:
                         vendorService.rating = int(average_rating["rating"])
                         if vendorService.rating >= int(review_rating):
+                            print("hey no")
                             if vendorService not in vendorServicesLList:
                               vendorServicesLList.append(vendorService) 
+                    elif vendorService in vendorServicesLList:
+                            vendorServicesLList.remove(vendorService)
 
 
     return vendorServicesLList
 
 def authenticate_customer(email, password):
+    # function check if the customer exist and compare the password also matches the existing one, 
+    # if not then return None else return the customer objeect
     try:
         customer = Customer.objects.get(email=email.lower())
         if customer.password == password and passlib_encryption_verify(password, customer.hashed_password):
@@ -954,6 +970,8 @@ def authenticate_customer(email, password):
         return None
     
 def authenticate_vendor(email, password):
+        # function check if the vendor exist and compare the password also matches the existing one, 
+        # if not then return None else return the vendor objeect
     try:
         vendor = Vendors.objects.get(email=email.lower())
         
@@ -1072,10 +1090,11 @@ def vendor_settings(request):
  
 
 def add_service(request):
-    services = Services.objects.all();
-    if 'vendor_id' in request.session:
-        vendorId = request.session['vendor_id']
-        if request.method == 'POST':
+    services = Services.objects.all() # fetch all services
+    if 'vendor_id' in request.session: # check if the venor is loggedin
+        vendorId = request.session['vendor_id'] # get vendor id from the session
+        if request.method == 'POST': # check if the html form method is post
+            # this block of code get the velues from the html form
             serviceId = request.POST['serviceId']
             description = request.POST['description']
             budget = request.POST['budget']
@@ -1083,9 +1102,12 @@ def add_service(request):
             vendor = Vendors.objects.get(pk=vendorId)
             print("vendor",vendor)
             print("vendorId",vendorId)
-            service = Services.objects.get(pk=serviceId)
+            service = Services.objects.get(pk=serviceId) # check if the service selected exist
+            # create a new  VendorServices record in the VendorServices table 
             VendorServices.objects.create(category=service.category,vendor=vendor,services=service,description=description,budget=budget,pdfUpload=pdfUpload)
+            # return success message after insertion
             messages.success(request,"Service Added successufully")
+            # send email confirmation
             confirmationEmail(request,"Add Service",vendor.email)
         context = {'services':services}
         return render (request, 'showout/vendor/add_service.html', context)
@@ -1093,12 +1115,14 @@ def add_service(request):
         return redirect('vendor_login') 
 
 def edit_service(request,vendorServicesId):
-    services = Services.objects.all();
-    vendorService = VendorServices.objects.get(pk=vendorServicesId);
+    services = Services.objects.all() # fetch all services
+    vendorService = VendorServices.objects.get(pk=vendorServicesId) # get a vendor service
     context = {'services':services,'vendorService':vendorService}
-    if 'vendor_id' in request.session:
+    if 'vendor_id' in request.session: # check if the venor is loggedin
         vendorId = request.session['vendor_id']
-        if request.method == 'POST':
+        if request.method == 'POST':  # check if the html form method is post
+
+            # this block of code get the velues from the html form
             serviceId = request.POST['serviceId']
             service = Services.objects.get(pk=serviceId)
             description = request.POST['description']
@@ -1114,7 +1138,9 @@ def edit_service(request,vendorServicesId):
             
             print("vendor",vendor)
             print("vendorId",vendorId)
+            # update vendor service
             vendorService.save()
+            # send email confirmation
             confirmationEmail(request,"Delete Service",vendorService.vendor.email)
             messages.success(request,"Service Updated successufully")
             return render (request, 'showout/vendor/vendor_edit_service.html', context)    
@@ -1140,25 +1166,28 @@ def delete_view(request):
         return redirect('vendor_login') 
 
 def confirmationEmail(request,topic,email):
-    if request.method == 'POST':
+    if request.method == 'POST': # check if the html form method is post
         subject = topic
         to_email =  email # Replace with the recipient's email address
         context = {'link': f'http://127.0.0.1:8000/'}
         template_path = 'showout/customers/email_template.html'
         messageString = render_to_string(template_path, context)
         from_email = 'hello@showout.studio'  # Replace with your email address
-        print("to_email",to_email)    
+        print("to_email",to_email)   
+        # create mail message 
         message = Mail(
         from_email=from_email,
         to_emails=to_email,
         subject=subject,
         html_content=messageString)
         try:
+            # send email using send grid by passing the token
             sg = SendGridAPIClient(emailToken)
             response = sg.send(message)
             print(response.status_code)
             print(response.body)
             print(response.headers)
+            # return to email sent page
             return redirect('emailSent')
 
         except Exception as e:
