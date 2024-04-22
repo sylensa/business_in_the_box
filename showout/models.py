@@ -23,7 +23,7 @@ class Gender(models.Model):
 	def __str__(self):
 		return self.genderName
 	
-class Customer(models.Model):
+class Customer(models.Model): # Admin manages customer
 	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
 	firstName = models.CharField(max_length=200, null=True)
 	lastName = models.CharField(max_length=200, null=True)
@@ -87,7 +87,7 @@ class Category(models.Model):
 	def __str__(self):
 		return self.categoryName
 	
-class Services(models.Model):
+class Services(models.Model): # Admin manages services
 	category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
 	serviceName = models.CharField(max_length=200, null=True)
 	date_created = models.DateTimeField(auto_now_add=True)
@@ -104,7 +104,7 @@ class Services(models.Model):
 			url = ''
 		return url
 	
-class VendorServices(models.Model):
+class VendorServices(models.Model): # Admin manages vendor services
 	vendor = models.ForeignKey(Vendors,  on_delete=models.SET_NULL, null=True, blank=True)
 	category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
 	services = models.ForeignKey(Services, on_delete=models.SET_NULL, null=True, blank=True)
@@ -137,7 +137,7 @@ class ReviewVendoreServices(models.Model):
 	def __int__(self):
 		return self.reviewVendoreServicesId	
 	
-class WishList(models.Model):
+class WishList(models.Model): # Admin manages customers' wishlist
 	vendor = models.ForeignKey(Vendors,  on_delete=models.SET_NULL, null=True, blank=True)
 	vendorService = models.ForeignKey(VendorServices,  on_delete=models.SET_NULL, null=True, blank=True)
 	customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
